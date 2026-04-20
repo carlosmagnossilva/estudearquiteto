@@ -85,7 +85,7 @@ jobs:
         with:
           node-version: '22'
           
-- name: Build Frontend
+      - name: Build Frontend
         run: |
           npm install
           CI=false npm run build
