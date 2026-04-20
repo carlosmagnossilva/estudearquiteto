@@ -69,13 +69,10 @@ jobs:
 
       - name: Deploy Hub Consumer
         run: |
-          az containerapp update \
+          az containerapp revision restart \
             --name hub-integrator-app \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --image ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:latest \
-            --registry-server ${{ env.ACR_NAME }}.azurecr.io \
-            --registry-username ${{ env.ACR_NAME }} \
-            --registry-password ${{ secrets.ACR_PASSWORD }}
+            --revision hub-integrator-app--0000001
 
   deploy-frontend:
     runs-on: ubuntu-latest
@@ -99,7 +96,7 @@ jobs:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
-          app_location: "/" 
+          app_location: "." 
           api_location: "" 
           output_location: "build"
           skip_app_build: true
