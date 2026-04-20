@@ -1,47 +1,102 @@
-name: Deploy to Azure
+name: Azure CI/CD - Hub de Obras
 
 on:
   push:
-    branches: [master]
+    branches:
+      - main
   workflow_dispatch:
 
+env:
+  ACR_NAME: crhubdeobrasdev
+  RESOURCE_GROUP: rg-hubdeobras-dev
+  ACA_ENV: env-hubdeobras-dev
+
 jobs:
-  deploy:
+  build-and-push:
     runs-on: ubuntu-latest
-    environment: production
     steps:
-      - name: Checkout
+      - name: Checkout path
         uses: actions/checkout@v4
 
-      - name: Login to Azure Container Registry
+      - name: Azure Login
         uses: azure/login@v2
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Build and push BFF image
-        run: |
-          az acr build \
-            --registry crhubdeobrasdev \
-            --image bff:latest \
-            --file bff/Dockerfile .
+      - name: ACR Login
+        run: az acr login --name ${{ env.ACR_NAME }}
 
-      - name: Build and push hub-core image
+      - name: Build and Push Hub Core
         run: |
-          az acr build \
-            --registry crhubdeobrasdev \
-            --image hub-core:latest \
-            --file hub-core/Dockerfile .
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/hub-core:${{ github.sha }} -t ${{ env.ACR_NAME }}.azurecr.io/hub-core:latest -f hub-core/Dockerfile .
+          docker push ${{ env.ACR_NAME }}.azurecr.io/hub-core:${{ github.sha }}
+          docker push ${{ env.ACR_NAME }}.azurecr.io/hub-core:latest
 
-      - name: Update hub-bff-app
+      - name: Build and Push BFF
+        run: |
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/bff:${{ github.sha }} -t ${{ env.ACR_NAME }}.azurecr.io/bff:latest -f bff/Dockerfile .
+          docker push ${{ env.ACR_NAME }}.azurecr.io/bff:${{ github.sha }}
+          docker push ${{ env.ACR_NAME }}.azurecr.io/bff:latest
+
+      - name: Build and Push Hub Consumer
+        run: |
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:${{ github.sha }} -t ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:latest -f hub-consumer/Dockerfile .
+          docker push ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:${{ github.sha }}
+          docker push ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:latest
+
+  deploy-backends:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Deploy Hub Core
         run: |
           az containerapp update \
-            --resource-group rg-hubdeobras-dev \
-            --name hub-bff-app \
-            --image crhubdeobrasdev.azurecr.io/bff:latest
-
-      - name: Update hub-core-app
-        run: |
-          az containerapp update \
-            --resource-group rg-hubdeobras-dev \
             --name hub-core-app \
-            --image crhubdeobrasdev.azurecr.io/hub-core:latest
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --image ${{ env.ACR_NAME }}.azurecr.io/hub-core:latest
+
+      - name: Deploy BFF
+        run: |
+          az containerapp update \
+            --name hub-bff-app \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --image ${{ env.ACR_NAME }}.azurecr.io/bff:latest
+
+      - name: Deploy Hub Consumer
+        run: |
+          az containerapp update \
+            --name hub-consumer-app \
+            --resource-group ${{ env.RESOURCE_GROUP }} \
+            --image ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:latest
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout path
+        uses: actions/checkout@v4
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          
+      - name: Build Frontend
+        run: |
+          npm install
+          npm run build
+          
+      - name: Build And Deploy Frontend
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/" 
+          api_location: "" 
+          output_location: "build"
+          skip_app_build: true
