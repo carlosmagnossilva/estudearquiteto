@@ -1,4 +1,4 @@
-name: Azure CI/CD - Hub de Obras
+name: Azure CI/CD - Hub de Obras - v2
 
 on:
   push:
