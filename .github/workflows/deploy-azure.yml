@@ -72,7 +72,10 @@ jobs:
           az containerapp update \
             --name hub-integrator-app \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --image ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:latest
+            --image ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:latest \
+            --registry-server ${{ env.ACR_NAME }}.azurecr.io \
+            --registry-username ${{ env.ACR_NAME }} \
+            --registry-password ${{ secrets.ACR_PASSWORD }}
 
   deploy-frontend:
     runs-on: ubuntu-latest
