@@ -1,0 +1,47 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Login to Azure Container Registry
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and push BFF image
+        run: |
+          az acr build \
+            --registry crhubdeobrasdev \
+            --image bff:latest \
+            --file bff/Dockerfile .
+
+      - name: Build and push hub-core image
+        run: |
+          az acr build \
+            --registry crhubdeobrasdev \
+            --image hub-core:latest \
+            --file hub-core/Dockerfile .
+
+      - name: Update hub-bff-app
+        run: |
+          az containerapp update \
+            --resource-group rg-hubdeobras-dev \
+            --name hub-bff-app \
+            --image crhubdeobrasdev.azurecr.io/bff:latest
+
+      - name: Update hub-core-app
+        run: |
+          az containerapp update \
+            --resource-group rg-hubdeobras-dev \
+            --name hub-core-app \
+            --image crhubdeobrasdev.azurecr.io/hub-core:latest
