@@ -1,0 +1,21 @@
+{
+  "name": "hub-integrator",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc",
+    "dev": "node --no-warnings --loader ts-node/esm src/index.ts"
+  },
+  "dependencies": {
+    "@azure/service-bus": "^7.9.5",
+    "dotenv": "^17.4.2",
+    "mssql": "^12.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.5.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
+}

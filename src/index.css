@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-[#F0F4F8] text-slate-800 font-sans antialiased overflow-hidden;
+  }
+}
+
+/* Scrollbar styles to match the Figma prototype */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.glass-card {
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.hero-overlay {
+  background: linear-gradient(180deg, rgba(0, 43, 67, 0.6) 0%, rgba(0, 43, 67, 0.9) 100%);
+}
+
+.card-scrollbar::-webkit-scrollbar {
+  width: 7px;
+}
+.card-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.02);
+  border-radius: 10px;
+}
+.card-scrollbar::-webkit-scrollbar-thumb {
+  background: #A3B8CC;
+  border-radius: 10px;
+}

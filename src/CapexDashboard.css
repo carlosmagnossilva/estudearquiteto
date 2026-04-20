@@ -1,0 +1,163 @@
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1.8fr;
+  grid-template-rows: auto auto;
+  gap: 20px;
+  padding: 0 10px;
+  animation: slideIn 0.5s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.dash-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 24px;
+  color: white;
+}
+
+.dash-card h3 {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* 1. Main Capex Card */
+.main-capex {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 30px;
+}
+
+.trend {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.trend.neg { color: #ff5f5f; }
+.trend.pos { color: #5fff8b; }
+
+.main-value {
+  font-size: 56px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+}
+
+.sub-metrics {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.sub-item {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.sub-item .label {
+  display: block;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 4px;
+}
+
+.sub-item .val {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* 2. Types Grid */
+.types-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.type-item {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 16px;
+  transition: all 0.3s ease;
+}
+
+.type-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.type-id {
+  font-size: 12px;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 4px;
+}
+
+.type-val {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.type-pct {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* 3. Indicators Row */
+.indicators-row {
+  grid-column: span 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.ind-item {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.ind-item .label {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.ind-item .val {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.ind-item small {
+  display: block;
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: right;
+}
