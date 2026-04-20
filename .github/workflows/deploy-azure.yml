@@ -40,9 +40,9 @@ jobs:
 
       - name: Build and Push Hub Consumer
         run: |
-          docker build -t ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:${{ github.sha }} -t ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:latest -f hub-consumer/Dockerfile .
-          docker push ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:${{ github.sha }}
-          docker push ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:latest
+          docker build -t ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:${{ github.sha }} -t ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:latest -f hub-integrator/Dockerfile .
+          docker push ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:${{ github.sha }}
+          docker push ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:latest
 
   deploy-backends:
     needs: build-and-push
@@ -70,9 +70,9 @@ jobs:
       - name: Deploy Hub Consumer
         run: |
           az containerapp update \
-            --name hub-consumer-app \
+            --name hub-integrator-app \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --image ${{ env.ACR_NAME }}.azurecr.io/hub-consumer:latest
+            --image ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:latest
 
   deploy-frontend:
     runs-on: ubuntu-latest
