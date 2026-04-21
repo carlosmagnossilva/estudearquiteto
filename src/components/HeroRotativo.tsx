@@ -46,9 +46,9 @@ export function HeroRotativo({ pinned, setPinned, activeTab, onSourceChange }: H
   const elegiveis = useMemo(() => {
     return items.filter((p: IParada) => {
       const s = p.fel;
-      if (activeTab === "Obras encerradas") return s === "FECH";
-      if (activeTab === "Em andamento") return s === "FEL-3" || s === "FEL-4";
-      if (activeTab === "Obras futuras") return s !== "FECH" && s !== "FEL-3" && s !== "FEL-4";
+      if (activeTab === "Obras Finalizadas") return s === "FECH";
+      if (activeTab === "Obras em Andamento") return s === "FEL-3" || s === "FEL-4";
+      if (activeTab === "Obras Futuras") return s !== "FECH" && s !== "FEL-3" && s !== "FEL-4";
       return false;
     });
   }, [items, activeTab]);
@@ -121,12 +121,12 @@ export function HeroRotativo({ pinned, setPinned, activeTab, onSourceChange }: H
           </div>
 
           <h1 className="text-[28px] sm:text-[38px] xl:text-[44px] font-bold text-white leading-tight max-w-[850px] mb-2 tracking-tighter [text-shadow:0_4px_12px_rgba(0,0,0,0.5)]">
-            {activeTab === "Obras encerradas" ? `Obra concluída: ${parada.embarcacao}` :
-             activeTab === "Em andamento" ? `Mobilização: ${parada.embarcacao}` :
+            {activeTab === "Obras Finalizadas" ? `Obra concluída: ${parada.embarcacao}` :
+             activeTab === "Obras em Andamento" ? `Mobilização: ${parada.embarcacao}` :
              `Mobilização futura: ${parada.embarcacao}`}
             <br />
             <span className="text-white/60 text-[0.7em] font-medium tracking-normal">
-              {activeTab === "Obras encerradas" ? `Finalizada em ${parada.terminoRP}.` : `Janela de execução: ${parada.terminoRP}.`}
+              {activeTab === "Obras Finalizadas" ? `Finalizada em ${parada.terminoRP}.` : `Janela de execução: ${parada.terminoRP}.`}
             </span>
           </h1>
           <p className="text-white/80 text-[15px] sm:text-[17px] font-medium max-w-[600px] [text-shadow:0_2px_4px_rgba(0,0,0,0.3)]">

@@ -4,16 +4,42 @@
 
 :root {
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
-  --bg-primary: #0B1F2E;
-  --bg-gradient: linear-gradient(135deg, #0B1F2E 0%, #12364A 100%);
-  --glass-bg: rgba(255, 255, 255, 0.06);
-  --glass-bg-hover: rgba(255, 255, 255, 0.1);
-  --glass-stroke: rgba(255, 255, 255, 0.12);
-  --glass-stroke-bright: rgba(255, 255, 255, 0.2);
-  --ocean-dark: #0B1F2E;
-  --ocean-accent: #7DD3FC;
-  --text-primary: #FFFFFF;
-  --text-secondary: #A7B3C2;
+}
+
+[data-theme='dark'] {
+  --bg-app: #0B1F2E;
+  --bg-overlay: rgba(15, 35, 50, 0.85); /* Tonalidade de glass no fundo */
+  --bg-card: rgba(15, 35, 50, 0.85); 
+  --bg-mini-card: rgba(255, 255, 255, 0.04);
+  --text-main: #FFFFFF;
+  --text-dim: #94A3B8;
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --border-card: rgba(255, 255, 255, 0.1);
+  --border-mini: rgba(255, 255, 255, 0.08);
+  --sidebar-bg: #0A192A;
+  --header-bg: transparent;
+  --text-nav: #FFFFFF;
+  --text-nav-dim: #94A3B8;
+  --border-nav: rgba(255, 255, 255, 0.05);
+  --accent: #22d3ee;
+}
+
+[data-theme='light'] {
+  --bg-app: #F8FAFC;
+  --bg-overlay: rgba(15, 35, 50, 0.3); 
+  --bg-card: rgba(15, 35, 50, 0.85); 
+  --bg-mini-card: rgba(255, 255, 255, 0.04);
+  --text-main: #FFFFFF;
+  --text-dim: #94A3B8;
+  --text-muted: rgba(255, 255, 255, 0.4);
+  --border-card: rgba(255, 255, 255, 0.1);
+  --border-mini: rgba(255, 255, 255, 0.08);
+  --sidebar-bg: #FFFFFF;
+  --header-bg: rgba(255, 255, 255, 0.8);
+  --text-nav: #1E293B;
+  --text-nav-dim: #64748B;
+  --border-nav: rgba(0, 0, 0, 0.1);
+  --accent: #0891b2;
 }
 
 @layer base {
