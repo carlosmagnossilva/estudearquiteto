@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import {
-  ResponsiveContainer, XAxis, Tooltip, AreaChart, Area, LabelList
+  ResponsiveContainer, XAxis, Tooltip, AreaChart, Area, LabelList, CartesianGrid
 } from "recharts";
 import { useBff } from "./hooks/useBff";
 import { ICapexData, IBffResponse } from "@hub/shared";
@@ -38,7 +38,7 @@ export default function CapexDashboard({ onSourceChange }: CapexDashboardProps) 
 
         <div className="flex-1 w-full -ml-4 sm:-ml-6 min-h-0">
           <ResponsiveContainer width="100%" height="100%">
-            <AreaChart data={historico} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+            <AreaChart data={historico} margin={{ top: 25, right: 20, left: 20, bottom: 10 }}>
               <defs>
                 <linearGradient id="colorCapexRefined" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.4} />
@@ -48,7 +48,14 @@ export default function CapexDashboard({ onSourceChange }: CapexDashboardProps) 
               <Tooltip
                 contentStyle={{ backgroundColor: 'rgba(10,26,42,0.98)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '11px', color: '#fff' }}
               />
-              <XAxis dataKey="year" hide />
+              <CartesianGrid strokeDasharray="3 3" vertical={true} horizontal={false} stroke="rgba(255,255,255,0.1)" />
+              <XAxis 
+                dataKey="year" 
+                axisLine={false} 
+                tickLine={false} 
+                tick={{ fill: 'white', opacity: 0.5, fontSize: 11 }}
+                dy={10}
+              />
               <Area
                 type="monotone"
                 dataKey="value"
@@ -57,7 +64,17 @@ export default function CapexDashboard({ onSourceChange }: CapexDashboardProps) 
                 fill="url(#colorCapexRefined)"
                 dot={false}
                 activeDot={{ r: 4, strokeWidth: 0, fill: '#fff' }}
-              />
+                isAnimationActive={true}
+              >
+                <LabelList 
+                  dataKey="value" 
+                  position="top" 
+                  offset={10} 
+                  fill="white" 
+                  fontSize={11} 
+                  formatter={(val: any) => val?.toLocaleString('pt-BR')} 
+                />
+              </Area>
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -115,7 +132,12 @@ export default function CapexDashboard({ onSourceChange }: CapexDashboardProps) 
             <div key={item.label} className="bg-[#0F2332]/85 border border-white/10 rounded-2xl p-3 flex-1 flex items-center justify-between transition-all hover:bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
               <span className="text-[12px] font-medium text-[#94A3B8]">{item.label}</span>
               <span className="text-2xl font-semibold text-white">{item.percentual}%</span>
-              <span className="text-[11px] text-[#94A3B8]">{item.valor_brl_m} M <span className="text-rose-400">-2%</span></span>
+              <span className="text-[11px] text-[#94A3B8]">
+                {item.valor_brl_m} M 
+                <span className={`ml-1.5 ${(item.variacao_perc || 0) <= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                  {item.variacao_perc > 0 ? '+' : ''}{item.variacao_perc}%
+                </span>
+              </span>
             </div>
           ))}
         </div>
