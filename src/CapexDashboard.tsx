@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
-import { 
-  ResponsiveContainer, XAxis, Tooltip, AreaChart, Area, LabelList 
+import {
+  ResponsiveContainer, XAxis, Tooltip, AreaChart, Area, LabelList
 } from "recharts";
 import { useBff } from "./hooks/useBff";
 import { ICapexData, IBffResponse } from "@hub/shared";
 
-const glassClass = "bg-[#102130]/90 backdrop-blur-md border border-white/10 rounded-[24px] p-5 lg:p-6 shadow-[0_8px_32px_rgba(0,0,0,0.3)] relative overflow-hidden";
+// Estilo Glassmorphism de alta fidelidade
+const glassClass = "bg-[#0F2332]/85 backdrop-blur-[12px] border border-white/10 rounded-2xl p-4 transition-all duration-500 hover:border-white/20 flex flex-col relative overflow-hidden shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]";
 
 interface CapexDashboardProps {
   onSourceChange?: (source: string) => void;
@@ -20,149 +21,123 @@ export default function CapexDashboard({ onSourceChange }: CapexDashboardProps) 
     }
   }, [data, onSourceChange]);
 
-  if (loading) return <div className="p-10 text-white/50 animate-pulse">Carregando métricas financeiras...</div>;
-  if (err) return <div className="p-10 text-rose-400 font-bold">Erro ao carregar Capex: {err}</div>;
+  if (loading) return <div className="p-10 text-white/50 animate-pulse text-sm">Carregando métricas financeiras...</div>;
+  if (err) return <div className="p-10 text-rose-400 font-bold text-sm">Erro ao carregar Capex: {err}</div>;
 
   const { outlook, tipos, composicao, subsistemas, historico } = data || {};
 
   return (
-    <div className="flex flex-col flex-1 gap-4 text-white animate-[fadeIn_0.5s_ease-out_forwards] w-full h-full overflow-y-auto lg:overflow-hidden pr-1">
-      
-      {/* UPPER ROW */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] gap-4 shrink-0">
-        
-        {/* OUTLOOK CARD */}
-        <div className={glassClass + " flex flex-col justify-between min-h-[180px]"}>
-          <div className="flex justify-between items-center mb-2">
-            <h3 className="text-[14px] sm:text-[16px] font-bold text-white tracking-wide">Outlook de Capex de Obras - {outlook?.ano || 2026}</h3>
+    <div className="flex flex-col flex-1 gap-3 xl:gap-4 text-white animate-fade-in w-full h-full overflow-hidden pr-0.5 pb-2">
+
+      {/* 1. TOP SECTION: CAPEX DOS 5 ANOS */}
+      <div className={`${glassClass} flex-1 min-h-0 rounded-[28px]`}>
+        <div className="flex justify-between items-center mb-2 shrink-0">
+          <h2 className="text-[13px] font-medium text-[var(--text-secondary)]">Capex dos 5 Anos</h2>
+          <span className="text-[13px] text-white">Total: <b className="font-bold">{historico?.reduce((acc, curr) => acc + curr.value, 0).toLocaleString('pt-BR')} M</b></span>
+        </div>
+
+        <div className="flex-1 w-full -ml-4 sm:-ml-6 min-h-0">
+          <ResponsiveContainer width="100%" height="100%">
+            <AreaChart data={historico} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+              <defs>
+                <linearGradient id="colorCapexRefined" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="#22d3ee" stopOpacity={0} />
+                </linearGradient>
+              </defs>
+              <Tooltip
+                contentStyle={{ backgroundColor: 'rgba(10,26,42,0.98)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '11px', color: '#fff' }}
+              />
+              <XAxis dataKey="year" hide />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="#67e8f9"
+                strokeWidth={2}
+                fill="url(#colorCapexRefined)"
+                dot={false}
+                activeDot={{ r: 4, strokeWidth: 0, fill: '#fff' }}
+              />
+            </AreaChart>
+          </ResponsiveContainer>
+        </div>
+      </div>
+
+      {/* 2. MID SECTION: OUTLOOK & TIPO DE OBRA */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 xl:gap-4 flex-[1.4] min-h-0">
+        <div className={`lg:col-span-5 ${glassClass} rounded-[28px] !p-4 xl:!p-5`}>
+          <h2 className="text-[13px] font-medium text-[var(--text-secondary)] mb-1">Outlook de Capex de Obras - 2026</h2>
+          <div className="text-[34px] font-semibold text-white leading-tight tracking-tight">
+            {outlook?.outlook_brl_m?.toLocaleString('pt-BR')} M
           </div>
-          
-          <div className="flex items-end flex-wrap gap-3 mb-4 mt-2">
-            <div className="text-[28px] sm:text-[36px] xl:text-[40px] font-medium text-white [text-shadow:_0_0_1px_rgba(255,255,255,0.4)] leading-none tracking-tight">
-              {outlook?.outlook_brl_m?.toLocaleString('pt-BR')} M
-            </div>
-            <span className={`text-[10px] sm:text-[11px] mb-1 px-2 py-1 flex items-center gap-1 rounded font-bold border ${(outlook?.variacao_orcamento_perc ?? 0) <= 0 ? 'bg-[#022c16] text-[#4ade80] border-[#4ade80]/20' : 'bg-rose-900/50 text-rose-400 border-rose-400/20'}`}>
-              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                <path d={(outlook?.variacao_orcamento_perc ?? 0) <= 0 ? "M12 5v14M19 12l-7 7-7-7" : "M12 19V5M5 12l7-7 7 7"}/>
-              </svg>
-              {outlook?.variacao_orcamento_perc}% vs orçamento
-            </span>
+          <div className={`text-[12px] mt-0.5 ${(outlook?.variacao_orcamento_perc ?? 0) <= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+            {Math.abs(outlook?.variacao_orcamento_perc || 0)}% vs orçamento
           </div>
 
-          <div className="grid grid-cols-2 gap-3 sm:gap-4">
-            <div className="border border-white/10 p-2.5 sm:p-3.5 rounded-[16px] flex flex-col justify-center">
-              <span className="text-[10px] sm:text-[12px] font-semibold text-white/70 mb-1">Total de Obras</span>
-              <span className="text-[16px] sm:text-[20px] font-medium text-white">{outlook?.total_obras}</span>
+          <div className="grid grid-cols-2 gap-3 mt-auto">
+            <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10 flex flex-col justify-between min-h-[90px] transition-all hover:bg-white/[0.08]">
+              <div className="text-[11px] text-white/40 uppercase font-bold tracking-widest">Total de Obras</div>
+              <div className="text-[24px] font-bold text-white leading-none mt-2">{outlook?.total_obras}</div>
             </div>
-            <div className="border border-white/10 p-2.5 sm:p-3.5 rounded-[16px] flex flex-col justify-center">
-              <span className="text-[10px] sm:text-[12px] font-semibold text-white/70 mb-1">Obras Executadas</span>
-              <span className="text-[16px] sm:text-[20px] font-medium text-white">{outlook?.obras_executadas}</span>
+            <div className="p-4 rounded-xl bg-white/[0.04] border border-white/10 flex flex-col justify-between min-h-[90px] transition-all hover:bg-white/[0.08]">
+              <div className="text-[11px] text-white/40 uppercase font-bold tracking-widest">Obras Executadas</div>
+              <div className="text-[24px] font-bold text-white leading-none mt-2">{outlook?.obras_executadas}</div>
             </div>
           </div>
         </div>
 
-        {/* TIPO DE OBRA CARD */}
-        <div className={glassClass}>
-          <h3 className="text-[14px] sm:text-[16px] font-bold text-white tracking-wide mb-4 mt-[-4px]">Total por Tipo de obra</h3>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3">
-             {tipos?.map(type => (
-               <div key={type.id} className="border border-white/10 p-2 sm:p-3 rounded-[16px] flex flex-col transition-all hover:bg-white/5">
-                  <div className="text-[10px] sm:text-[12px] text-white/70 mb-1 font-bold truncate">{type.id}</div>
-                  <div className="text-[15px] sm:text-[18px] font-medium text-white mb-0.5">{type.valor_brl_m?.toLocaleString('pt-BR')}M</div>
-                  <div className="text-[10px] text-white/60">{type.percentual}%</div>
-               </div>
-             ))}
-          </div>
-        </div>
-      </div>
-
-      {/* HORIZONTAL METRICS */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-3 sm:gap-4 shrink-0">
-        {composicao?.map(item => (
-          <div key={item.label} className={glassClass + " flex items-center justify-between !py-2.5 !px-4 sm:!py-3 sm:!px-5 transition-all hover:border-white/20"}>
-            <span className="text-[14px] sm:text-[16px] font-normal text-white truncate mr-2">{item.label}</span>
-            <div className="flex items-baseline gap-2 shrink-0">
-                <div className="text-[24px] sm:text-[32px] font-medium text-white">{item.percentual}%</div>
-                <div className="text-[10px] sm:text-[12px] font-bold text-white/70 whitespace-nowrap">{item.valor_brl_m}M</div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* LOWER ROW */}
-      <div className="flex-1 min-h-[400px] lg:min-h-0 grid grid-cols-1 lg:grid-cols-12 gap-4 pb-2">
-        
-        {/* SUBSISTEMAS */}
-        <div className={`lg:col-span-4 ${glassClass} flex flex-col max-h-[400px] lg:max-h-none`}>
-           <h3 className="text-[14px] sm:text-[16px] font-bold text-white mb-4 sm:mb-5 mt-[-2px] shrink-0">Custos por Subsistema</h3>
-           <div className="flex-1 overflow-y-auto card-scrollbar space-y-3.5 pr-4 -mr-2">
-              {subsistemas?.map((s, idx) => (
-                <div key={idx} className="flex flex-col">
-                   <div className="flex justify-between items-baseline mb-1">
-                      <span className="text-[12px] sm:text-[13px] font-semibold text-white truncate mr-2">{s.nome}</span>
-                      <span className="text-[12px] sm:text-[13px] font-medium text-white">{s.valor_brl_m}M</span>
-                   </div>
-                   <div className="text-[10px] text-white/60 mb-2">{s.codigo}</div>
-                   <div className="h-[3px] bg-white/10 w-full rounded-full overflow-hidden">
-                      <div className="h-full bg-white shadow-[0_0_8px_rgba(255,255,255,0.4)]" style={{ width: `${s.percentual}%` }}></div>
-                   </div>
+        <div className={`${glassClass} lg:col-span-7`}>
+          <h2 className="text-[13px] font-medium text-white/70 mb-2">Total por Tipo de obra - 2026</h2>
+          <div className="grid grid-cols-3 gap-3 mt-2 flex-1">
+            {tipos?.slice(0, 5).map(type => (
+              <div key={type.id} className="rounded-xl px-4 py-3 bg-white/[0.04] border border-white/[0.08] flex flex-col items-start transition-all hover:bg-white/[0.08] min-h-[100px] justify-center">
+                <div className="text-[11px] text-white/40 uppercase font-bold tracking-wider mb-2">
+                  {type.id}
                 </div>
-              ))}
-           </div>
-        </div>
-
-        {/* GRÁFICO AREA */}
-        <div className={`lg:col-span-8 ${glassClass} flex flex-col min-h-[300px] lg:min-h-0`}>
-           <div className="flex justify-between items-start mb-0">
-              <div>
-                <h3 className="text-[14px] sm:text-[16px] font-bold text-white mb-1 mt-[-2px]">Capex Por Ano</h3>
-                <p className="text-[10px] sm:text-[12px] text-white/70">Total Ciclo dos 5 anos</p>
-                <div className="text-[20px] sm:text-[26px] font-medium text-white mt-1">
-                   {historico?.reduce((acc, curr) => acc + curr.value, 0).toLocaleString('pt-BR')} M
+                <div className="text-[16px] font-bold text-white leading-tight mb-1">
+                  {type.valor_brl_m} M
+                </div>
+                <div className="text-[10px] text-white/30 font-medium">
+                  {type.percentual}%
                 </div>
               </div>
-           </div>
-           
-           <div className="flex-1 w-full mt-2 -ml-4 sm:-ml-6">
-              <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={historico} margin={{ top: 25, right: 15, left: 10, bottom: 0 }}>
-                  <defs>
-                    <linearGradient id="colorCapex" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#ffffff" stopOpacity={0.25}/>
-                      <stop offset="100%" stopColor="#ffffff" stopOpacity={0}/>
-                    </linearGradient>
-                  </defs>
-                  <Tooltip 
-                    contentStyle={{ backgroundColor: 'rgba(0,0,0,0.85)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', fontSize: '12px' }}
-                    itemStyle={{ color: '#fff', fontWeight: 'bold' }}
-                    labelStyle={{ color: 'rgba(255,255,255,0.6)' }}
-                  />
-                  <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{fill: 'rgba(255,255,255,0.6)', fontSize: 10, fontWeight: 'bold'}} dy={5} />
-                  <Area 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke="#ffffff" 
-                    strokeWidth={2}
-                    fillOpacity={1} 
-                    fill="url(#colorCapex)" 
-                    isAnimationActive={false}
-                  >
-                    <LabelList 
-                      dataKey="value" 
-                      position="top" 
-                      fill="white" 
-                      fontSize={10} 
-                      fontWeight="normal"
-                      offset={12} 
-                    />
-                  </Area>
-                </AreaChart>
-              </ResponsiveContainer>
-           </div>
+            ))}
+            {/* Célula vazia para manter o grid */}
+            <div className="invisible" />
+          </div>
+        </div>
+      </div>
+
+      {/* 3. BOTTOM SECTION: COMPOSIÇÃO & SUBSISTEMAS */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 xl:gap-4 flex-[1.3] min-h-0 overflow-hidden">
+        <div className="lg:col-span-5 flex flex-col gap-2 overflow-hidden">
+          {composicao?.map(item => (
+            <div key={item.label} className="bg-[#0F2332]/85 border border-white/10 rounded-2xl p-3 flex-1 flex items-center justify-between transition-all hover:bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+              <span className="text-[12px] font-medium text-[#94A3B8]">{item.label}</span>
+              <span className="text-2xl font-semibold text-white">{item.percentual}%</span>
+              <span className="text-[11px] text-[#94A3B8]">{item.valor_brl_m} M <span className="text-rose-400">-2%</span></span>
+            </div>
+          ))}
         </div>
 
+        <div className={`${glassClass} lg:col-span-7`}>
+          <h2 className="text-[13px] font-medium text-[var(--text-secondary)] mb-4">Custos por Subsistema - 2026</h2>
+          <div className="flex-1 overflow-y-auto card-scrollbar space-y-4 pr-2">
+            {subsistemas?.map((s, idx) => (
+              <div key={idx} className="flex flex-col group">
+                <div className="flex justify-between text-[11px] mb-1.5 font-medium text-[#94A3B8]">
+                  <span className="text-white/90">{s.nome}</span>
+                  <span className="text-white">{s.valor_brl_m} M</span>
+                </div>
+                <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+                  <div className="h-full bg-cyan-300 rounded-full shadow-[0_0_8px_#22d3ee]" style={{ width: `${s.percentual}%` }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
+
     </div>
   );
 }
-

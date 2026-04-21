@@ -2,9 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --bg-primary: #0B1F2E;
+  --bg-gradient: linear-gradient(135deg, #0B1F2E 0%, #12364A 100%);
+  --glass-bg: rgba(255, 255, 255, 0.06);
+  --glass-bg-hover: rgba(255, 255, 255, 0.1);
+  --glass-stroke: rgba(255, 255, 255, 0.12);
+  --glass-stroke-bright: rgba(255, 255, 255, 0.2);
+  --ocean-dark: #0B1F2E;
+  --ocean-accent: #7DD3FC;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A7B3C2;
+}
+
 @layer base {
   body {
-    @apply bg-[#F0F4F8] text-slate-800 font-sans antialiased overflow-hidden;
+    @apply bg-[var(--bg-primary)] text-slate-800 antialiased overflow-hidden;
+    font-family: var(--font-inter);
+  }
+}
+
+@layer components {
+  /* Glassmorphism Classes */
+  .glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-stroke);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  }
+
+  .glass-stroke {
+    border: 1px solid var(--glass-stroke);
+  }
+
+  .glass-stroke-hover:hover {
+    border-color: var(--glass-stroke-bright);
+  }
+
+  .glass-pill {
+    @apply rounded-full bg-white/5 border border-white/10 px-4 py-1.5 transition-all hover:bg-white/10;
   }
 }
 
@@ -24,26 +62,23 @@
   background: #94a3b8;
 }
 
-.glass-card {
-  background: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-}
-
-.hero-overlay {
-  background: linear-gradient(180deg, rgba(0, 43, 67, 0.6) 0%, rgba(0, 43, 67, 0.9) 100%);
-}
-
 .card-scrollbar::-webkit-scrollbar {
-  width: 7px;
+  width: 5px;
 }
 .card-scrollbar::-webkit-scrollbar-track {
-  background: rgba(255,255,255,0.02);
-  border-radius: 10px;
+  background: transparent;
 }
 .card-scrollbar::-webkit-scrollbar-thumb {
-  background: #A3B8CC;
+  background: rgba(163, 184, 204, 0.4);
   border-radius: 10px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
 }

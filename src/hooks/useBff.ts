@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useMsal } from "@azure/msal-react";
-import { IBffResponse } from "@hub/shared";
+//import { IBffResponse } from "@hub/shared";
 
 // Controle de erro para todos os componentes se comunicarem com BFF
 export function useBff<T = any>(url: string, deps: any[] = []) {
