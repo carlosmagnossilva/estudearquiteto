@@ -7,7 +7,7 @@
 }
 
 [data-theme='dark'] {
-  --bg-app: #0B1F2E;
+  --bg-app: #05111B;
   --bg-overlay: rgba(15, 35, 50, 0.85); /* Tonalidade de glass no fundo */
   --bg-card: rgba(15, 35, 50, 0.85); 
   --bg-mini-card: rgba(255, 255, 255, 0.04);
@@ -25,10 +25,10 @@
 }
 
 [data-theme='light'] {
-  --bg-app: #F8FAFC;
-  --bg-overlay: rgba(15, 35, 50, 0.3); 
+  --bg-app: #E9F1F6;
+  --bg-overlay: rgba(15, 35, 50, 0.85); 
   --bg-card: rgba(15, 35, 50, 0.85); 
-  --bg-mini-card: rgba(255, 255, 255, 0.04);
+  --bg-mini-card: rgba(255, 255, 255, 0.05);
   --text-main: #FFFFFF;
   --text-dim: #94A3B8;
   --text-muted: rgba(255, 255, 255, 0.4);
@@ -38,7 +38,7 @@
   --header-bg: rgba(255, 255, 255, 0.8);
   --text-nav: #1E293B;
   --text-nav-dim: #64748B;
-  --border-nav: rgba(0, 0, 0, 0.1);
+  --border-nav: rgba(0, 0, 0, 0.06);
   --accent: #0891b2;
 }
 
