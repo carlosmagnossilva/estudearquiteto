@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 
 import logoOPC from "./assets/logo.png";
@@ -40,6 +40,31 @@ export default function App() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
+  // Controle de responsividade dinâmica (Resize)
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      // No mobile/tablet, fechamos por padrão para não obstruir
+      if (width < 1024) {
+        setIsSidebarOpen(false);
+      } else {
+        setIsSidebarOpen(true);
+      }
+      
+      if (width < 1280) {
+        setIsNotificationsOpen(false);
+      } else {
+        setIsNotificationsOpen(true);
+      }
+    };
+
+    // Executa uma vez no mount
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   if (!isAuthenticated && !isBypass) return <LoginPage />;
 
   return (
@@ -52,6 +77,22 @@ export default function App() {
           <div
             className="fixed inset-0 bg-black/50 z-[60] lg:hidden animate-[fadeIn_0.2s_ease-out]"
             onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        {/* BACKDROP FOR MOBILE (SIDEBAR) */}
+        {isSidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[65] lg:hidden animate-fade-in"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
+
+        {/* BACKDROP FOR MOBILE (NOTIFICATIONS) */}
+        {isNotificationsOpen && !isFullScreen && (
+          <div 
+            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[65] xl:hidden animate-fade-in"
+            onClick={() => setIsNotificationsOpen(false)}
           />
         )}
 
@@ -173,13 +214,13 @@ export default function App() {
         )}
 
         {/* MAIN */}
-        <main className="flex-1 flex flex-col relative h-full min-w-0 p-4 gap-4">
+        <main className="flex-1 flex flex-col relative h-full min-w-0 p-2 sm:p-4 gap-4 overflow-hidden">
           {/* TOP BAR */}
           {!isFullScreen && (
-            <header className="h-16 flex justify-between items-center px-6 shrink-0 border border-[var(--border-nav)] bg-[var(--header-bg)] backdrop-blur-md z-30 transition-all rounded-[20px] shadow-sm">
+            <header className="h-16 flex justify-between items-center px-4 sm:px-6 shrink-0 border border-[var(--border-nav)] bg-[var(--header-bg)] backdrop-blur-md z-30 transition-all rounded-[20px] shadow-sm">
               <div className="flex items-center gap-4">
                 <button
-                  className="lg:hidden p-2 bg-[var(--bg-mini-card)] rounded-lg text-[var(--text-nav)]"
+                  className="lg:hidden p-2 bg-[var(--bg-mini-card)] rounded-lg text-[var(--text-nav)] hover:bg-black/10 transition-colors"
                   onClick={() => setIsSidebarOpen(true)}
                 >
                   <IconGrid className="w-5 h-5" />

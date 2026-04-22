@@ -17,13 +17,13 @@ const FinanceiroModule: React.FC = () => {
   return (
     <div className="flex-1 flex flex-col min-h-0 animate-fade-in h-full">
       {/* Tab Selector Interno do Módulo */}
-      <div className="px-6 py-4 flex items-center justify-between bg-[#0B1F2E]/40 backdrop-blur-md border-b border-white/10 shrink-0">
-        <div className="flex gap-8">
+      <div className="px-4 sm:px-6 py-4 flex flex-col sm:flex-row gap-4 items-center justify-between bg-[#0B1F2E]/40 backdrop-blur-md border-b border-white/10 shrink-0">
+        <div className="flex gap-4 sm:gap-8 overflow-x-auto no-scrollbar w-full sm:w-auto">
           {TABS.map((tab) => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 py-2 text-sm font-bold transition-all relative ${
+              className={`flex items-center gap-2 py-2 text-sm font-bold transition-all relative shrink-0 ${
                 activeTab === tab.id ? "text-white" : "text-white/40 hover:text-white/70"
               }`}
             >
@@ -35,12 +35,12 @@ const FinanceiroModule: React.FC = () => {
             </button>
           ))}
         </div>
-        <div className="flex gap-3">
-           <button className="px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-bold text-white transition-all">
-             Relatório PDF
+        <div className="flex gap-3 w-full sm:w-auto justify-end">
+           <button className="flex-1 sm:flex-none px-4 py-2 bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg text-xs font-bold text-white transition-all whitespace-nowrap">
+             PDF
            </button>
-           <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-xs font-bold text-white transition-all shadow-lg shadow-blue-600/20">
-             Exportar Excel
+           <button className="flex-1 sm:flex-none px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg text-xs font-bold text-white transition-all shadow-lg shadow-blue-600/20 whitespace-nowrap">
+             Excel
            </button>
         </div>
       </div>

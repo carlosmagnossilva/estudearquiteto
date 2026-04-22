@@ -81,60 +81,59 @@ export default function CapexDashboard({ onSourceChange }: CapexDashboardProps) 
       </div>
 
       {/* 2. MID SECTION: OUTLOOK & TIPO DE OBRA */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 xl:gap-4 flex-none lg:flex-[1.4] min-h-0">
-        <div className={`lg:col-span-5 ${glassClass} rounded-[28px] !p-4 xl:!p-5`}>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3 xl:gap-4 flex-none lg:flex-[1.4] min-h-0">
+        <div className={`md:col-span-1 lg:col-span-5 ${glassClass} rounded-[28px] !p-4 xl:!p-5`}>
           <h2 className="text-[13px] font-medium text-[var(--text-dim)] mb-1">Outlook de Capex de Obras - 2026</h2>
-          <div className="text-[34px] font-semibold text-[var(--text-main)] leading-tight tracking-tight">
+          <div className="text-[28px] sm:text-[34px] font-semibold text-[var(--text-main)] leading-tight tracking-tight">
             {outlook?.outlook_brl_m?.toLocaleString('pt-BR')} M
           </div>
           <div className={`text-[12px] mt-0.5 ${(outlook?.variacao_orcamento_perc ?? 0) <= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
             {Math.abs(outlook?.variacao_orcamento_perc || 0)}% vs orçamento
           </div>
 
-          <div className="grid grid-cols-2 gap-3 mt-auto">
-            <div className="p-4 rounded-xl bg-[var(--bg-mini-card)] border border-[var(--border-mini)] flex flex-col justify-between min-h-[90px] transition-all hover:bg-white/[0.08]">
-              <div className="text-[11px] text-[var(--text-muted)] uppercase font-bold tracking-widest">Total de Obras</div>
-              <div className="text-[24px] font-bold text-[var(--text-main)] leading-none mt-2">{outlook?.total_obras}</div>
+          <div className="grid grid-cols-2 gap-3 mt-4 sm:mt-auto">
+            <div className="p-3 sm:p-4 rounded-xl bg-[var(--bg-mini-card)] border border-[var(--border-mini)] flex flex-col justify-between min-h-[80px] sm:min-h-[90px] transition-all hover:bg-white/[0.08]">
+              <div className="text-[10px] sm:text-[11px] text-[var(--text-muted)] uppercase font-bold tracking-widest leading-tight">Total de Obras</div>
+              <div className="text-[20px] sm:text-[24px] font-bold text-[var(--text-main)] leading-none mt-2">{outlook?.total_obras}</div>
             </div>
-            <div className="p-4 rounded-xl bg-[var(--bg-mini-card)] border border-[var(--border-mini)] flex flex-col justify-between min-h-[90px] transition-all hover:bg-white/[0.08]">
-              <div className="text-[11px] text-[var(--text-muted)] uppercase font-bold tracking-widest">Obras Executadas</div>
-              <div className="text-[24px] font-bold text-[var(--text-main)] leading-none mt-2">{outlook?.obras_executadas}</div>
+            <div className="p-3 sm:p-4 rounded-xl bg-[var(--bg-mini-card)] border border-[var(--border-mini)] flex flex-col justify-between min-h-[80px] sm:min-h-[90px] transition-all hover:bg-white/[0.08]">
+              <div className="text-[10px] sm:text-[11px] text-[var(--text-muted)] uppercase font-bold tracking-widest leading-tight">Obras Executadas</div>
+              <div className="text-[20px] sm:text-[24px] font-bold text-[var(--text-main)] leading-none mt-2">{outlook?.obras_executadas}</div>
             </div>
           </div>
         </div>
 
-        <div className={`${glassClass} lg:col-span-7`}>
+        <div className={`${glassClass} md:col-span-1 lg:col-span-7`}>
           <h2 className="text-[13px] font-medium text-[var(--text-dim)] mb-2">Total por Tipo de obra - 2026</h2>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-2 flex-1">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mt-2 flex-1">
             {tipos?.slice(0, 5).map(type => (
-              <div key={type.id} className="rounded-xl px-4 py-3 bg-[var(--bg-mini-card)] border border-[var(--border-mini)] flex flex-col items-start transition-all hover:bg-white/[0.08] min-h-[100px] justify-center">
-                <div className="text-[11px] text-[var(--text-muted)] uppercase font-bold tracking-wider mb-2">
+              <div key={type.id} className="rounded-xl px-3 sm:px-4 py-2 sm:py-3 bg-[var(--bg-mini-card)] border border-[var(--border-mini)] flex flex-col items-start transition-all hover:bg-white/[0.08] min-h-[80px] sm:min-h-[100px] justify-center">
+                <div className="text-[9px] sm:text-[11px] text-[var(--text-muted)] uppercase font-bold tracking-wider mb-1 sm:mb-2 leading-tight">
                   {type.id}
                 </div>
-                <div className="text-[16px] font-bold text-[var(--text-main)] leading-tight mb-1">
+                <div className="text-[14px] sm:text-[16px] font-bold text-[var(--text-main)] leading-tight mb-1">
                   {type.valor_brl_m} M
                 </div>
-                <div className="text-[10px] text-[var(--text-muted)] font-medium">
+                <div className="text-[9px] sm:text-[10px] text-[var(--text-muted)] font-medium">
                   {type.percentual}%
                 </div>
               </div>
             ))}
-            {/* Célula vazia para manter o grid */}
-            <div className="invisible" />
+            <div className="hidden sm:block sm:invisible" />
           </div>
         </div>
       </div>
 
       {/* 3. BOTTOM SECTION: COMPOSIÇÃO & SUBSISTEMAS */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3 xl:gap-4 flex-none lg:flex-[1.3] min-h-0 lg:overflow-hidden">
-        <div className="lg:col-span-5 flex flex-col gap-2 overflow-hidden">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-3 xl:gap-4 flex-none lg:flex-[1.3] min-h-0 lg:overflow-hidden">
+        <div className="md:col-span-1 lg:col-span-5 flex flex-col gap-2 overflow-hidden">
           {composicao?.map(item => (
             <div key={item.label} className="bg-[var(--bg-card)] border border-[var(--border-card)] rounded-2xl p-3 flex-1 flex items-center justify-between transition-all hover:bg-white/10 shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
-              <span className="text-[12px] font-medium text-[var(--text-dim)]">{item.label}</span>
-              <span className="text-2xl font-semibold text-[var(--text-main)]">{item.percentual}%</span>
-              <span className="text-[11px] text-[var(--text-dim)]">
+              <span className="text-[11px] sm:text-[12px] font-medium text-[var(--text-dim)]">{item.label}</span>
+              <span className="text-xl sm:text-2xl font-semibold text-[var(--text-main)]">{item.percentual}%</span>
+              <span className="text-[10px] sm:text-[11px] text-[var(--text-dim)]">
                 {item.valor_brl_m} M 
-                <span className={`ml-1.5 ${(item.variacao_perc || 0) <= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                <span className={`ml-1 sm:ml-1.5 ${(item.variacao_perc || 0) <= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
                   {item.variacao_perc > 0 ? '+' : ''}{item.variacao_perc}%
                 </span>
               </span>
@@ -142,7 +141,7 @@ export default function CapexDashboard({ onSourceChange }: CapexDashboardProps) 
           ))}
         </div>
 
-        <div className={`${glassClass} lg:col-span-7`}>
+        <div className={`${glassClass} md:col-span-1 lg:col-span-7`}>
           <h2 className="text-[13px] font-medium text-[var(--text-dim)] mb-4">Custos por Subsistema - 2026</h2>
           <div className="flex-1 overflow-y-auto card-scrollbar space-y-4 pr-2">
             {subsistemas?.map((s, idx) => (

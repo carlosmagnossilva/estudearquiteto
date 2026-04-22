@@ -58,17 +58,19 @@ const FinancialIndicadores: React.FC = () => {
     <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
       
       {/* 1. Cards de Resumo Superior */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
           { label: "Outlook Total", value: `R$ ${totalOutlook.toFixed(1)}M`, sub: "+12% vs orçado", color: "border-blue-500/30" },
           { label: "Realizado Acumulado", value: `R$ ${totalRealizado.toFixed(1)}M`, sub: `${percExecucao.toFixed(1)}% de execução`, color: "border-emerald-500/30" },
           { label: "Obras em FEL", value: "08", sub: "3 críticas", color: "border-orange-500/30" },
           { label: "Eficiência Financeira", value: "94.2%", sub: "Acima da meta", color: "border-purple-500/30" }
         ].map((c, i) => (
-          <div key={i} className={`bg-white/10 backdrop-blur-md border ${c.color} rounded-2xl p-4 shadow-xl`}>
-            <div className="text-[10px] uppercase font-bold text-white/50 tracking-wider mb-1">{c.label}</div>
-            <div className="text-2xl font-bold text-white mb-1">{c.value}</div>
-            <div className="text-[10px] text-white/40 font-medium">{c.sub}</div>
+          <div key={i} className={`bg-white/10 backdrop-blur-md border ${c.color} rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-xl flex flex-col justify-between`}>
+            <div>
+              <div className="text-[9px] sm:text-[10px] uppercase font-bold text-white/50 tracking-wider mb-1 leading-tight">{c.label}</div>
+              <div className="text-lg sm:text-2xl font-bold text-white mb-1 leading-none">{c.value}</div>
+            </div>
+            <div className="text-[9px] sm:text-[10px] text-white/40 font-medium leading-tight">{c.sub}</div>
           </div>
         ))}
       </div>
