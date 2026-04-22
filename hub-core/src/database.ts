@@ -131,6 +131,126 @@ export async function queryCapex(ano: number) {
   }
 }
 
+// --- FINANCEIRO ---
+
+export async function queryEstaleiros() {
+  try {
+    const pool = await getPool();
+    const result = await pool.request().query("SELECT * FROM Financeiro.Estaleiros ORDER BY nome");
+    return result.recordset;
+  } catch (err: any) {
+    console.error("[DB] Erro ao consultar estaleiros:", err.message);
+    return null;
+  }
+}
+
+export async function queryPPUs(estaleiroId?: number) {
+  try {
+    const pool = await getPool();
+    let query = "SELECT * FROM Financeiro.PPUs";
+    if (estaleiroId) query += ` WHERE estaleiroId = ${estaleiroId}`;
+    query += " ORDER BY dataInclusao DESC";
+    const result = await pool.request().query(query);
+    return result.recordset;
+  } catch (err: any) {
+    console.error("[DB] Erro ao consultar PPUs:", err.message);
+    return null;
+  }
+}
+
+export async function queryObrasFinanceiras() {
+  try {
+    const pool = await getPool();
+    const result = await pool.request().query(`
+      SELECT 
+        o.*,
+        p.condicao,
+        p.inicio_rp as inicio,
+        p.termino_rp as termino,
+        p.dur_rp as duracaoTotal,
+        (SELECT tag, descricao FOR JSON PATH) as tags_json
+      FROM Financeiro.Obras o
+      JOIN hub.fato_parada p ON o.id_parada = p.parada_id
+      ORDER BY o.dataUltimaAtualizacao DESC
+    `);
+
+    return result.recordset.map(r => ({
+      ...r,
+      tags: r.tags_json ? JSON.parse(r.tags_json) : []
+    }));
+  } catch (err: any) {
+    console.error("[DB] Erro ao consultar obras financeiras:", err.message);
+    return null;
+  }
+}
+
+export async function queryFinancialIndicadores(ano: number = 2025) {
+  try {
+    const pool = await getPool();
+    
+    // 1. Evolução Mensal (Agregado por Mês)
+    const evolucao = await pool.request().input("ano", mssql.Int, ano).query(`
+      SELECT 
+        FORMAT(data_referencia, 'MMM', 'pt-BR') as name,
+        SUM(valor_brl) as value
+      FROM Financeiro.HistoricoFinanceiro
+      WHERE YEAR(data_referencia) = @ano AND categoria = 'Realizado'
+      GROUP BY MONTH(data_referencia), FORMAT(data_referencia, 'MMM', 'pt-BR')
+      ORDER BY MONTH(data_referencia)
+    `);
+
+    // 2. Waterfall (Capex Overview)
+    const waterfall = await pool.request().query(`
+      SELECT 'Orçamento' as name, 450.0 as value
+      UNION ALL
+      SELECT 'Executado' as name, SUM(realizadoBRL) as value FROM Financeiro.Obras
+      UNION ALL
+      SELECT 'Comprometido' as name, SUM(outlookBRL - realizadoBRL) as value FROM Financeiro.Obras
+    `);
+
+    // 3. Gastos por Categoria (Donut)
+    const gastos = await pool.request().query(`
+      SELECT 'Mão de Obra' as name, 35 as value, '#003D5B' as fill
+      UNION ALL
+      SELECT 'Materiais' as name, 25 as value, '#005D8D' as fill
+      UNION ALL
+      SELECT 'Serviços' as name, 20 as value, '#0EA5E9' as fill
+      UNION ALL
+      SELECT 'Outros' as name, 20 as value, '#7DD3FC' as fill
+    `);
+
+    // 4. Detalhamento (Tabela Resumo)
+    const detalhamento = await pool.request().query(`
+      SELECT TOP 5
+        o.id as Id,
+        p.inicio_rp as inicio,
+        p.termino_rp as termino,
+        p.dur_rp as dias,
+        o.percRE as PercRE,
+        o.percEM as PercEM,
+        o.percCO as PercCO,
+        o.percES as PercES,
+        o.percNC as PercNC,
+        o.outlookBRL as OutlookBRL,
+        o.realizadoBRL as RealizadoBRL,
+        o.embarcacao_nome as embarcacao
+      FROM Financeiro.Obras o
+      JOIN hub.fato_parada p ON o.id_parada = p.parada_id
+      ORDER BY o.outlookBRL DESC
+    `);
+
+    return {
+      evolucao: evolucao.recordset,
+      waterfall: waterfall.recordset,
+      gastos: gastos.recordset,
+      detalhamento: detalhamento.recordset
+    };
+  } catch (err: any) {
+    console.error("[DB] Erro ao consultar indicadores financeiros:", err.message);
+    return null;
+  }
+}
+
 export async function closePool() {
   if (poolPromise) {
     const pool = await poolPromise;

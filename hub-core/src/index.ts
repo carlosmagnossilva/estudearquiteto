@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { ServiceBusClient } from "@azure/service-bus";
-import { queryParadas, queryUpdates, queryCapex, closePool } from "./database.js";
+import { queryParadas, queryUpdates, queryCapex, queryEstaleiros, queryPPUs, queryObrasFinanceiras, queryFinancialIndicadores, closePool } from "./database.js";
 import { authMiddleware } from "./authMiddleware.js";
 
 const app = express();
@@ -73,6 +73,50 @@ serviceRouter.get("/capex", async (req, res) => {
   const ano = parseInt(req.query.ano as string) || 2026;
   try {
     const data = await queryCapex(ano);
+    if (!data) return res.status(503).json({ error: "Banco de dados indisponível" });
+    res.json(data);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// --- FINANCEIRO ---
+
+serviceRouter.get("/financeiro/estaleiros", async (req, res) => {
+  try {
+    const data = await queryEstaleiros();
+    if (!data) return res.status(503).json({ error: "Banco de dados indisponível" });
+    res.json(data);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+serviceRouter.get("/financeiro/ppus", async (req, res) => {
+  const estaleiroId = req.query.estaleiroId ? parseInt(req.query.estaleiroId as string) : undefined;
+  try {
+    const data = await queryPPUs(estaleiroId);
+    if (!data) return res.status(503).json({ error: "Banco de dados indisponível" });
+    res.json(data);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+serviceRouter.get("/financeiro/obras", async (req, res) => {
+  try {
+    const data = await queryObrasFinanceiras();
+    if (!data) return res.status(503).json({ error: "Banco de dados indisponível" });
+    res.json(data);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+serviceRouter.get("/financeiro/indicadores", async (req, res) => {
+  const ano = parseInt(req.query.ano as string) || 2025;
+  try {
+    const data = await queryFinancialIndicadores(ano);
     if (!data) return res.status(503).json({ error: "Banco de dados indisponível" });
     res.json(data);
   } catch (e: any) {

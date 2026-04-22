@@ -113,6 +113,53 @@ protectedRouter.get("/capex", async (req, res) => {
   }
 });
 
+protectedRouter.get("/financeiro/estaleiros", async (req, res) => {
+  try {
+    const core = getCoreClient(req);
+    const response = await core.get(`/core/financeiro/estaleiros`);
+    res.json(wrapResponse(response.data, "database"));
+  } catch (error) {
+    res.json(wrapResponse([], "mock"));
+  }
+});
+
+protectedRouter.get("/financeiro/ppus", async (req, res) => {
+  const estaleiroId = req.query.estaleiroId;
+  try {
+    const core = getCoreClient(req);
+    const response = await core.get(`/core/financeiro/ppus${estaleiroId ? `?estaleiroId=${estaleiroId}` : ""}`);
+    res.json(wrapResponse(response.data, "database"));
+  } catch (error) {
+    res.json(wrapResponse([], "mock"));
+  }
+});
+
+protectedRouter.get("/financeiro/obras", async (req, res) => {
+  try {
+    const core = getCoreClient(req);
+    const response = await core.get(`/core/financeiro/obras`);
+    res.json(wrapResponse(response.data, "database"));
+  } catch (error) {
+    res.json(wrapResponse([], "mock"));
+  }
+});
+
+protectedRouter.get("/financeiro/indicadores", async (req, res) => {
+  const ano = req.query.ano || 2025;
+  try {
+    const core = getCoreClient(req);
+    const response = await core.get(`/core/financeiro/indicadores?ano=${ano}`);
+    res.json(wrapResponse(response.data, "database"));
+  } catch (error) {
+    res.json(wrapResponse({
+      evolucao: [],
+      waterfall: [],
+      gastos: [],
+      detalhamento: []
+    }, "mock"));
+  }
+});
+
 app.use("/bff", protectedRouter);
 
 app.get("/health", (req, res) => res.json({ status: "ok", service: "bff" }));
