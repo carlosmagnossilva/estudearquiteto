@@ -55,7 +55,7 @@ const FinancialIndicadores: React.FC = () => {
   const percExecucao = totalOutlook > 0 ? (totalRealizado / totalOutlook) * 100 : 0;
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 space-y-6 custom-scrollbar">
+    <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar">
       
       {/* 1. Cards de Resumo Superior */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">

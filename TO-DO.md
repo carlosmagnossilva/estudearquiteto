@@ -44,6 +44,11 @@
 - [x] Adaptar Módulo Financeiro para Temas Light/Dark.
 - [x] Implementar tags numéricas minimalistas no Grid.
 - [x] Implementar Filtro de Busca (ID / Embarcação).
+- [x] Implementar Visão de Cards (Kanban) no Módulo Financeiro
+- [x] Implementar drag-to-scroll (Kanban e Grid)
+- [x] Adicionar opções de colapso de cards (Individual e Global)
+- [x] Implementar Exportação PDF (Relatório Paisagem) e Excel (CSV Seguro)
+- [x] Refatorar arquitetura do módulo (Elevação de estado e constantes)
 - [x] Implementar Filtro de Status (Pipeline FEL completo).
 - [x] Implementar Filtro de Tipo de Obra (Código - Descrição).
 - [ ] Implementar a lógica de Upsert completa no Integrator.

@@ -13,7 +13,25 @@
 - ✅ Refinamento de fidelidade visual e tokens de design (Commit: `78d53ab`).
 - ✅ Migração total para o esquema `hub_frontend` (Queries, Scripts e Banco).
 - ✅ Filtros Gerenciais (Busca Dual, Pipeline FEL e Tipo de Obra com Código).
-- ✅ Estabilização do Módulo Financeiro (Grid numérico, datas BR e temas Light/Dark).
+
+## 🛠️ Estado Atual do Sistema
+
+### Módulo Financeiro (FinanceiroModule)
+- **Status**: Alta Fidelidade Concluída 🚀
+- **Funcionalidades**:
+  - Visão Dupla: Alternância entre Grade (Lista) e Cards (Kanban).
+  - Sistema de Filtros: Busca textual, Status e Tipos de Obra (Coletores).
+  - Gestão Kanban: Ordenação dinâmica (Data/Valor), Expansão/Colapso individual e por coluna.
+  - Exportação Executiva:
+    - **Excel (CSV High-Fidelity)**: Gerado com BOM (UTF-8) e escape de caracteres.
+    - **PDF (Relatório Corporativo)**: Forçado em modo Paisagem (Landscape), Tema Claro garantido via CSS Override e ocultação inteligente de UI (Sidebar/Notificações).
+- **Arquitetura**: Estado de dados elevado para o módulo pai, permitindo ações globais sobre dados filtrados.
+
+## 🧠 Aprendizados e Padrões Estabelecidos
+1. **Print-Ready Architecture**: Uso de `@media print` com `table-layout: fixed` e porcentagens exatas para garantir que dashboards complexos caibam em A4 sem cortes.
+2. **Thematic Isolation**: Técnica de override de variáveis CSS em bloco de impressão para forçar o "Light Mode" em relatórios, independente do tema da UI.
+3. **State Elevation for Exports**: Centralizar lógica de filtragem no nível do Módulo para permitir que botões de exportação externos acessem o estado atualizado dos dados.
+
 - ✅ Unificação de interfaces em `shared-types` e suporte a pnpm workspaces.
 - 🚧 Implementação da lógica de escrita (Upsert) no `hub-integrator` para processamento de snapshots.
 - 🚧 Homologação do fluxo Service Bus -> Integrator -> SQL Azure.

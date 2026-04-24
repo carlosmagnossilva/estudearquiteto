@@ -280,41 +280,43 @@ export default function App() {
             {page === "home" ? (
               <div className="flex-1 w-full relative lg:overflow-hidden flex flex-col h-full min-h-0">
                 <div className="relative z-10 flex-1 lg:overflow-hidden flex flex-col h-full min-h-0 animate-fade-in">
-                  {/* 🎯 4. TAB BAR (High Fidelity) */}
-                  <header className="flex flex-nowrap items-center justify-between mb-8 w-full shrink-0 relative z-30">
-                    <div className="flex bg-[var(--bg-card)] backdrop-blur-xl p-1.5 rounded-2xl border border-[var(--border-card)] shadow-xl">
-                      {NAV_TABS.map((t) => (
-                        <button
-                          key={t}
-                          type="button"
-                          className={`px-6 py-2.5 rounded-xl transition-all duration-300 text-[13px] font-bold ${activeTab === t ? "bg-[var(--text-main)] text-[var(--bg-app)] shadow-lg" : "text-[var(--text-dim)] hover:text-[var(--text-main)] hover:bg-white/5"}`}
-                          onClick={() => setActiveTab(t)}
-                        >
-                          {t}
-                        </button>
-                      ))}
-                    </div>
-                    <button
-                      type="button"
-                      className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-card)] backdrop-blur-xl border border-[var(--border-card)] text-[var(--text-main)] hover:bg-white/5 transition-all shadow-xl shrink-0"
-                      onClick={() => setPinned(!pinned)}
-                      title="Fixar/Soltar Hero"
-                    >
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill={pinned ? "currentColor" : "none"}
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        className={`transition-transform duration-300 ${pinned ? "rotate-45 text-[var(--accent)]" : "rotate-0"}`}
+                  {/* 🎯 4. TAB BAR & FILTERS (High Fidelity) */}
+                  <header className="flex flex-col gap-4 mb-8 w-full shrink-0 relative z-30 no-print">
+                    <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+                      <div className="flex bg-[var(--bg-card)] backdrop-blur-xl p-1.5 rounded-2xl border border-[var(--border-card)] shadow-xl overflow-x-auto no-scrollbar max-w-full">
+                        {NAV_TABS.map((t) => (
+                          <button
+                            key={t}
+                            type="button"
+                            className={`px-6 py-2.5 rounded-xl transition-all duration-300 text-[13px] font-bold whitespace-nowrap ${activeTab === t ? "bg-[var(--text-main)] text-[var(--bg-app)] shadow-lg" : "text-[var(--text-dim)] hover:text-[var(--text-main)] hover:bg-white/5"}`}
+                            onClick={() => setActiveTab(t)}
+                          >
+                            {t}
+                          </button>
+                        ))}
+                      </div>
+                      <button
+                        type="button"
+                        className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-card)] backdrop-blur-xl border border-[var(--border-card)] text-[var(--text-main)] hover:bg-white/5 transition-all shadow-xl shrink-0"
+                        onClick={() => setPinned(!pinned)}
+                        title="Fixar/Soltar Hero"
                       >
-                        <line x1="12" y1="17" x2="12" y2="22" />
-                        <path d="M5 17h14v-2l-1.5-1.5V6a2 2 0 0 0-2-2H9.5a2 2 0 0 0-2 2v7.5L6 15v2z" />
-                      </svg>
-                    </button>
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          fill={pinned ? "currentColor" : "none"}
+                          stroke="currentColor"
+                          strokeWidth="2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className={`transition-transform duration-300 ${pinned ? "rotate-45 text-[var(--accent)]" : "rotate-0"}`}
+                        >
+                          <line x1="12" y1="17" x2="12" y2="22" />
+                          <path d="M5 17h14v-2l-1.5-1.5V6a2 2 0 0 0-2-2H9.5a2 2 0 0 0-2 2v7.5L6 15v2z" />
+                        </svg>
+                      </button>
+                    </div>
                   </header>
 
                   <div className="flex-1 overflow-hidden flex flex-col w-full h-full min-h-0">
@@ -343,11 +345,15 @@ export default function App() {
 
         {/* RIGHT PANEL (Notifications) */}
         {isNotificationsOpen && !isFullScreen && (
-          <aside className={`
-            fixed inset-y-0 right-0 z-[70] xl:relative xl:z-20
-            w-[320px] bg-[var(--sidebar-bg)] border-l border-[var(--border-card)] flex flex-col shrink-0
-            transition-all duration-500 transform
-          `}>
+          <aside 
+            id="notification-panel"
+            className={`
+              print:hidden no-print
+              fixed inset-y-0 right-0 z-[70] xl:relative xl:z-20
+              w-[320px] bg-[var(--sidebar-bg)] border-l border-[var(--border-card)] flex flex-col shrink-0
+              transition-all duration-500 transform
+            `}
+          >
             <div className="pt-7 px-6 pb-0 flex justify-between items-start shrink-0">
               <div className="flex-1">
                 <div className="flex justify-between items-center mb-6">

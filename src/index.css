@@ -114,3 +114,194 @@
 .animate-fade-in {
   animation: fadeIn 0.4s ease-out forwards;
 }
+
+  /* 🖨️ High Fidelity Print Styles - LANDSCAPE MODE */
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+
+  /* Forçar Variáveis do TEMA CLARO na Impressão */
+  :root, [data-theme='dark'], [data-theme='light'] {
+    --bg-app: #FFFFFF !important;
+    --bg-card: #FFFFFF !important;
+    --bg-mini-card: #F8FAFC !important;
+    --text-main: #000000 !important;
+    --text-dim: #1E293B !important;
+    --text-muted: #475569 !important;
+    --border-card: #E2E8F0 !important;
+    --border-mini: #F1F5F9 !important;
+    --accent: #0284C7 !important;
+    --bg-header-solid: #F1F5F9 !important;
+    --hover-bg: #F8FAFC !important;
+  }
+
+  /* Ocultar UI de Navegação e Filtros */
+  nav, 
+  aside, 
+  header, 
+  .no-print,
+  #notification-panel,
+  .print\:hidden,
+  button,
+  select,
+  input,
+  .tab-selector,
+  .relative.group div svg { 
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    width: 0 !important;
+    height: 0 !important;
+    position: absolute !important;
+    pointer-events: none !important;
+  }
+
+  /* Resetar para Branco/Preto para Impressão */
+  body, html, #root {
+    background: white !important;
+    color: black !important;
+    overflow: visible !important;
+    height: auto !important;
+    width: 100% !important;
+  }
+
+  /* Forçar contraste e remover efeitos de vidro */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+    color: black !important;
+    border-color: #ddd !important;
+    background-image: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    text-shadow: none !important;
+  }
+
+  /* Layout de Relatório */
+  main, .flex-1, .min-h-0, .overflow-hidden {
+    display: block !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    min-height: auto !important;
+    max-width: none !important; /* Forçar expansão total */
+  }
+
+  /* Tabela de Dados Otimizada para Paisagem */
+  table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    table-layout: fixed !important;
+  }
+
+  th, td {
+    padding: 4px 2px !important;
+    border-bottom: 1px solid #ddd !important;
+    word-wrap: break-word !important;
+    overflow: hidden !important;
+    text-align: center !important;
+  }
+
+  th {
+    background: #f1f5f9 !important;
+    font-size: 7px !important;
+    text-transform: uppercase !important;
+    font-weight: 900 !important;
+    border-top: 1px solid #000 !important;
+    border-bottom: 2px solid #000 !important;
+  }
+
+  td {
+    font-size: 8px !important;
+    vertical-align: middle !important;
+  }
+
+  /* Distribuição de Largura para as 15 Colunas */
+  th:nth-child(1), td:nth-child(1) { width: 30px !important; }  /* ID */
+  th:nth-child(2), td:nth-child(2) { width: 100px !important; text-align: left !important; } /* Embarcação */
+  th:nth-child(3), td:nth-child(3) { width: 45px !important; }  /* Status */
+  th:nth-child(4), td:nth-child(4) { width: 90px !important; }  /* Tipo de Obra */
+  th:nth-child(5), td:nth-child(5) { width: 65px !important; text-align: right !important; } /* Realizado */
+  th:nth-child(6), td:nth-child(6) { width: 65px !important; text-align: right !important; } /* Outlook */
+  th:nth-child(7), td:nth-child(7) { width: 30px !important; }  /* RE */
+  th:nth-child(8), td:nth-child(8) { width: 30px !important; }  /* EM */
+  th:nth-child(9), td:nth-child(9) { width: 30px !important; }  /* CO */
+  th:nth-child(10), td:nth-child(10) { width: 30px !important; } /* ES */
+  th:nth-child(11), td:nth-child(11) { width: 30px !important; } /* NC */
+  th:nth-child(12), td:nth-child(12) { width: 50px !important; } /* Condição */
+  th:nth-child(13), td:nth-child(13) { width: 60px !important; } /* Início */
+  th:nth-child(14), td:nth-child(14) { width: 60px !important; } /* Término */
+  th:nth-child(15), td:nth-child(15) { width: 40px !important; } /* Duração */
+
+  tr {
+    page-break-inside: avoid !important;
+  }
+
+  /* Título do Relatório */
+  .print-header {
+    display: block !important;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #000;
+    padding-bottom: 8px;
+  }
+
+  /* Ajuste de Tags */
+  .flex.flex-wrap {
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    gap: 1px !important;
+  }
+
+  .px-2, .px-1.5, .px-2.5 {
+    padding: 1px 2px !important;
+    font-size: 7px !important;
+    min-width: 18px !important;
+  }
+
+  /* 🃏 Ajustes Específicos para Visão de CARDS (Kanban) no PDF */
+  .min-w-max.h-full {
+    display: flex !important;
+    flex-direction: row !important;
+    width: 100% !important;
+    min-width: unset !important;
+    gap: 10px !important;
+  }
+
+  /* Redimensionar Colunas do Kanban para caberem 6 na horizontal */
+  .w-\[320px\] {
+    width: 16.66% !important; /* 100% / 6 colunas */
+    min-width: 150px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  /* Estilizar Cards para Impressão */
+  .bg-\[var\(--bg-card\)\] {
+    background: white !important;
+    border: 1px solid #ddd !important;
+    box-shadow: none !important;
+    margin-bottom: 10px !important;
+    padding: 8px !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Ajustar Textos e Barras de Progresso nos Cards */
+  .text-xl { font-size: 14px !important; }
+  .text-\[13px\] { font-size: 10px !important; }
+  .h-2.w-full { height: 6px !important; border: 1px solid #eee !important; }
+  
+  /* Ocultar elementos de UI dentro dos cards */
+  .rotate-180, .shrink-0.w-8.h-8, .bg-white\/5.px-3.py-1\.5 {
+    display: none !important;
+  }
+
+  /* Garantir que todos os cards apareçam (remover scroll interno) */
+  .overflow-y-auto.no-scrollbar {
+    overflow: visible !important;
+    height: auto !important;
+  }
+}
