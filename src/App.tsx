@@ -123,7 +123,7 @@ export default function App() {
 
               <nav className={`space-y-2 text-[14px] font-medium transition-all ${isSidebarOpen ? "px-4" : "px-3"}`}>
                 <button
-                  className={`w-full flex items-center gap-4 py-3 rounded-lg transition-all duration-300 ${isSidebarOpen ? "px-4" : "justify-center"} ${page === "home" ? "bg-[#003D5B] text-white shadow-md" : "text-[var(--text-nav-dim)] hover:bg-black/5 hover:text-[var(--text-nav)]"}`}
+                  className={`w-full flex items-center gap-4 py-3 rounded-xl transition-all duration-300 ${isSidebarOpen ? "px-4" : "justify-center"} ${page === "home" ? "bg-[var(--accent)] text-black shadow-lg shadow-[var(--accent)]/20" : "text-[var(--text-nav-dim)] hover:bg-white/5 hover:text-[var(--text-nav)]"}`}
                   onClick={() => { setPage("home"); if (!isSidebarOpen) setIsSidebarOpen(true); }}
                   title="Início"
                 >
@@ -131,7 +131,7 @@ export default function App() {
                 </button>
 
                 <button
-                className={`w-full flex items-center gap-4 py-3 rounded-lg transition-all duration-300 ${isSidebarOpen ? "px-4" : "justify-center"} ${page === "financeiro" ? "bg-[#003D5B] text-white shadow-md" : "text-[var(--text-nav-dim)] hover:bg-black/5 hover:text-[var(--text-nav)]"}`}
+                className={`w-full flex items-center gap-4 py-3 rounded-xl transition-all duration-300 ${isSidebarOpen ? "px-4" : "justify-center"} ${page === "financeiro" ? "bg-[var(--accent)] text-black shadow-lg shadow-[var(--accent)]/20" : "text-[var(--text-nav-dim)] hover:bg-white/5 hover:text-[var(--text-nav)]"}`}
                 onClick={() => { setPage("financeiro"); if (!isSidebarOpen) setIsSidebarOpen(true); }}
                 title="Financeiro"
               >
@@ -217,7 +217,7 @@ export default function App() {
         <main className="flex-1 flex flex-col relative h-full min-w-0 p-2 sm:p-4 gap-4 overflow-hidden">
           {/* TOP BAR */}
           {!isFullScreen && (
-            <header className="h-16 flex justify-between items-center px-4 sm:px-6 shrink-0 border border-[var(--border-nav)] bg-[var(--header-bg)] backdrop-blur-md z-30 transition-all rounded-[20px] shadow-sm">
+            <header className="h-16 flex justify-between items-center px-4 sm:px-6 shrink-0 border border-[var(--border-nav)] bg-[var(--bg-card)] backdrop-blur-xl z-30 transition-all rounded-2xl shadow-2xl">
               <div className="flex items-center gap-4">
                 <button
                   className="lg:hidden p-2 bg-[var(--bg-mini-card)] rounded-lg text-[var(--text-nav)] hover:bg-black/10 transition-colors"
@@ -225,6 +225,12 @@ export default function App() {
                 >
                   <IconGrid className="w-5 h-5" />
                 </button>
+                <div className="flex items-center gap-2">
+                  <div className="h-6 w-px bg-[var(--border-mini)] mx-2 hidden sm:block opacity-50"></div>
+                  <h1 className="text-[17px] font-bold text-[var(--text-main)] tracking-tight">
+                    {page === "home" ? "Capex Dashboard" : page === "financeiro" ? "Financeiro" : "Simulações"}
+                  </h1>
+                </div>
               </div>
 
               <div className="flex justify-end gap-3 sm:gap-5 items-center text-[var(--text-nav-dim)]">
@@ -276,12 +282,12 @@ export default function App() {
                 <div className="relative z-10 flex-1 lg:overflow-hidden flex flex-col h-full min-h-0 animate-fade-in">
                   {/* 🎯 4. TAB BAR (High Fidelity) */}
                   <header className="flex flex-nowrap items-center justify-between mb-8 w-full shrink-0 relative z-30">
-                    <div className="flex bg-[#0B1F2E]/90 backdrop-blur-md p-1 rounded-xl border border-white/5">
+                    <div className="flex bg-[var(--bg-card)] backdrop-blur-xl p-1.5 rounded-2xl border border-[var(--border-card)] shadow-xl">
                       {NAV_TABS.map((t) => (
                         <button
                           key={t}
                           type="button"
-                          className={`px-5 py-2.5 rounded-lg transition-all duration-300 text-[13px] font-bold ${activeTab === t ? "bg-[#E2E8F0] text-[#0B1F2E] shadow-lg" : "text-white/70 hover:text-white"}`}
+                          className={`px-6 py-2.5 rounded-xl transition-all duration-300 text-[13px] font-bold ${activeTab === t ? "bg-[var(--text-main)] text-[var(--bg-app)] shadow-lg" : "text-[var(--text-dim)] hover:text-[var(--text-main)] hover:bg-white/5"}`}
                           onClick={() => setActiveTab(t)}
                         >
                           {t}
@@ -290,20 +296,20 @@ export default function App() {
                     </div>
                     <button
                       type="button"
-                      className="w-10 h-10 flex items-center justify-center rounded-lg bg-[#0B1F2E]/90 backdrop-blur-md border border-white/5 text-white hover:bg-[#0F2332] transition-all shadow-lg shrink-0 mr-[1px]"
+                      className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-card)] backdrop-blur-xl border border-[var(--border-card)] text-[var(--text-main)] hover:bg-white/5 transition-all shadow-xl shrink-0"
                       onClick={() => setPinned(!pinned)}
                       title="Fixar/Soltar Hero"
                     >
                       <svg
-                        width="18"
-                        height="18"
+                        width="20"
+                        height="20"
                         viewBox="0 0 24 24"
                         fill={pinned ? "currentColor" : "none"}
                         stroke="currentColor"
                         strokeWidth="2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
-                        className={`transition-transform duration-300 ${pinned ? "rotate-45" : "rotate-0"}`}
+                        className={`transition-transform duration-300 ${pinned ? "rotate-45 text-[var(--accent)]" : "rotate-0"}`}
                       >
                         <line x1="12" y1="17" x2="12" y2="22" />
                         <path d="M5 17h14v-2l-1.5-1.5V6a2 2 0 0 0-2-2H9.5a2 2 0 0 0-2 2v7.5L6 15v2z" />
@@ -365,7 +371,7 @@ export default function App() {
               <UpdateList tab={updatesTab} onSourceChange={setDataSource} />
             </div>
 
-            <button className="absolute bottom-8 right-8 w-14 h-14 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center shadow-xl backdrop-blur-md transition-all hover:scale-110 active:scale-95 z-[80] border border-white/20">
+            <button className="absolute bottom-8 right-8 w-14 h-14 bg-[var(--accent)] text-black rounded-2xl flex items-center justify-center shadow-[0_8px_32px_rgba(56,189,248,0.4)] transition-all hover:scale-110 active:scale-95 z-[80] hover:brightness-110">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
               </svg>

@@ -7,39 +7,41 @@
 }
 
 [data-theme='dark'] {
-  --bg-app: #05111B;
-  --bg-overlay: rgba(15, 35, 50, 0.85); /* Tonalidade de glass no fundo */
-  --bg-card: rgba(15, 35, 50, 0.85); 
-  --bg-mini-card: rgba(255, 255, 255, 0.04);
-  --text-main: #FFFFFF;
+  --bg-app: #020617;
+  --bg-overlay: rgba(15, 23, 42, 0.8);
+  --bg-card: rgba(30, 41, 59, 0.5); 
+  --bg-mini-card: rgba(255, 255, 255, 0.03);
+  --text-main: #F8FAFC;
   --text-dim: #94A3B8;
-  --text-muted: rgba(255, 255, 255, 0.4);
-  --border-card: rgba(255, 255, 255, 0.1);
-  --border-mini: rgba(255, 255, 255, 0.08);
-  --sidebar-bg: #0A192A;
-  --header-bg: transparent;
-  --text-nav: #FFFFFF;
-  --text-nav-dim: #94A3B8;
+  --text-muted: #64748B;
+  --border-card: rgba(255, 255, 255, 0.08);
+  --border-mini: rgba(255, 255, 255, 0.05);
+  --sidebar-bg: #0F172A;
+  --header-bg: rgba(15, 23, 42, 0.6);
+  --text-nav: #F8FAFC;
+  --text-nav-dim: #64748B;
   --border-nav: rgba(255, 255, 255, 0.05);
-  --accent: #22d3ee;
+  --accent: #38BDF8;
+  --accent-glow: rgba(56, 189, 248, 0.4);
 }
 
 [data-theme='light'] {
-  --bg-app: #E9F1F6;
-  --bg-overlay: rgba(15, 35, 50, 0.85); 
-  --bg-card: rgba(15, 35, 50, 0.85); 
-  --bg-mini-card: rgba(255, 255, 255, 0.05);
-  --text-main: #FFFFFF;
-  --text-dim: #94A3B8;
-  --text-muted: rgba(255, 255, 255, 0.4);
-  --border-card: rgba(255, 255, 255, 0.1);
-  --border-mini: rgba(255, 255, 255, 0.08);
+  --bg-app: #F1F5F9;
+  --bg-overlay: rgba(255, 255, 255, 0.8); 
+  --bg-card: rgba(255, 255, 255, 0.7); 
+  --bg-mini-card: rgba(0, 0, 0, 0.02);
+  --text-main: #0F172A;
+  --text-dim: #475569;
+  --text-muted: #94A3B8;
+  --border-card: rgba(0, 0, 0, 0.05);
+  --border-mini: rgba(0, 0, 0, 0.03);
   --sidebar-bg: #FFFFFF;
-  --header-bg: rgba(255, 255, 255, 0.8);
-  --text-nav: #1E293B;
+  --header-bg: rgba(255, 255, 255, 0.7);
+  --text-nav: #0F172A;
   --text-nav-dim: #64748B;
-  --border-nav: rgba(0, 0, 0, 0.06);
-  --accent: #0891b2;
+  --border-nav: rgba(0, 0, 0, 0.04);
+  --accent: #0284C7;
+  --accent-glow: rgba(2, 132, 199, 0.2);
 }
 
 @layer base {
