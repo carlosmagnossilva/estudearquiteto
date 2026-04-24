@@ -7,7 +7,7 @@ RUN npm install
 COPY tsconfig.json ./
 COPY shared-types ./shared-types
 COPY bff ./bff
-RUN npm run build -w shared-types
+RUN npm run build -w @hub/shared
 RUN npm run build -w bff
 
 FROM node:18-slim
