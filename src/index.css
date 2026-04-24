@@ -23,6 +23,8 @@
   --border-nav: rgba(255, 255, 255, 0.05);
   --accent: #38BDF8;
   --accent-glow: rgba(56, 189, 248, 0.4);
+  --bg-header-solid: #0F172A;
+  --hover-bg: rgba(255, 255, 255, 0.03);
 }
 
 [data-theme='light'] {
@@ -42,6 +44,8 @@
   --border-nav: rgba(0, 0, 0, 0.04);
   --accent: #0284C7;
   --accent-glow: rgba(2, 132, 199, 0.2);
+  --bg-header-solid: #FFFFFF;
+  --hover-bg: rgba(0, 0, 0, 0.03);
 }
 
 @layer base {

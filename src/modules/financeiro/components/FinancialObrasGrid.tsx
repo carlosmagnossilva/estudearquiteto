@@ -1,11 +1,49 @@
 import React from "react";
 import { useBff } from "../../../hooks/useBff";
 import { useDragScroll } from "../../../hooks/useDragScroll";
-import { IFinanceiroObra, IBffResponse } from "@hub/shared";
+import { IBffResponse } from "@hub/shared";
+
+// Definição local para garantir que a propriedade 'cor' seja reconhecida imediatamente
+interface ITag {
+  tag: string;
+  descricao: string;
+  cor: string;
+}
+
+export interface IFinanceiroObraLocal {
+  id: number;
+  id_parada: number;
+  embarcacao_nome: string;
+  statusFinanceiro: string;
+  outlookBRL: number;
+  realizadoBRL: number;
+  percRE: number;
+  percEM: number;
+  percCO: number;
+  percES: number;
+  percNC: number;
+  dataUltimaAtualizacao: string;
+  condicao: string;
+  inicio: string;
+  termino: string;
+  duracaoTotal: number;
+  tags: ITag[];
+}
 
 const FinancialObrasGrid: React.FC = () => {
-  const { data, loading } = useBff<IBffResponse<IFinanceiroObra>>("/bff/financeiro/obras");
+  const { data, loading } = useBff<IBffResponse<IFinanceiroObraLocal>>("/bff/financeiro/obras");
   const dragScroll = useDragScroll();
+
+  const formatDateBR = (dateStr: string) => {
+    if (!dateStr || dateStr === "-") return "-";
+    try {
+      const date = new Date(dateStr);
+      if (isNaN(date.getTime())) return dateStr;
+      return date.toLocaleDateString("pt-BR", { timeZone: "UTC" });
+    } catch {
+      return dateStr;
+    }
+  };
 
   if (loading) return (
     <div className="flex-1 flex items-center justify-center text-[var(--text-dim)] animate-pulse">
@@ -14,12 +52,12 @@ const FinancialObrasGrid: React.FC = () => {
   );
 
   // Fallback para dados locais se o BFF não retornar itens (baseado na extração do Figma)
-  const obras: IFinanceiroObra[] = data?.items && data.items.length > 0 ? data.items : [
-    { id: 24, id_parada: 24, embarcacao_nome: "A. Abrolhos", statusFinanceiro: "FEL-3", tags: [{tag: "100", descricao: "100"}, {tag: "101", descricao: "101"}], realizadoBRL: 38.0, outlookBRL: 38.0, percRE: 100, percEM: 1, percCO: 5, percES: 3, percNC: 90, condicao: "Seco", inicio: "02/12/24", termino: "26/02/25", duracaoTotal: 96, dataUltimaAtualizacao: "" },
-    { id: 25, id_parada: 25, embarcacao_nome: "R. São Paulo", statusFinanceiro: "FECH", tags: [{tag: "101", descricao: "101"}], realizadoBRL: 8.3, outlookBRL: 11.8, percRE: 70, percEM: 8, percCO: 2, percES: 0, percNC: 89, condicao: "Molhado", inicio: "07/03/25", termino: "07/04/25", duracaoTotal: 31, dataUltimaAtualizacao: "" },
-    { id: 36, id_parada: 36, embarcacao_nome: "I. Mosqueiro", statusFinanceiro: "FECH", tags: [{tag: "301", descricao: "301"}], realizadoBRL: 22.1, outlookBRL: 22.1, percRE: 100, percEM: 1, percCO: 0, percES: 81, percNC: 18, condicao: "Seco", inicio: "15/03/25", termino: "15/06/25", duracaoTotal: 92, dataUltimaAtualizacao: "" },
-    { id: 33, id_parada: 33, embarcacao_nome: "P. Meros", statusFinanceiro: "EXEC", tags: [{tag: "100", descricao: "100"}, {tag: "101", descricao: "101"}, {tag: "103", descricao: "103"}], realizadoBRL: 5.6, outlookBRL: 29.3, percRE: 19, percEM: 18, percCO: 49, percES: 22, percNC: 11, condicao: "Seco", inicio: "21/01/26", termino: "11/04/26", duracaoTotal: 80, dataUltimaAtualizacao: "" },
-    { id: 37, id_parada: 37, embarcacao_nome: "P. Badejo", statusFinanceiro: "FEL-4", tags: [{tag: "101", descricao: "101"}], realizadoBRL: 10.6, outlookBRL: 16.2, percRE: 65, percEM: 32, percCO: 5, percES: 50, percNC: 13, condicao: "Molhado", inicio: "30/10/25", termino: "10/12/25", duracaoTotal: 41, dataUltimaAtualizacao: "" }
+  const obras: IFinanceiroObraLocal[] = data?.items && data.items.length > 0 ? data.items : [
+    { id: 24, id_parada: 24, embarcacao_nome: "A. Abrolhos", statusFinanceiro: "FEL-3", tags: [{tag: "100", descricao: "Mobilização Contratual", cor: "#FFC000"}, {tag: "101", descricao: "Parada Especial", cor: "#00B0F0"}], realizadoBRL: 38.0, outlookBRL: 38.0, percRE: 100, percEM: 1, percCO: 5, percES: 3, percNC: 90, condicao: "Seco", inicio: "2024-12-02", termino: "2025-02-26", duracaoTotal: 96, dataUltimaAtualizacao: "" },
+    { id: 25, id_parada: 25, embarcacao_nome: "R. São Paulo", statusFinanceiro: "FECH", tags: [{tag: "101", descricao: "Parada Especial", cor: "#00B0F0"}], realizadoBRL: 8.3, outlookBRL: 11.8, percRE: 70, percEM: 8, percCO: 2, percES: 0, percNC: 89, condicao: "Molhado", inicio: "2025-03-07", termino: "2025-04-07", duracaoTotal: 31, dataUltimaAtualizacao: "" },
+    { id: 36, id_parada: 36, embarcacao_nome: "I. Mosqueiro", statusFinanceiro: "FECH", tags: [{tag: "301", descricao: "Parada Emergencial", cor: "#999999"}], realizadoBRL: 22.1, outlookBRL: 22.1, percRE: 100, percEM: 1, percCO: 0, percES: 81, percNC: 18, condicao: "Seco", inicio: "2025-03-15", termino: "2025-06-15", duracaoTotal: 92, dataUltimaAtualizacao: "" },
+    { id: 33, id_parada: 33, embarcacao_nome: "P. Meros", statusFinanceiro: "EXEC", tags: [{tag: "100", descricao: "Mobilização Contratual", cor: "#FFC000"}, {tag: "101", descricao: "Parada Especial", cor: "#00B0F0"}, {tag: "103", descricao: "Parada Programada", cor: "#2D7DCE"}], realizadoBRL: 5.6, outlookBRL: 29.3, percRE: 19, percEM: 18, percCO: 49, percES: 22, percNC: 11, condicao: "Seco", inicio: "2026-01-21", termino: "2026-04-11", duracaoTotal: 80, dataUltimaAtualizacao: "" },
+    { id: 37, id_parada: 37, embarcacao_nome: "P. Badejo", statusFinanceiro: "FEL-4", tags: [{tag: "101", descricao: "Parada Especial", cor: "#00B0F0"}], realizadoBRL: 10.6, outlookBRL: 16.2, percRE: 65, percEM: 32, percCO: 5, percES: 50, percNC: 13, condicao: "Molhado", inicio: "2025-10-30", termino: "2025-12-10", duracaoTotal: 41, dataUltimaAtualizacao: "" }
   ];
 
   return (
@@ -69,43 +107,52 @@ const FinancialObrasGrid: React.FC = () => {
       >
         <table className="w-full text-left border-collapse min-w-[1400px]">
           <thead>
-            <tr className="bg-[var(--bg-card)] border-b border-[var(--border-card)] sticky top-0 z-30 backdrop-blur-2xl">
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">ID</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Embarcação</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Status</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Tags (Obra)</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-right">Realizado BRL</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-right">Outlook BRL</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center">RE</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center">EM</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center">CO</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center">ES</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center">NC</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Condição</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Início</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Término</th>
-              <th className="px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center">Duração</th>
+            <tr className="sticky top-0 z-30 shadow-xl">
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest first:rounded-tl-2xl transition-colors duration-1000">ID</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Embarcação</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Status</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Tags (Obra)</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-right transition-colors duration-1000">Realizado BRL</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-right transition-colors duration-1000">Outlook BRL</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center transition-colors duration-1000">RE</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center transition-colors duration-1000">EM</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center transition-colors duration-1000">CO</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center transition-colors duration-1000">ES</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center transition-colors duration-1000">NC</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Condição</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Início</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Término</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center last:rounded-tr-2xl transition-colors duration-1000">Duração</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--border-mini)]">
             {obras.map((row) => (
-              <tr key={row.id} className="group hover:bg-white/[0.03] transition-all cursor-default">
+              <tr key={row.id} className="group hover:bg-[var(--hover-bg)] transition-all cursor-default">
                 <td className="px-6 py-5 text-sm text-[var(--text-dim)] group-hover:text-[var(--text-main)] font-mono">{row.id}</td>
                 <td className="px-6 py-5 text-[15px] text-[var(--text-main)] font-bold tracking-tight">{row.embarcacao_nome}</td>
-                <td className="px-6 py-5">
-                  <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm ${
+                 <td className="px-6 py-5 min-w-[120px]">
+                  <span className={`px-2.5 py-1 rounded-lg text-[10px] font-black uppercase tracking-wider shadow-sm whitespace-nowrap ${
                     row.statusFinanceiro === 'EXEC' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/20' : 
-                    row.statusFinanceiro.startsWith('FEL') ? 'bg-orange-500/20 text-orange-400 border border-orange-500/20' :
+                    row.statusFinanceiro?.startsWith('FEL') ? 'bg-orange-500/20 text-orange-400 border border-orange-500/20' :
                     'bg-white/10 text-[var(--text-dim)] border border-white/10'
                   }`}>
                     {row.statusFinanceiro}
                   </span>
                 </td>
-                <td className="px-6 py-5">
-                   <div className="flex gap-1.5">
+                 <td className="px-6 py-5">
+                   <div className="flex flex-wrap gap-1.5">
                       {row.tags?.map(t => (
-                        <span key={t.tag} className="px-2 py-0.5 bg-white/5 text-[var(--text-muted)] text-[10px] font-bold rounded-md border border-white/5 group-hover:border-[var(--accent)]/30 transition-all">
-                          {t.descricao}
+                        <span 
+                          key={t.tag} 
+                          title={t.descricao}
+                          className="px-2 py-1 text-[11px] font-bold rounded-lg transition-all shadow-sm cursor-help"
+                          style={{ 
+                            backgroundColor: t.cor,
+                            color: '#000000',
+                            border: `1px solid ${t.cor}`
+                          }}
+                        >
+                          {t.tag}
                         </span>
                       ))}
                    </div>
@@ -126,8 +173,8 @@ const FinancialObrasGrid: React.FC = () => {
                     {row.condicao}
                    </span>
                 </td>
-                <td className="px-6 py-5 text-[13px] text-[var(--text-muted)] group-hover:text-[var(--text-dim)] transition-colors">{row.inicio}</td>
-                <td className="px-6 py-5 text-[13px] text-[var(--text-muted)] group-hover:text-[var(--text-dim)] transition-colors">{row.termino}</td>
+                <td className="px-6 py-5 text-[13px] text-[var(--text-muted)] group-hover:text-[var(--text-dim)] transition-colors font-mono">{formatDateBR(row.inicio)}</td>
+                <td className="px-6 py-5 text-[13px] text-[var(--text-muted)] group-hover:text-[var(--text-dim)] transition-colors font-mono">{formatDateBR(row.termino)}</td>
                 <td className="px-6 py-5 text-sm text-[var(--text-main)] text-center font-bold">{row.duracaoTotal}d</td>
               </tr>
             ))}

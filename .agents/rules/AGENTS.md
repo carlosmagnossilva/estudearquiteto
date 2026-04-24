@@ -17,6 +17,7 @@ Objetivo geral:
 Construir entendimento completo e confiável do projeto antes de propor ou executar mudanças, preservando aderência à arquitetura existente, aos processos reais da empresa e à infraestrutura já operando na nuvem e em produção.
 
 Ordem de trabalho obrigatória:
+0. LEITURA OBRIGATÓRIA: [CURRENT_CONTEXT.md](file:///c:/Users/carlo/estudearquiteto/CURRENT_CONTEXT.md)
 1. Inspecione todos os documentos do projeto
 2. Depois, inspecione todos os arquivos de código
 3. Por fim, inspecione todos os demais arquivos restantes
@@ -35,6 +36,7 @@ Regras de operação:
 - preserve consistência entre frontend, backend, banco de dados, documentação e processos reais da empresa
 - procure arquivos de TODO, backlog, checklist, roadmap, pendências e notas operacionais
 - mantenha esses artefatos atualizados sempre que novas descobertas relevantes surgirem
+- GATILHO OBRIGATÓRIO: Sempre que houver um commit/push de alterações, o arquivo CURRENT_CONTEXT.md deve ser revisado e atualizado para refletir o novo estado do sistema.
 
 Forma de análise esperada:
 - documente o panorama geral do sistema

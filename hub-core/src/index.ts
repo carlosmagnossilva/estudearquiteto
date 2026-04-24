@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { ServiceBusClient } from "@azure/service-bus";
-import { queryParadas, queryUpdates, queryCapex, queryEstaleiros, queryPPUs, queryObrasFinanceiras, queryFinancialIndicadores, closePool } from "./database.js";
+import { queryParadas, queryUpdates, queryCapex, queryObrasFinanceiras, queryFinancialIndicadores, closePool } from "./database.js";
 import { authMiddleware } from "./authMiddleware.js";
 
 const app = express();
@@ -34,7 +34,7 @@ serviceRouter.post("/paradas/publish", async (req, res) => {
 
   try {
     const data = await queryParadas();
-    
+
     const sbClient = new ServiceBusClient(SB_CONN);
     const sender = sbClient.createSender(SB_QUEUE);
 
@@ -80,28 +80,7 @@ serviceRouter.get("/capex", async (req, res) => {
   }
 });
 
-// --- FINANCEIRO ---
-
-serviceRouter.get("/financeiro/estaleiros", async (req, res) => {
-  try {
-    const data = await queryEstaleiros();
-    if (!data) return res.status(503).json({ error: "Banco de dados indisponível" });
-    res.json(data);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
-  }
-});
-
-serviceRouter.get("/financeiro/ppus", async (req, res) => {
-  const estaleiroId = req.query.estaleiroId ? parseInt(req.query.estaleiroId as string) : undefined;
-  try {
-    const data = await queryPPUs(estaleiroId);
-    if (!data) return res.status(503).json({ error: "Banco de dados indisponível" });
-    res.json(data);
-  } catch (e: any) {
-    res.status(500).json({ error: e.message });
-  }
-});
+// --- FINANCEIRO (MODELO FRONTEND) ---
 
 serviceRouter.get("/financeiro/obras", async (req, res) => {
   try {

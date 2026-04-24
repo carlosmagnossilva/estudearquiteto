@@ -196,5 +196,5 @@ export interface IFinanceiroObra {
   inicio: string;
   termino: string;
   duracaoTotal: number;
-  tags: { tag: string; descricao: string }[];
+  tags: { tag: string; descricao: string; cor: string }[];
 }

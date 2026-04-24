@@ -39,11 +39,11 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
     next();
   } catch (err: any) {
     console.error(`[Auth Error] ${req.method} ${req.url}: ${err.message}`);
-    res.status(401).json({ 
-      error: "Invalid token", 
-      message: err.message, 
+    res.status(401).json({
+      error: "Invalid token",
+      message: err.message,
       clientId: clientId,
-      tenantId: tenantId 
+      tenantId: tenantId
     });
   }
 };

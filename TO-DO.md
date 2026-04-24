@@ -35,13 +35,17 @@
 
 ## 🔨 Hub-Integrator (Prioridade 2)
 - [x] Criar estrutura do serviço `hub-integrator` na pasta `hub-consumer`.
-- [ ] Implementar lógica de consumo da fila do Service Bus.
-- [ ] Centralizar operações de escrita (INSERT/UPDATE) no banco de dados.
+- [/] Implementar lógica de consumo da fila do Service Bus (Base iniciada).
+- [/] Centralizar operações de escrita (INSERT/UPDATE) no banco de dados (Lógica de Upsert inicial implementada).
 
-## 🔌 Integrações Externas (Prioridade 3)
-- [ ] Desenvolver "Small Services" (Adaptadores).
-- [ ] Padronizar mensagens de entrada para o Integrator via Service Bus.
+## ⚡ Backend & Frontend Sync
+- [x] Unificar consultas no esquema `hub_frontend` (Core e Scripts).
+- [x] Corrigir bugs de tipagem no shared-types (Propriedade `cor`).
+- [x] Adaptar Módulo Financeiro para Temas Light/Dark.
+- [x] Implementar tags numéricas minimalistas no Grid.
+- [ ] Implementar a lógica de Upsert completa no Integrator.
 
 ## 🚀 Melhorias de DevOps
+- [x] Configurar `pnpm-workspace.yaml` para suporte nativo a monorepo.
 - [ ] Configurar logs centralizados.
 - [ ] Implementar testes unitários nos middlewares de segurança.

@@ -1,0 +1,6 @@
+packages:
+  - 'hub-core'
+  - 'bff'
+  - 'hub-consumer'
+  - 'shared-types'
+  - 'hub-integrator'

@@ -61,7 +61,7 @@ protectedRouter.get("/updates", async (req, res) => {
     const core = getCoreClient(req);
     const response = await core.get(`/core/updates`);
     const flat = response.data;
-    
+
     const groups = [
       {
         dateLabel: "Recentes",
@@ -113,26 +113,7 @@ protectedRouter.get("/capex", async (req, res) => {
   }
 });
 
-protectedRouter.get("/financeiro/estaleiros", async (req, res) => {
-  try {
-    const core = getCoreClient(req);
-    const response = await core.get(`/core/financeiro/estaleiros`);
-    res.json(wrapResponse(response.data, "database"));
-  } catch (error) {
-    res.json(wrapResponse([], "mock"));
-  }
-});
-
-protectedRouter.get("/financeiro/ppus", async (req, res) => {
-  const estaleiroId = req.query.estaleiroId;
-  try {
-    const core = getCoreClient(req);
-    const response = await core.get(`/core/financeiro/ppus${estaleiroId ? `?estaleiroId=${estaleiroId}` : ""}`);
-    res.json(wrapResponse(response.data, "database"));
-  } catch (error) {
-    res.json(wrapResponse([], "mock"));
-  }
-});
+// Rotas legadas de estaleiros e ppus removidas (migrado para modelo frontend único)
 
 protectedRouter.get("/financeiro/obras", async (req, res) => {
   try {

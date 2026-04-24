@@ -17,14 +17,49 @@ const sqlConfig = {
   },
 };
 
+async function upsertParadas(payload: any[]) {
+  if (!payload || !Array.isArray(payload)) return;
+
+  const pool = await sql.connect(sqlConfig);
+  
+  for (const item of payload) {
+    try {
+      // Upsert na fato_parada (Simplified for this stage)
+      await pool.request()
+        .input('id', sql.Int, item.parada_id)
+        .input('embarcacao_id', sql.Int, item.embarcacao_id)
+        .input('fel_codigo', sql.VarChar, item.fel_codigo)
+        .input('realizado_brl_m', sql.Decimal(18, 2), item.realizado_brl_m)
+        .input('outlook_brl_m', sql.Decimal(18, 2), item.outlook_brl_m)
+        .query(`
+          IF EXISTS (SELECT 1 FROM hub_frontend.fato_parada WHERE parada_id = @id)
+          BEGIN
+            UPDATE hub_frontend.fato_parada 
+            SET embarcacao_id = @embarcacao_id, fel_codigo = @fel_codigo, 
+                realizado_brl_m = @realizado_brl_m, outlook_brl_m = @outlook_brl_m,
+                atualizado_em = GETDATE()
+            WHERE parada_id = @id
+          END
+          ELSE
+          BEGIN
+            INSERT INTO hub_frontend.fato_parada (parada_id, embarcacao_id, fel_codigo, realizado_brl_m, outlook_brl_m, atualizado_em)
+            VALUES (@id, @embarcacao_id, @fel_codigo, @realizado_brl_m, @outlook_brl_m, GETDATE())
+          END
+        `);
+      console.log(`[INTEGRATOR] Upsert realizado para Parada ID: ${item.parada_id}`);
+    } catch (err: any) {
+      console.error(`[INTEGRATOR] Erro no upsert da Parada ${item.parada_id}:`, err.message);
+    }
+  }
+}
+
 async function processMessage(messageBody: any) {
   console.log(`[INTEGRATOR] Processando mensagem de: ${messageBody.servico}`);
   console.log(`[INTEGRATOR] Ação: ${messageBody.acao}`);
 
   if (messageBody.acao === "snapshot_paradas") {
     console.log(`[INTEGRATOR] Recebido snapshot com ${messageBody.payload?.length || 0} paradas.`);
-    // TODO: Implementar lógica de merge/upsert no Banco de Dados
-    // await upsertParadas(messageBody.payload);
+    await upsertParadas(messageBody.payload);
   }
 }
 

@@ -48,11 +48,11 @@ export async function queryParadas() {
         o.ser_total as obra_serTot,
         o.fac_realizado as obra_facPerc, 
         o.fac_total as obra_facTot
-      FROM hub.fato_parada p
-      JOIN hub.dim_embarcacao e ON p.embarcacao_id = e.id
-      JOIN hub.dim_fase_fel f ON p.fel_codigo = f.codigo
-      LEFT JOIN hub.fato_gmud g ON p.parada_id = g.parada_id
-      LEFT JOIN hub.fato_obra_progresso o ON p.parada_id = o.parada_id
+      FROM hub_frontend.fato_parada p
+      JOIN hub_frontend.dim_embarcacao e ON p.embarcacao_id = e.id
+      JOIN hub_frontend.dim_fase_fel f ON p.fel_codigo = f.codigo
+      LEFT JOIN hub_frontend.fato_gmud g ON p.parada_id = g.parada_id
+      LEFT JOIN hub_frontend.fato_obra_progresso o ON p.parada_id = o.parada_id
     `);
 
     return result.recordset.map(p => ({
@@ -95,7 +95,7 @@ export async function queryParadas() {
 export async function queryUpdates() {
   try {
     const pool = await getPool();
-    const result = await pool.request().query("SELECT * FROM hub.fato_notificacao ORDER BY data_hora DESC");
+    const result = await pool.request().query("SELECT * FROM hub_frontend.fato_notificacao ORDER BY data_hora DESC");
     return result.recordset;
   } catch (err) {
     console.error("Erro ao consultar updates:", err);
@@ -106,16 +106,16 @@ export async function queryUpdates() {
 export async function queryCapex(ano: number) {
   try {
     const pool = await getPool();
-    const outlookResult = await pool.request().input("ano", mssql.Int, ano).query("SELECT TOP 1 * FROM hub.dim_capex_ano WHERE ano = @ano");
+    const outlookResult = await pool.request().input("ano", mssql.Int, ano).query("SELECT TOP 1 * FROM hub_frontend.dim_capex_ano WHERE ano = @ano");
     const outlook = outlookResult.recordset[0];
-    
+
     if (!outlook) return null;
 
     const [tipos, composicao, subsistemas, historico] = await Promise.all([
-      pool.request().input("parent_id", mssql.Int, outlook.id).query("SELECT codigo as id, valor_brl_m, percentual FROM hub.fato_capex_tipo_obra WHERE capex_ano_id = @parent_id"),
-      pool.request().input("parent_id", mssql.Int, outlook.id).query("SELECT categoria as label, valor_brl_m, percentual, variacao_perc FROM hub.fato_capex_composicao WHERE capex_ano_id = @parent_id"),
-      pool.request().input("parent_id", mssql.Int, outlook.id).query("SELECT nome, codigo, valor_brl_m, percentual FROM hub.fato_capex_subsistema WHERE capex_ano_id = @parent_id"),
-      pool.request().query("SELECT ano as year, valor_brl_m as value FROM hub.fato_capex_historico_anual ORDER BY ano ASC")
+      pool.request().input("parent_id", mssql.Int, outlook.id).query("SELECT codigo as id, valor_brl_m, percentual FROM hub_frontend.fato_capex_tipo_obra WHERE capex_ano_id = @parent_id"),
+      pool.request().input("parent_id", mssql.Int, outlook.id).query("SELECT categoria as label, valor_brl_m, percentual, variacao_perc FROM hub_frontend.fato_capex_composicao WHERE capex_ano_id = @parent_id"),
+      pool.request().input("parent_id", mssql.Int, outlook.id).query("SELECT nome, codigo, valor_brl_m, percentual FROM hub_frontend.fato_capex_subsistema WHERE capex_ano_id = @parent_id"),
+      pool.request().query("SELECT ano as year, valor_brl_m as value FROM hub_frontend.fato_capex_historico_anual ORDER BY ano ASC")
     ]);
 
     return {
@@ -131,47 +131,40 @@ export async function queryCapex(ano: number) {
   }
 }
 
-// --- FINANCEIRO ---
-
-export async function queryEstaleiros() {
-  try {
-    const pool = await getPool();
-    const result = await pool.request().query("SELECT * FROM Financeiro.Estaleiros ORDER BY nome");
-    return result.recordset;
-  } catch (err: any) {
-    console.error("[DB] Erro ao consultar estaleiros:", err.message);
-    return null;
-  }
-}
-
-export async function queryPPUs(estaleiroId?: number) {
-  try {
-    const pool = await getPool();
-    let query = "SELECT * FROM Financeiro.PPUs";
-    if (estaleiroId) query += ` WHERE estaleiroId = ${estaleiroId}`;
-    query += " ORDER BY dataInclusao DESC";
-    const result = await pool.request().query(query);
-    return result.recordset;
-  } catch (err: any) {
-    console.error("[DB] Erro ao consultar PPUs:", err.message);
-    return null;
-  }
-}
+// --- FINANCEIRO (MODELO FRONTEND) ---
 
 export async function queryObrasFinanceiras() {
   try {
     const pool = await getPool();
+    // Agora consultamos diretamente do modelo hub_frontend
     const result = await pool.request().query(`
       SELECT 
-        o.*,
+        p.parada_id as id,
+        p.parada_id as id_parada,
+        e.nome as embarcacao_nome,
+        p.fel_codigo as statusFinanceiro,
+        p.realizado_brl_m as realizadoBRL,
+        p.outlook_brl_m as outlookBRL,
+        p.re_perc as percRE,
+        p.em_perc as percEM,
+        p.co_perc as percCO,
+        p.es_perc as percES,
+        p.nc_perc as percNC,
         p.condicao,
         p.inicio_rp as inicio,
         p.termino_rp as termino,
         p.dur_rp as duracaoTotal,
-        (SELECT tag, descricao FOR JSON PATH) as tags_json
-      FROM Financeiro.Obras o
-      JOIN hub.fato_parada p ON o.id_parada = p.parada_id
-      ORDER BY o.dataUltimaAtualizacao DESC
+        p.atualizado_em as dataUltimaAtualizacao,
+        (
+          SELECT t.tag, c.descricao, c.cor 
+          FROM hub_frontend.fato_parada_tags t
+          JOIN hub_frontend.dim_coletor c ON t.tag = c.codigo
+          WHERE t.parada_id = p.parada_id
+          FOR JSON PATH
+        ) as tags_json
+      FROM hub_frontend.fato_parada p
+      JOIN hub_frontend.dim_embarcacao e ON p.embarcacao_id = e.id
+      ORDER BY p.atualizado_em DESC
     `);
 
     return result.recordset.map(r => ({
@@ -187,63 +180,51 @@ export async function queryObrasFinanceiras() {
 export async function queryFinancialIndicadores(ano: number = 2025) {
   try {
     const pool = await getPool();
-    
-    // 1. Evolução Mensal (Agregado por Mês)
-    const evolucao = await pool.request().input("ano", mssql.Int, ano).query(`
+
+    // 1. Evolução Mensal (Usando Capex Histórico como base para o modelo frontend)
+    const evolucao = await pool.request()
+      .input("ano", mssql.Int, ano)
+      .query(`
+        SELECT 
+          FORMAT(DATEADD(MONTH, id-1, CAST(CAST(@ano AS VARCHAR) + '-01-01' AS DATE)), 'MMM', 'pt-BR') as name,
+          valor_brl_m as value
+        FROM hub_frontend.fato_capex_historico_anual
+        WHERE ano = @ano
+        ORDER BY id
+      `);
+
+    // 2. Waterfall (Baseado no Fato Parada)
+    const stats = await pool.request().query(`
       SELECT 
-        FORMAT(data_referencia, 'MMM', 'pt-BR') as name,
-        SUM(valor_brl) as value
-      FROM Financeiro.HistoricoFinanceiro
-      WHERE YEAR(data_referencia) = @ano AND categoria = 'Realizado'
-      GROUP BY MONTH(data_referencia), FORMAT(data_referencia, 'MMM', 'pt-BR')
-      ORDER BY MONTH(data_referencia)
+        SUM(outlook_brl_m) as totalOutlook,
+        SUM(realizado_brl_m) as totalRealizado
+      FROM hub_frontend.fato_parada
     `);
+    const { totalOutlook, totalRealizado } = stats.recordset[0];
 
-    // 2. Waterfall (Capex Overview)
-    const waterfall = await pool.request().query(`
-      SELECT 'Orçamento' as name, 450.0 as value
-      UNION ALL
-      SELECT 'Executado' as name, SUM(realizadoBRL) as value FROM Financeiro.Obras
-      UNION ALL
-      SELECT 'Comprometido' as name, SUM(outlookBRL - realizadoBRL) as value FROM Financeiro.Obras
-    `);
+    const waterfall = [
+      { name: 'Orçamento', value: totalOutlook || 450 },
+      { name: 'Executado', value: totalRealizado || 0 },
+      { name: 'Comprometido', value: (totalOutlook - totalRealizado) || 0 }
+    ];
 
-    // 3. Gastos por Categoria (Donut)
-    const gastos = await pool.request().query(`
-      SELECT 'Mão de Obra' as name, 35 as value, '#003D5B' as fill
-      UNION ALL
-      SELECT 'Materiais' as name, 25 as value, '#005D8D' as fill
-      UNION ALL
-      SELECT 'Serviços' as name, 20 as value, '#0EA5E9' as fill
-      UNION ALL
-      SELECT 'Outros' as name, 20 as value, '#7DD3FC' as fill
-    `);
+    // 3. Gastos por Categoria (Dados do Capex Composicao)
+    const gastos = await pool.request()
+      .input("ano", mssql.Int, ano)
+      .query(`
+        SELECT categoria as name, valor_brl_m as value
+        FROM hub_frontend.fato_capex_composicao
+        WHERE capex_ano_id = (SELECT id FROM hub_frontend.dim_capex_ano WHERE ano = @ano)
+      `);
 
-    // 4. Detalhamento (Tabela Resumo)
-    const detalhamento = await pool.request().query(`
-      SELECT TOP 5
-        o.id as Id,
-        p.inicio_rp as inicio,
-        p.termino_rp as termino,
-        p.dur_rp as dias,
-        o.percRE as PercRE,
-        o.percEM as PercEM,
-        o.percCO as PercCO,
-        o.percES as PercES,
-        o.percNC as PercNC,
-        o.outlookBRL as OutlookBRL,
-        o.realizadoBRL as RealizadoBRL,
-        o.embarcacao_nome as embarcacao
-      FROM Financeiro.Obras o
-      JOIN hub.fato_parada p ON o.id_parada = p.parada_id
-      ORDER BY o.outlookBRL DESC
-    `);
+    // 4. Detalhamento (Top 5 Obras)
+    const detalhamento = await queryObrasFinanceiras();
 
     return {
       evolucao: evolucao.recordset,
-      waterfall: waterfall.recordset,
+      waterfall,
       gastos: gastos.recordset,
-      detalhamento: detalhamento.recordset
+      detalhamento: detalhamento ? detalhamento.slice(0, 5) : []
     };
   } catch (err: any) {
     console.error("[DB] Erro ao consultar indicadores financeiros:", err.message);

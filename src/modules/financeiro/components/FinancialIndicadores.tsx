@@ -79,7 +79,7 @@ const FinancialIndicadores: React.FC = () => {
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         
         {/* Evolução de Capex */}
-        <div className="xl:col-span-2 bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl">
+        <div className="xl:col-span-2 bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl min-w-0">
           <div className="flex justify-between items-center mb-6">
             <h3 className="text-white font-bold text-lg flex items-center gap-2">
               <span className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></span>
@@ -89,7 +89,7 @@ const FinancialIndicadores: React.FC = () => {
                <span className="px-3 py-1 bg-white/5 rounded-full text-[10px] text-white/50 border border-white/5">Mensal</span>
             </div>
           </div>
-          <div className="h-[300px]">
+          <div className="h-[300px] min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <ComposedChart data={EVOLUCAO_DATA}>
                 <defs>
@@ -98,23 +98,23 @@ const FinancialIndicadores: React.FC = () => {
                     <stop offset="95%" stopColor="#0EA5E9" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border-card)" vertical={false} />
                 <XAxis 
                   dataKey="name" 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fill: 'rgba(255,255,255,0.4)', fontSize: 11}} 
+                  tick={{fill: 'var(--text-muted)', fontSize: 11}} 
                   dy={10}
                 />
                 <YAxis 
                   axisLine={false} 
                   tickLine={false} 
-                  tick={{fill: 'rgba(255,255,255,0.4)', fontSize: 11}}
+                  tick={{fill: 'var(--text-muted)', fontSize: 11}}
                   tickFormatter={(v) => `R$ ${v}M`}
                 />
                 <Tooltip 
-                  contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px' }}
-                  itemStyle={{ color: '#fff', fontSize: '12px' }}
+                  contentStyle={{ backgroundColor: 'var(--sidebar-bg)', border: '1px solid var(--border-card)', borderRadius: '12px' }}
+                  itemStyle={{ color: 'var(--text-main)', fontSize: '12px' }}
                 />
                 <Area type="monotone" dataKey="value" stroke="none" fillOpacity={1} fill="url(#colorValue)" />
                 <Bar dataKey="value" fill="#0EA5E9" radius={[4, 4, 0, 0]} barSize={30} />
@@ -125,9 +125,9 @@ const FinancialIndicadores: React.FC = () => {
         </div>
 
         {/* Distribuição de Gastos */}
-        <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl flex flex-col">
+        <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl flex flex-col min-w-0">
           <h3 className="text-white font-bold text-lg mb-6">Distribuição de Gastos</h3>
-          <div className="flex-1 min-h-[250px]">
+          <div className="flex-1 min-h-[250px] min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -163,9 +163,9 @@ const FinancialIndicadores: React.FC = () => {
         </div>
 
         {/* Waterfall Financeiro */}
-        <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl">
+        <div className="bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl min-w-0">
           <h3 className="text-white font-bold text-lg mb-6">Waterfall (Capex vs Outlook)</h3>
-          <div className="h-[250px]">
+          <div className="h-[250px] min-w-0">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={WATERFALL_DATA} layout="vertical" margin={{ left: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" horizontal={false} />

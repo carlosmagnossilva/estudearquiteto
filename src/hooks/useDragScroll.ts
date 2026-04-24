@@ -6,14 +6,21 @@ export function useDragScroll() {
   const onMouseDown = useCallback((e: React.MouseEvent) => {
     if (!ref.current) return;
     const startX = e.pageX - ref.current.offsetLeft;
+    const startY = e.pageY - ref.current.offsetTop;
     const scrollLeft = ref.current.scrollLeft;
+    const scrollTop = ref.current.scrollTop;
 
     const onMouseMove = (e: MouseEvent) => {
       if (!ref.current) return;
-      e.preventDefault();
+      // Não damos preventDefault aqui para permitir cliques em botões, 
+      // mas calculamos o deslocamento
       const x = e.pageX - ref.current.offsetLeft;
-      const walk = (x - startX) * 2;
-      ref.current.scrollLeft = scrollLeft - walk;
+      const y = e.pageY - ref.current.offsetTop;
+      const walkX = (x - startX) * 1.5;
+      const walkY = (y - startY) * 1.5;
+      
+      ref.current.scrollLeft = scrollLeft - walkX;
+      ref.current.scrollTop = scrollTop - walkY;
     };
 
     const onMouseUp = () => {
@@ -25,5 +32,5 @@ export function useDragScroll() {
     window.addEventListener("mouseup", onMouseUp);
   }, []);
 
-  return { ref, onMouseDown, style: { cursor: "grab" } };
+  return { ref, onMouseDown };
 }
