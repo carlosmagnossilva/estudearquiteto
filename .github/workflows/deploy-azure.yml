@@ -58,21 +58,24 @@ jobs:
           az containerapp update \
             --name hub-core-app \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --image ${{ env.ACR_NAME }}.azurecr.io/hub-core:latest
+            --image ${{ env.ACR_NAME }}.azurecr.io/hub-core:latest \
+            --set-env-vars AZURE_TENANT_ID=7a9dfddd-2ce9-4d8a-80ce-7ee6f58c8db9 AZURE_CLIENT_ID=f09f4ab4-94d1-4e3f-b94b-f6ff812f5e4d
 
       - name: Deploy BFF
         run: |
           az containerapp update \
             --name hub-bff-app \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --image ${{ env.ACR_NAME }}.azurecr.io/bff:latest
+            --image ${{ env.ACR_NAME }}.azurecr.io/bff:latest \
+            --set-env-vars CORE_API_URL=https://hub-core-app.blackwater-be256f74.eastus.azurecontainerapps.io AZURE_TENANT_ID=7a9dfddd-2ce9-4d8a-80ce-7ee6f58c8db9 AZURE_CLIENT_ID=f09f4ab4-94d1-4e3f-b94b-f6ff812f5e4d
 
       - name: Deploy Hub Consumer
         run: |
-          az containerapp revision restart \
+          az containerapp update \
             --name hub-integrator-app \
             --resource-group ${{ env.RESOURCE_GROUP }} \
-            --revision hub-integrator-app--0000001
+            --image ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:latest \
+            --set-env-vars AZURE_TENANT_ID=7a9dfddd-2ce9-4d8a-80ce-7ee6f58c8db9 AZURE_CLIENT_ID=f09f4ab4-94d1-4e3f-b94b-f6ff812f5e4d
 
   deploy-frontend:
     runs-on: ubuntu-latest
@@ -87,6 +90,7 @@ jobs:
           
       - name: Build Frontend
         run: |
+          cp .env.production .env
           npm install
           CI=false npm run build
            
