@@ -43,6 +43,9 @@
 - [x] Corrigir bugs de tipagem no shared-types (Propriedade `cor`).
 - [x] Adaptar Módulo Financeiro para Temas Light/Dark.
 - [x] Implementar tags numéricas minimalistas no Grid.
+- [x] Implementar Filtro de Busca (ID / Embarcação).
+- [x] Implementar Filtro de Status (Pipeline FEL completo).
+- [x] Implementar Filtro de Tipo de Obra (Código - Descrição).
 - [ ] Implementar a lógica de Upsert completa no Integrator.
 
 ## 🚀 Melhorias de DevOps

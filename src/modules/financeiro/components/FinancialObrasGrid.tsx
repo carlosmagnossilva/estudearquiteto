@@ -31,6 +31,9 @@ export interface IFinanceiroObraLocal {
 }
 
 const FinancialObrasGrid: React.FC = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [statusFilter, setStatusFilter] = React.useState("Todos os Status");
+  const [typeFilter, setTypeFilter] = React.useState("Todos os Tipos");
   const { data, loading } = useBff<IBffResponse<IFinanceiroObraLocal>>("/bff/financeiro/obras");
   const dragScroll = useDragScroll();
 
@@ -60,6 +63,20 @@ const FinancialObrasGrid: React.FC = () => {
     { id: 37, id_parada: 37, embarcacao_nome: "P. Badejo", statusFinanceiro: "FEL-4", tags: [{tag: "101", descricao: "Parada Especial", cor: "#00B0F0"}], realizadoBRL: 10.6, outlookBRL: 16.2, percRE: 65, percEM: 32, percCO: 5, percES: 50, percNC: 13, condicao: "Molhado", inicio: "2025-10-30", termino: "2025-12-10", duracaoTotal: 41, dataUltimaAtualizacao: "" }
   ];
 
+  const filteredObras = obras.filter(obra => {
+    const term = searchTerm.toLowerCase();
+    const matchesSearch = obra.id.toString().includes(term) || 
+                         obra.embarcacao_nome.toLowerCase().includes(term);
+    
+    const matchesStatus = statusFilter === "Todos os Status" || 
+                         obra.statusFinanceiro === statusFilter;
+
+    const matchesType = typeFilter === "Todos os Tipos" || 
+                       obra.tags.some(t => `${t.tag} - ${t.descricao}` === typeFilter);
+
+    return matchesSearch && matchesStatus && matchesType;
+  });
+
   return (
     <div className="flex-1 flex flex-col min-h-0 overflow-hidden bg-transparent">
       {/* 🛠️ Barra de Ferramentas / Filtros */}
@@ -69,19 +86,46 @@ const FinancialObrasGrid: React.FC = () => {
               <input 
                 type="text" 
                 placeholder="Buscar Obra..." 
-                className="w-full sm:w-64 pl-10 pr-4 py-2.5 bg-white/5 border border-[var(--border-mini)] rounded-xl text-sm text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 placeholder:text-[var(--text-muted)] transition-all"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full sm:w-64 pl-10 pr-10 py-2.5 bg-white/5 border border-[var(--border-mini)] rounded-xl text-sm text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 placeholder:text-[var(--text-muted)] transition-all"
               />
               <div className="absolute left-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] group-focus-within:text-[var(--accent)] transition-colors">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
               </div>
+              {searchTerm && (
+                <button 
+                  onClick={() => setSearchTerm("")}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--text-muted)] hover:text-[var(--text-main)] transition-colors"
+                >
+                  ✕
+                </button>
+              )}
             </div>
-            <select className="bg-white/5 border border-[var(--border-mini)] rounded-xl px-4 py-2 text-sm text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 min-w-[120px] transition-all">
-              <option className="bg-[var(--sidebar-bg)]">Status</option>
+            <select 
+              value={statusFilter}
+              onChange={(e) => setStatusFilter(e.target.value)}
+              className="bg-white/5 border border-[var(--border-mini)] rounded-xl px-4 py-2 text-sm text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 min-w-[150px] transition-all cursor-pointer"
+            >
+              <option className="bg-[var(--sidebar-bg)]">Todos os Status</option>
               <option className="bg-[var(--sidebar-bg)]">FEL-1</option>
+              <option className="bg-[var(--sidebar-bg)]">FEL-2</option>
+              <option className="bg-[var(--sidebar-bg)]">FEL-3</option>
+              <option className="bg-[var(--sidebar-bg)]">FEL-4</option>
               <option className="bg-[var(--sidebar-bg)]">EXEC</option>
+              <option className="bg-[var(--sidebar-bg)]">FECH</option>
             </select>
-            <select className="bg-white/5 border border-[var(--border-mini)] rounded-xl px-4 py-2 text-sm text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 min-w-[120px] transition-all">
-              <option className="bg-[var(--sidebar-bg)]">Tipo</option>
+            <select 
+              value={typeFilter}
+              onChange={(e) => setTypeFilter(e.target.value)}
+              className="bg-white/5 border border-[var(--border-mini)] rounded-xl px-4 py-2 text-sm text-[var(--text-main)] focus:outline-none focus:ring-2 focus:ring-[var(--accent)]/30 min-w-[220px] transition-all cursor-pointer"
+            >
+              <option className="bg-[var(--sidebar-bg)]">Todos os Tipos</option>
+              <option className="bg-[var(--sidebar-bg)]">100 - Mobilização Contratual</option>
+              <option className="bg-[var(--sidebar-bg)]">101 - Parada Especial</option>
+              <option className="bg-[var(--sidebar-bg)]">102 - Parada Intermediária</option>
+              <option className="bg-[var(--sidebar-bg)]">103 - Parada Programada</option>
+              <option className="bg-[var(--sidebar-bg)]">301 - Parada Emergencial</option>
             </select>
             <button className="flex items-center gap-2 bg-white/5 border border-[var(--border-mini)] rounded-xl px-4 py-2 text-sm text-[var(--text-main)] hover:bg-white/10 transition-all font-bold">
                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="2" y1="14" x2="6" y2="14"/><line x1="10" y1="8" x2="14" y2="8"/><line x1="18" y1="16" x2="22" y2="16"/></svg>
@@ -111,7 +155,7 @@ const FinancialObrasGrid: React.FC = () => {
               <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest first:rounded-tl-2xl transition-colors duration-1000">ID</th>
               <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Embarcação</th>
               <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Status</th>
-              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Tags (Obra)</th>
+              <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest transition-colors duration-1000">Tipo de Obra</th>
               <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-right transition-colors duration-1000">Realizado BRL</th>
               <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-right transition-colors duration-1000">Outlook BRL</th>
               <th className="bg-[var(--bg-header-solid)] px-6 py-5 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest text-center transition-colors duration-1000">RE</th>
@@ -126,7 +170,7 @@ const FinancialObrasGrid: React.FC = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-[var(--border-mini)]">
-            {obras.map((row) => (
+            {filteredObras.map((row) => (
               <tr key={row.id} className="group hover:bg-[var(--hover-bg)] transition-all cursor-default">
                 <td className="px-6 py-5 text-sm text-[var(--text-dim)] group-hover:text-[var(--text-main)] font-mono">{row.id}</td>
                 <td className="px-6 py-5 text-[15px] text-[var(--text-main)] font-bold tracking-tight">{row.embarcacao_nome}</td>

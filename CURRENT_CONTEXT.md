@@ -12,6 +12,7 @@
 ## 🎯 Foco Atual
 - ✅ Refinamento de fidelidade visual e tokens de design (Commit: `78d53ab`).
 - ✅ Migração total para o esquema `hub_frontend` (Queries, Scripts e Banco).
+- ✅ Filtros Gerenciais (Busca Dual, Pipeline FEL e Tipo de Obra com Código).
 - ✅ Estabilização do Módulo Financeiro (Grid numérico, datas BR e temas Light/Dark).
 - ✅ Unificação de interfaces em `shared-types` e suporte a pnpm workspaces.
 - 🚧 Implementação da lógica de escrita (Upsert) no `hub-integrator` para processamento de snapshots.
