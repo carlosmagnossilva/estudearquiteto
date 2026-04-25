@@ -18,6 +18,12 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
   const authHeader = req.headers.authorization;
 
   if (!authHeader) {
+    // Bypass APENAS quando AUTH_BYPASS_DEV=true (variável local, nunca presente no Azure)
+    if (process.env.AUTH_BYPASS_DEV === "true") {
+      console.warn(`[Auth] DEV BYPASS - ${req.method} ${req.url} (sem token)`);
+      (req as any).user = { sub: "dev-bypass", name: "Dev User" };
+      return next();
+    }
     return res.status(401).json({ error: "No token provided" });
   }
 
