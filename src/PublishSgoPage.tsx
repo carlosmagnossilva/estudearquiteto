@@ -17,7 +17,7 @@ export default function PublishSgoPage() {
         account: accounts[0]
       });
 
-      const baseUrl = process.env.REACT_APP_BFF_URL || "http://localhost:4000";
+      const baseUrl = process.env.REACT_APP_BFF_URL || "";
       const resp = await fetch(`${baseUrl}/bff/paradas/publish`, {
         method: "POST",
         headers: {
