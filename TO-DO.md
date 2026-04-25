@@ -35,8 +35,8 @@
 
 ## 🔨 Hub-Integrator (Prioridade 2)
 - [x] Criar estrutura do serviço `hub-integrator` na pasta `hub-consumer`.
-- [/] Implementar lógica de consumo da fila do Service Bus (Base iniciada).
-- [/] Centralizar operações de escrita (INSERT/UPDATE) no banco de dados (Lógica de Upsert inicial implementada).
+- [x] Implementar lógica de consumo da fila do Service Bus (Base iniciada).
+- [x] Centralizar operações de escrita (INSERT/UPDATE) no banco de dados (Lógica de Upsert com MERGE implementada).
 
 ## ⚡ Backend & Frontend Sync
 - [x] Unificar consultas no esquema `hub_frontend` (Core e Scripts).
@@ -51,7 +51,7 @@
 - [x] Refatorar arquitetura do módulo (Elevação de estado e constantes)
 - [x] Implementar Filtro de Status (Pipeline FEL completo).
 - [x] Implementar Filtro de Tipo de Obra (Código - Descrição).
-- [ ] Implementar a lógica de Upsert completa no Integrator.
+- [x] Implementar a lógica de Upsert completa no Integrator.
 
 ## 🚀 Melhorias de DevOps
 - [x] Configurar `pnpm-workspace.yaml` para suporte nativo a monorepo.

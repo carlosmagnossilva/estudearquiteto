@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 import { useIsAuthenticated, useMsal } from "@azure/msal-react";
 
 import logoOPC from "./assets/logo.png";
@@ -7,6 +8,7 @@ import LoginPage from "./LoginPage";
 import CapexDashboard from "./CapexDashboard";
 import IntegrationSimulationsPage from "./IntegrationSimulationsPage";
 import FinanceiroModule from "./modules/financeiro/FinanceiroModule";
+import PublishSgoPage from "./PublishSgoPage";
 
 import { DataStatusBadge } from "./components/DataStatusBadge";
 import { UpdateList } from "./components/UpdateList";
@@ -24,10 +26,11 @@ type NavTab = typeof NAV_TABS[number];
 
 export default function App() {
   const [updatesTab, setUpdatesTab] = useState("geral");
-  const [page, setPage] = useState<"home" | "simulations" | "financeiro">("home");
+  const [page, setPage] = useState<"home" | "simulations" | "financeiro" | "setup">("home");
   const [activeTab, setActiveTab] = useState<NavTab>("Visão Geral");
   const [pinned, setPinned] = useState(false);
   const [dataSource, setDataSource] = useState<string | null>(null);
+  const [globalToast, setGlobalToast] = useState<{ message: string; type: "success" | "info" } | null>(null);
 
   const { instance } = useMsal();
   const isAuthenticated = useIsAuthenticated();
@@ -50,7 +53,7 @@ export default function App() {
       } else {
         setIsSidebarOpen(true);
       }
-      
+
       if (width < 1280) {
         setIsNotificationsOpen(false);
       } else {
@@ -65,10 +68,41 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Escuta silenciosa de Sockets para notificações do SGO
+  useEffect(() => {
+    const baseUrl = process.env.REACT_APP_BFF_URL || "";
+    // Se não houver URL configurada, assume localhost:5001 para evitar bater no servidor do React (3000)
+    const socketUrl = baseUrl ? baseUrl.replace(":4000", ":5001") : "http://localhost:5001";
+    const socket = io(socketUrl, { transports: ["websocket", "polling"] });
+
+    socket.on("sgo_sync_completed", (data: any) => {
+      setGlobalToast({ message: data.message, type: "success" });
+      setTimeout(() => setGlobalToast(null), 10000);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   if (!isAuthenticated && !isBypass) return <LoginPage />;
 
   return (
     <div className="relative h-screen w-full overflow-hidden font-[var(--font-inter)] bg-[var(--bg-app)] transition-colors duration-1000" data-theme={theme}>
+      {/* NOTIFICAÇÃO GLOBAL FLUTUANTE (Camada superior) */}
+      {globalToast && (
+        <div className="fixed top-8 left-1/2 -translate-x-1/2 z-[200] animate-slide-down">
+          <div className="bg-[#003D5B] text-white px-8 py-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-[var(--accent)]/30 flex items-center gap-5 backdrop-blur-2xl">
+            <div className="w-12 h-12 rounded-2xl bg-[var(--accent)]/10 flex items-center justify-center border border-[var(--accent)]/20 shadow-inner shadow-black/20">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-6 h-6 text-[var(--accent)] animate-pulse"><polyline points="20 6 9 17 4 12" /></svg>
+            </div>
+            <div>
+              <p className="text-[var(--text-dim)] text-[11px] uppercase tracking-[2px] font-black opacity-60">Sistema SGO / Integrator</p>
+              <h4 className="text-[15px] font-bold text-white mt-1">{globalToast.message}</h4>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="relative z-10 flex h-full w-full text-[var(--text-main)]">
 
@@ -82,7 +116,7 @@ export default function App() {
 
         {/* BACKDROP FOR MOBILE (SIDEBAR) */}
         {isSidebarOpen && (
-          <div 
+          <div
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[65] lg:hidden animate-fade-in"
             onClick={() => setIsSidebarOpen(false)}
           />
@@ -90,7 +124,7 @@ export default function App() {
 
         {/* BACKDROP FOR MOBILE (NOTIFICATIONS) */}
         {isNotificationsOpen && !isFullScreen && (
-          <div 
+          <div
             className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[65] xl:hidden animate-fade-in"
             onClick={() => setIsNotificationsOpen(false)}
           />
@@ -131,32 +165,32 @@ export default function App() {
                 </button>
 
                 <button
-                className={`w-full flex items-center gap-4 py-3 rounded-xl transition-all duration-300 ${isSidebarOpen ? "px-4" : "justify-center"} ${page === "financeiro" ? "bg-[var(--accent)] text-black shadow-lg shadow-[var(--accent)]/20" : "text-[var(--text-nav-dim)] hover:bg-white/5 hover:text-[var(--text-nav)]"}`}
-                onClick={() => { setPage("financeiro"); if (!isSidebarOpen) setIsSidebarOpen(true); }}
-                title="Financeiro"
-              >
-                <IconMoney className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Financeiro</span>}
-              </button>
+                  className={`w-full flex items-center gap-4 py-3 rounded-xl transition-all duration-300 ${isSidebarOpen ? "px-4" : "justify-center"} ${page === "financeiro" ? "bg-[var(--accent)] text-black shadow-lg shadow-[var(--accent)]/20" : "text-[var(--text-nav-dim)] hover:bg-white/5 hover:text-[var(--text-nav)]"}`}
+                  onClick={() => { setPage("financeiro"); if (!isSidebarOpen) setIsSidebarOpen(true); }}
+                  title="Financeiro"
+                >
+                  <IconMoney className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Financeiro</span>}
+                </button>
 
-              <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/obras" title="Obras">
-                <IconGrid className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Obras</span>}
-              </a>
+                <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/obras" title="Obras">
+                  <IconGrid className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Obras</span>}
+                </a>
 
-              <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/gmuds" title="GMUDs">
-                <IconDocEdit className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">GMUDs</span>}
-              </a>
+                <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/gmuds" title="GMUDs">
+                  <IconDocEdit className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">GMUDs</span>}
+                </a>
 
-              <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/equipes" title="Equipes">
-                <IconUsers className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Equipes</span>}
-              </a>
+                <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/equipes" title="Equipes">
+                  <IconUsers className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Equipes</span>}
+                </a>
 
-              <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/embarcacoes" title="Embarcações">
-                <IconBoat className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Embarcações</span>}
-              </a>
+                <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/embarcacoes" title="Embarcações">
+                  <IconBoat className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Embarcações</span>}
+                </a>
 
-              <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/relatorios" title="Relatórios">
-                <IconDoc className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Relatórios</span>}
-              </a>
+                <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/relatorios" title="Relatórios">
+                  <IconDoc className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Relatórios</span>}
+                </a>
 
                 <div className={`h-px bg-[var(--border-nav)] my-6 opacity-50 ${isSidebarOpen ? "mx-4" : "mx-2"}`} />
 
@@ -228,7 +262,7 @@ export default function App() {
                 <div className="flex items-center gap-2">
                   <div className="h-6 w-px bg-[var(--border-mini)] mx-2 hidden sm:block opacity-50"></div>
                   <h1 className="text-[17px] font-bold text-[var(--text-main)] tracking-tight">
-                    {page === "home" ? "Capex Dashboard" : page === "financeiro" ? "Financeiro" : "Simulações"}
+                    {page === "home" ? "Capex Dashboard" : page === "financeiro" ? "Financeiro" : page === "setup" ? "Setup / Integrações" : "Simulações"}
                   </h1>
                 </div>
               </div>
@@ -247,7 +281,7 @@ export default function App() {
                   <button className="hover:text-[var(--text-nav)] transition-colors">A-</button>
                   <button className="hover:text-[var(--text-nav)] transition-colors">A+</button>
                 </div>
-                <button 
+                <button
                   className="hover:text-[var(--text-nav)] text-[var(--text-nav-dim)] hidden sm:block transition-all hover:scale-110"
                   onClick={() => setIsPendenciasOpen(true)}
                   title="Pendências"
@@ -261,10 +295,17 @@ export default function App() {
                   <IconBell className="w-5 h-5" />
                   <span className="absolute -top-1 -right-1 bg-[#f87171] text-white text-[9px] w-3.5 h-3.5 flex items-center justify-center rounded-full border-2 border-[var(--sidebar-bg)]">4</span>
                 </button>
+                <button
+                  className={`relative hover:scale-110 transition-transform ${page === "setup" ? "text-[var(--accent)]" : ""}`}
+                  onClick={() => setPage("setup")}
+                  title="Setup / Integrações"
+                >
+                  <IconGear className="w-5 h-5" />
+                </button>
                 <button className="relative hover:scale-110 transition-transform">
                   <IconUser className="w-5 h-5" />
                 </button>
-                <button 
+                <button
                   className="hover:text-[var(--text-nav)] text-lg hidden sm:block transition-colors"
                   onClick={() => setIsFullScreen(true)}
                   title="Modo Cinema"
@@ -337,15 +378,19 @@ export default function App() {
                   </div>
                 </div>
               </div>
-            ) : (
+            ) : page === "financeiro" ? (
               <FinanceiroModule />
+            ) : page === "setup" ? (
+              <PublishSgoPage />
+            ) : (
+              <IntegrationSimulationsPage />
             )}
           </div>
         </main>
 
         {/* RIGHT PANEL (Notifications) */}
         {isNotificationsOpen && !isFullScreen && (
-          <aside 
+          <aside
             id="notification-panel"
             className={`
               print:hidden no-print
@@ -386,7 +431,7 @@ export default function App() {
         )}
 
         {isFullScreen && (
-          <button 
+          <button
             className="fixed top-4 right-4 z-[100] w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center backdrop-blur-md border border-white/20 transition-all hover:scale-110"
             onClick={() => setIsFullScreen(false)}
             title="Sair do Modo Cinema"

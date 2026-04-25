@@ -6,7 +6,7 @@ export default function PublishSgoPage() {
   const [status, setStatus] = useState<{ ok: boolean; message: string; data?: any } | null>(null);
   const { instance, accounts } = useMsal();
 
-  async function onPublish() {
+  async function onPublish(customPayload?: any) {
     if (accounts.length === 0) return;
     setLoading(true);
     setStatus(null);
@@ -17,12 +17,16 @@ export default function PublishSgoPage() {
         account: accounts[0]
       });
 
-      const resp = await fetch("/bff/paradas/publish", {
+      const baseUrl = process.env.REACT_APP_BFF_URL || "http://localhost:4000";
+      const resp = await fetch(`${baseUrl}/bff/paradas/publish`, {
         method: "POST",
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${tokenResponse.accessToken}`,
         },
+        body: customPayload ? JSON.stringify({ payload: customPayload }) : undefined
       });
+      
       const json = await resp.json();
 
       if (!resp.ok || !json.ok) {
@@ -31,7 +35,7 @@ export default function PublishSgoPage() {
 
       setStatus({
         ok: true,
-        message: "Publicado com sucesso na fila SGO.",
+        message: customPayload ? "Carga CUSTOMIZADA publicada com sucesso." : "Carga REAL publicada com sucesso.",
         data: json
       });
     } catch (e: any) {
@@ -41,47 +45,78 @@ export default function PublishSgoPage() {
     }
   }
 
+  const triggerCustom = () => {
+    const payload = [
+      { parada_id: 501, embarcacao_id: 1, fel_codigo: "FEL-3", realizado_brl_m: 42.5, outlook_brl_m: 42.5, nc_perc: 95, es_perc: 2, co_perc: 1, em_perc: 1, re_perc: 1, condicao: "Seco", inicio_rp: "2026-05-01", termino_rp: "2026-08-15", dur_rp: 106 },
+      { parada_id: 502, embarcacao_id: 2, fel_codigo: "FEL-4", realizado_brl_m: 12.8, outlook_brl_m: 15.2, nc_perc: 80, es_perc: 5, co_perc: 5, em_perc: 5, re_perc: 5, condicao: "Molhado", inicio_rp: "2026-06-10", termino_rp: "2026-07-10", dur_rp: 30 }
+    ];
+    onPublish(payload);
+  };
+
   return (
-    <div style={{ padding: 16 }}>
-      <h2 style={{ marginTop: 0 }}>Publicar paradas na fila SGO</h2>
+    <div className="flex-1 w-full relative lg:overflow-hidden flex flex-col h-full min-h-0 animate-fade-in text-[var(--text-main)]">
+      <div className="flex-1 overflow-y-auto p-6 md:p-12 max-w-4xl mx-auto w-full">
+        <h2 className="text-[28px] font-bold text-white mb-2">Setup / Integrações</h2>
+        <p className="text-[var(--text-dim)] mb-8 text-[15px]">
+          Simulação de Carga do Sistema SGO para o Hub-Integrator via Azure Service Bus.
+        </p>
 
-      <p style={{ maxWidth: 700 }}>
-        Este botão chama o BFF para publicar o snapshot atual de <code>/bff/paradas</code> na fila
-        configurada como SGO no Azure Service Bus.
-      </p>
+        <div className="bg-[var(--bg-card)] backdrop-blur-xl border border-[var(--border-card)] p-8 rounded-3xl shadow-2xl flex flex-col items-center justify-center min-h-[350px]">
+          <div className="w-16 h-16 rounded-2xl bg-blue-500/10 flex items-center justify-center border border-blue-500/20 mb-6 shadow-[0_0_20px_rgba(59,130,246,0.1)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-blue-400">
+              <path d="M21 12V7H5a2 2 0 0 1 0-4h14v4" />
+              <path d="M3 5v14a2 2 0 0 0 2 2h16v-5" />
+              <path d="M18 12h-4" />
+            </svg>
+          </div>
 
-      <button
-        type="button"
-        onClick={onPublish}
-        disabled={loading}
-        style={{
-          padding: "10px 14px",
-          borderRadius: 10,
-          border: 0,
-          cursor: loading ? "not-allowed" : "pointer"
-        }}
-      >
-        {loading ? "Publicando..." : "Publicar agora"}
-      </button>
+          <h3 className="text-xl font-bold text-white mb-3">Sincronização SGO</h3>
+          <p className="text-center text-[var(--text-dim)] max-w-md mb-8 text-[14px]">
+            Este processo captura o estado simulado das obras e o publica na fila de integração. O Hub-Integrator consumirá essa fila para atualizar o banco de dados.
+          </p>
 
-      {status && (
-        <div
-          style={{
-            marginTop: 14,
-            padding: 12,
-            borderRadius: 10,
-            border: "1px solid #CFE1E9",
-            background: status.ok ? "#F0FDF4" : "#FEF2F2"
-          }}
-        >
-          <div style={{ fontWeight: 800 }}>{status.message}</div>
-          {status.ok && (
-            <pre style={{ margin: "8px 0 0", whiteSpace: "pre-wrap" }}>
-              {JSON.stringify(status.data, null, 2)}
-            </pre>
-          )}
+          <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+            <button
+              type="button"
+              onClick={() => onPublish()}
+              disabled={loading}
+              className="px-8 py-3.5 rounded-xl font-bold text-[13px] bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-all uppercase tracking-widest flex items-center gap-3"
+            >
+              Publicar Real
+            </button>
+            <button
+              type="button"
+              onClick={triggerCustom}
+              disabled={loading}
+              className="px-8 py-3.5 rounded-xl font-bold text-[13px] bg-[var(--accent)] text-black hover:brightness-110 transition-all uppercase tracking-widest flex items-center gap-3 shadow-[0_0_20px_rgba(56,189,248,0.3)]"
+            >
+              Publicar Custom
+            </button>
+          </div>
         </div>
-      )}
+
+        {status && (
+          <div className={`mt-6 p-6 rounded-2xl border backdrop-blur-xl animate-fade-in ${status.ok ? "bg-green-500/10 border-green-500/20" : "bg-red-500/10 border-red-500/20"}`}>
+            <div className="flex items-center gap-3 mb-3">
+              {status.ok ? (
+                <div className="w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-3 h-3 text-green-400"><polyline points="20 6 9 17 4 12" /></svg>
+                </div>
+              ) : (
+                <div className="w-6 h-6 rounded-full bg-red-500/20 flex items-center justify-center">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" className="w-3 h-3 text-red-400"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
+                </div>
+              )}
+              <h4 className={`font-bold ${status.ok ? "text-green-400" : "text-red-400"}`}>{status.message}</h4>
+            </div>
+            {status.ok && status.data && (
+              <pre className="bg-black/30 p-4 rounded-xl text-[12px] text-white/70 overflow-x-auto border border-black/50">
+                {JSON.stringify(status.data, null, 2)}
+              </pre>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

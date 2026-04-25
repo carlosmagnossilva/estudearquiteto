@@ -13,7 +13,7 @@ async function readPdfs() {
       const data = await pdf(dataBuffer);
       console.log('--- FILE:', file, '---');
       // Extrair informações mais relevantes: remover espaços em branco e quebras extras
-
+      // alterações de pdf
       const txt = data.text.replace(/\s+/g, ' ').trim();
       console.log(txt.substring(0, 1500));
     } catch (e) {
