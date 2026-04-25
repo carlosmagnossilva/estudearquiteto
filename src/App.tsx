@@ -71,8 +71,9 @@ export default function App() {
   // Escuta silenciosa de Sockets para notificações do SGO
   useEffect(() => {
     const baseUrl = process.env.REACT_APP_BFF_URL || "";
-    // Se não houver URL configurada, assume localhost:5001 para evitar bater no servidor do React (3000)
-    const socketUrl = baseUrl ? baseUrl.replace(":4000", ":5001") : "http://localhost:5001";
+    const prodCoreUrl = process.env.REACT_APP_CORE_URL;
+    // Prioriza URL explícita do Core (Produção), senão tenta adivinhar ou usa localhost
+    const socketUrl = prodCoreUrl || (baseUrl ? baseUrl.replace(":4000", ":5001") : "http://localhost:5001");
     const socket = io(socketUrl, { transports: ["websocket", "polling"] });
 
     socket.on("sgo_sync_completed", (data: any) => {
