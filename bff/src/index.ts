@@ -2,10 +2,17 @@ import express from "express";
 import cors from "cors";
 import axios from "axios";
 import "dotenv/config";
+import { createServer } from "http";
+import { Server } from "socket.io";
 import { authMiddleware } from "./authMiddleware.js";
 
 const app = express();
 const port = process.env.PORT_BFF || 4000;
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: { origin: "*", methods: ["GET", "POST"] }
+});
+
 const CORE_URL = process.env.CORE_API_URL || "http://localhost:5001";
 
 app.use(cors());
@@ -141,11 +148,26 @@ protectedRouter.get("/financeiro/indicadores", async (req, res) => {
   }
 });
 
+// Endpoint para o Integrator avisar o BFF sobre sincronizações concluídas
+app.post("/bff/internal/notify-sync", (req, res) => {
+  const { count } = req.body;
+  console.log(`[BFF] Sinalizando frontend via Socket: ${count} registros integrados.`);
+  io.emit("sgo_sync_completed", {
+    message: `Integração SGO concluída: ${count} registros processados.`,
+    timestamp: new Date().toISOString()
+  });
+  res.json({ ok: true });
+});
+
 app.use("/bff", protectedRouter);
 
 app.get("/health", (req, res) => res.json({ status: "ok", service: "bff" }));
 
-app.listen(port, () => {
-  console.log(`[BFF] API Gateway rodando na porta ${port} [SECURE] v2`);
+io.on("connection", (socket) => {
+  console.log(`[BFF] Socket conectado: ${socket.id}`);
+});
+
+httpServer.listen(port, () => {
+  console.log(`[BFF] API Gateway rodando na porta ${port} [SECURE + SOCKETS] v3`);
   console.log(`[BFF] Conectado ao Core em: ${CORE_URL}`);
 });

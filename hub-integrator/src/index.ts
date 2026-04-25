@@ -107,16 +107,17 @@ async function processMessage(messageBody: any) {
   if (messageBody.acao === "snapshot_paradas") {
     await upsertParadas(messageBody.payload);
     
-    // Notificar o Core para atualizar o frontend via Socket
-    const coreUrl = process.env.CORE_API_URL || "http://localhost:5001";
+    // 4. Sinalizar que a sincronização terminou enviando POST para o BFF
+    const bffUrl = process.env.BFF_API_URL || "http://localhost:4000";
     try {
-      await fetch(`${coreUrl}/core/paradas/notify-sync`, {
+      await fetch(`${bffUrl}/bff/internal/notify-sync`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ count: messageBody.payload?.length || 0 })
       });
+      console.log("[INTEGRATOR] BFF notificado com sucesso.");
     } catch (e: any) {
-      console.warn(`[INTEGRATOR] Falha ao notificar Core: ${e.message}`);
+      console.error("[INTEGRATOR] Falha ao notificar BFF:", e.message);
     }
   }
 }

@@ -1,18 +1,12 @@
 import express from "express";
 import cors from "cors";
 import "dotenv/config";
-import { createServer } from "http";
-import { Server } from "socket.io";
 import { ServiceBusClient, ServiceBusAdministrationClient } from "@azure/service-bus";
 import { queryParadas, queryUpdates, queryCapex, queryObrasFinanceiras, queryFinancialIndicadores, closePool } from "./database.js";
 import { authMiddleware } from "./authMiddleware.js";
 
 const app = express();
 const port = process.env.PORT_HUBCORE_SERVICES || 5001;
-const httpServer = createServer(app);
-const io = new Server(httpServer, {
-  cors: { origin: "*", methods: ["GET", "POST"] }
-});
 
 const SB_CONN = process.env.SERVICE_BUS_CONNECTION_STRING;
 // Fallback para lista de filas se não houver variável definida
@@ -39,16 +33,7 @@ async function ensureQueuesExist() {
   }
 }
 
-// Endpoint de sinalização interna (Integrator -> Core)
-app.post("/core/paradas/notify-sync", (req, res) => {
-  const { count } = req.body;
-  console.log(`[CORE] Sinalizando frontend: ${count} registros integrados.`);
-  io.emit("sgo_sync_completed", {
-    message: `Integração SGO concluída: ${count} registros processados.`,
-    timestamp: new Date().toISOString()
-  });
-  res.json({ ok: true });
-});
+
 
 const serviceRouter = express.Router();
 serviceRouter.use(authMiddleware);
@@ -140,14 +125,8 @@ serviceRouter.get("/financeiro/indicadores", async (req, res) => {
 });
 
 app.use("/core", serviceRouter);
-app.get("/health", (req, res) => res.json({ status: "ok", mode: "replica-sockets" }));
-
-io.on("connection", (socket) => {
-  console.log(`[CORE] Socket conectado: ${socket.id}`);
-});
-
-httpServer.listen(port, () => {
-  console.log(`[CORE] Hub Core rodando na porta ${port} [REPLICA + SOCKETS]`);
+app.listen(port, () => {
+  console.log(`[CORE] Hub Core rodando na porta ${port} [REPLICA ONLY]`);
   ensureQueuesExist();
 });
 

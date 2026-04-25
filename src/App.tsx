@@ -70,7 +70,7 @@ export default function App() {
 
   // Escuta silenciosa de Sockets para notificações do SGO
   useEffect(() => {
-    const socketUrl = process.env.REACT_APP_CORE_URL || "";
+    const socketUrl = process.env.REACT_APP_BFF_URL || "";
     const socket = io(socketUrl, { transports: ["websocket", "polling"] });
 
     socket.on("sgo_sync_completed", (data: any) => {
