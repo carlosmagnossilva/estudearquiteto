@@ -232,6 +232,16 @@ export async function queryFinancialIndicadores(ano: number = 2025) {
   }
 }
 
+export async function queryLastSync(): Promise<string | null> {
+  try {
+    const pool = await getPool();
+    const result = await pool.request().query(`SELECT MAX(atualizado_em) as lastSync FROM hub_frontend.fato_parada`);
+    return result.recordset[0]?.lastSync?.toISOString() || null;
+  } catch (err: any) {
+    return null;
+  }
+}
+
 export async function closePool() {
   if (poolPromise) {
     const pool = await poolPromise;

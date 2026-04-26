@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { ServiceBusClient, ServiceBusAdministrationClient } from "@azure/service-bus";
-import { queryParadas, queryUpdates, queryCapex, queryObrasFinanceiras, queryFinancialIndicadores, closePool } from "./database.js";
+import { queryParadas, queryUpdates, queryCapex, queryObrasFinanceiras, queryFinancialIndicadores, queryLastSync, closePool } from "./database.js";
 import { authMiddleware } from "./authMiddleware.js";
 
 const app = express();
@@ -34,6 +34,12 @@ async function ensureQueuesExist() {
 }
 
 
+
+// Rota interna leve para SSE do BFF verificar última sincronização
+app.get("/core/internal/sync-status", async (_req, res) => {
+  const lastSync = await queryLastSync();
+  res.json({ lastSync });
+});
 
 const serviceRouter = express.Router();
 serviceRouter.use(authMiddleware);
@@ -125,6 +131,7 @@ serviceRouter.get("/financeiro/indicadores", async (req, res) => {
 });
 
 app.use("/core", serviceRouter);
+app.get("/health", (_req, res) => res.json({ status: "ok" }));
 app.listen(port, () => {
   console.log(`[CORE] Hub Core rodando na porta ${port} [REPLICA ONLY]`);
   ensureQueuesExist();

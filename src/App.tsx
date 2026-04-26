@@ -68,19 +68,20 @@ export default function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Escuta silenciosa de Sockets para notificações do SGO
+  // SSE - Escuta notificações de sincronização do SGO
   useEffect(() => {
-    const socketUrl = process.env.REACT_APP_BFF_URL || "";
-    const socket = io(socketUrl, { transports: ["websocket", "polling"] });
+    const bffUrl = process.env.REACT_APP_BFF_URL || "";
+    const evtSource = new EventSource(`${bffUrl}/events`);
 
-    socket.on("sgo_sync_completed", (data: any) => {
-      setGlobalToast({ message: data.message, type: "success" });
-      setTimeout(() => setGlobalToast(null), 10000);
-    });
-
-    return () => {
-      socket.disconnect();
+    evtSource.onmessage = (event) => {
+      try {
+        const data = JSON.parse(event.data);
+        setGlobalToast({ message: data.message, type: "success" });
+        setTimeout(() => setGlobalToast(null), 10000);
+      } catch { /* ignorar */ }
     };
+
+    return () => evtSource.close();
   }, []);
 
   if (!isAuthenticated && !isBypass) return <LoginPage />;

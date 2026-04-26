@@ -107,18 +107,6 @@ async function processMessage(messageBody: any) {
   if (messageBody.acao === "snapshot_paradas") {
     await upsertParadas(messageBody.payload);
     
-    // 4. Sinalizar que a sincronização terminou enviando POST para o BFF
-    const bffUrl = process.env.BFF_API_URL || "http://localhost:4000";
-    try {
-      await fetch(`${bffUrl}/internal/notify-sync`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ count: messageBody.payload?.length || 0 })
-      });
-      console.log("[INTEGRATOR] BFF notificado com sucesso.");
-    } catch (e: any) {
-      console.error("[INTEGRATOR] Falha ao notificar BFF:", e.message);
-    }
   }
 }
 
