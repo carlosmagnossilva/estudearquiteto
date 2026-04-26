@@ -18,8 +18,9 @@ import { PendenciasModal } from "./components/PendenciasModal";
 import {
   IconHome, IconDoc, IconBell, IconCheck, IconGear,
   IconUser, IconExit, IconUsers, IconBoat, IconGrid, IconMoney,
-  IconDocEdit
+  IconDocEdit, IconX
 } from "./components/icons";
+import { useResponsive } from "./hooks/useResponsive";
 
 const NAV_TABS = ["Visão Geral", "Obras em Andamento", "Obras Futuras", "Obras Finalizadas"] as const;
 type NavTab = typeof NAV_TABS[number];
@@ -43,30 +44,24 @@ export default function App() {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('dark');
 
-  // Controle de responsividade dinâmica (Resize)
+  const { isLessThanTablet, isLessThanDesktop } = useResponsive();
+
+  // Efeito para fechar painéis automaticamente ao cruzar breakpoints
   useEffect(() => {
-    const handleResize = () => {
-      const width = window.innerWidth;
-      // No mobile/tablet, fechamos por padrão para não obstruir
-      if (width < 1024) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
-      }
+    if (isLessThanTablet) {
+      setIsSidebarOpen(false);
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, [isLessThanTablet]);
 
-      if (width < 1280) {
-        setIsNotificationsOpen(false);
-      } else {
-        setIsNotificationsOpen(true);
-      }
-    };
-
-    // Executa uma vez no mount
-    handleResize();
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  useEffect(() => {
+    if (isLessThanDesktop) {
+      setIsNotificationsOpen(false);
+    } else {
+      setIsNotificationsOpen(true);
+    }
+  }, [isLessThanDesktop]);
 
   // SSE - Escuta notificações de sincronização do SGO
   useEffect(() => {
@@ -137,6 +132,14 @@ export default function App() {
             transition-all duration-300 transform overflow-visible
             ${isSidebarOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"}
           `}>
+            {/* MOBILE CLOSE BUTTON */}
+            <button
+              className="absolute top-4 right-4 p-2 bg-white/5 rounded-lg text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] lg:hidden"
+              onClick={() => setIsSidebarOpen(false)}
+            >
+              <IconX className="w-5 h-5" />
+            </button>
+
             {/* COLLAPSE/EXPAND BUTTON (High Fidelity) */}
             <button
               className="absolute -right-3 top-20 w-6 h-10 bg-[var(--sidebar-bg)] border border-[var(--border-nav)] rounded-lg hidden lg:flex items-center justify-center text-[var(--text-nav-dim)] shadow-sm z-50 hover:bg-black/5"
@@ -318,12 +321,12 @@ export default function App() {
           {/* CONTENT */}
           <div className="flex-1 p-0 lg:overflow-hidden overflow-y-auto flex flex-col min-h-0">
             {page === "home" ? (
-              <div className="flex-1 w-full relative lg:overflow-hidden flex flex-col h-full min-h-0">
-                <div className="relative z-10 flex-1 lg:overflow-hidden flex flex-col h-full min-h-0 animate-fade-in">
+              <div className="flex-1 w-full relative lg:overflow-hidden overflow-y-auto flex flex-col h-full min-h-0">
+                <div className="relative z-10 flex-1 lg:overflow-hidden overflow-y-auto flex flex-col h-full min-h-0 animate-fade-in">
                   {/* 🎯 4. TAB BAR & FILTERS (High Fidelity) */}
                   <header className="flex flex-col gap-4 mb-8 w-full shrink-0 relative z-30 no-print">
-                    <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
-                      <div className="flex bg-[var(--bg-card)] backdrop-blur-xl p-1.5 rounded-2xl border border-[var(--border-card)] shadow-xl overflow-x-auto no-scrollbar max-w-full">
+                    <div className="flex flex-row gap-3 items-center justify-between">
+                      <div className="flex-1 flex bg-[var(--bg-card)] backdrop-blur-xl p-1.5 rounded-2xl border border-[var(--border-card)] shadow-xl overflow-x-auto no-scrollbar">
                         {NAV_TABS.map((t) => (
                           <button
                             key={t}
@@ -335,31 +338,33 @@ export default function App() {
                           </button>
                         ))}
                       </div>
-                      <button
-                        type="button"
-                        className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-card)] backdrop-blur-xl border border-[var(--border-card)] text-[var(--text-main)] hover:bg-white/5 transition-all shadow-xl shrink-0"
-                        onClick={() => setPinned(!pinned)}
-                        title="Fixar/Soltar Hero"
-                      >
-                        <svg
-                          width="20"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          fill={pinned ? "currentColor" : "none"}
-                          stroke="currentColor"
-                          strokeWidth="2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          className={`transition-transform duration-300 ${pinned ? "rotate-45 text-[var(--accent)]" : "rotate-0"}`}
+                      {activeTab !== "Visão Geral" && (
+                        <button
+                          type="button"
+                          className="w-12 h-12 flex items-center justify-center rounded-2xl bg-[var(--bg-card)] backdrop-blur-xl border border-[var(--border-card)] text-[var(--text-main)] hover:bg-white/5 transition-all shadow-xl shrink-0"
+                          onClick={() => setPinned(!pinned)}
+                          title="Fixar/Soltar Hero"
                         >
-                          <line x1="12" y1="17" x2="12" y2="22" />
-                          <path d="M5 17h14v-2l-1.5-1.5V6a2 2 0 0 0-2-2H9.5a2 2 0 0 0-2 2v7.5L6 15v2z" />
-                        </svg>
-                      </button>
+                          <svg
+                            width="20"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            fill={pinned ? "currentColor" : "none"}
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            className={`transition-transform duration-300 ${pinned ? "rotate-45 text-[var(--accent)]" : "rotate-0"}`}
+                          >
+                            <line x1="12" y1="17" x2="12" y2="22" />
+                            <path d="M5 17h14v-2l-1.5-1.5V6a2 2 0 0 0-2-2H9.5a2 2 0 0 0-2 2v7.5L6 15v2z" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
                   </header>
 
-                  <div className="flex-1 overflow-hidden flex flex-col w-full h-full min-h-0">
+                  <div className="flex-1 lg:overflow-hidden overflow-y-auto flex flex-col w-full h-full min-h-0">
                     {activeTab === "Visão Geral" && (
                       <BackgroundImageTreatment src={parcelDosReisImg}
                         overlayOpacity={50}

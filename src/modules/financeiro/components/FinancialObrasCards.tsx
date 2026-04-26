@@ -2,6 +2,7 @@ import React from "react";
 import { IFinanceiroObraLocal } from "./FinancialObrasGrid";
 import { useDragScroll } from "../../../hooks/useDragScroll";
 import { FINANCIAL_STATUSES } from "../constants/financialConstants";
+import { useResponsive } from "../../../hooks/useResponsive";
 
 interface FinancialObrasCardsProps {
   data: IFinanceiroObraLocal[];
@@ -13,6 +14,9 @@ const FinancialObrasCards: React.FC<FinancialObrasCardsProps> = ({ data }) => {
   const [expandedIds, setExpandedIds] = React.useState<Set<number>>(new Set());
   const [openMenuStatus, setOpenMenuStatus] = React.useState<string | null>(null);
   const [columnSorts, setColumnSorts] = React.useState<Record<string, "date" | "value">>({});
+  
+  const { isMobile } = useResponsive();
+  const [activeMobileStatus, setActiveMobileStatus] = React.useState<typeof FINANCIAL_STATUSES[number]>(FINANCIAL_STATUSES[0]);
 
   const toggleCard = (id: number, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -106,13 +110,28 @@ const FinancialObrasCards: React.FC<FinancialObrasCardsProps> = ({ data }) => {
         </button>
       </div>
 
+      {/* 📱 Seletor de Colunas para Mobile */}
+      {isMobile && (
+        <div className="px-6 py-2 flex gap-2 overflow-x-auto no-scrollbar border-b border-white/5 bg-black/20">
+          {statuses.map(s => (
+            <button
+              key={s}
+              onClick={() => setActiveMobileStatus(s)}
+              className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeMobileStatus === s ? "bg-[var(--accent)] text-black shadow-lg shadow-[var(--accent)]/20" : "text-[var(--text-dim)] hover:text-[var(--text-main)] bg-white/5"}`}
+            >
+              {s} ({groupedObras[s]?.length || 0})
+            </button>
+          ))}
+        </div>
+      )}
+
       <div 
         {...dragScroll}
         className="flex-1 overflow-x-auto custom-scrollbar p-6 select-none cursor-grab active:cursor-grabbing"
       >
-        <div className="flex gap-6 min-w-max h-full">
-          {statuses.map(status => (
-            <div key={status} className="w-[320px] flex flex-col gap-4">
+        <div className={`flex gap-6 h-full ${isMobile ? "w-full" : "min-w-max"}`}>
+          {statuses.filter(s => !isMobile || s === activeMobileStatus).map(status => (
+            <div key={status} className={`${isMobile ? "w-full" : "w-[320px]"} flex flex-col gap-4`}>
               {/* Header da Coluna */}
               <div className="flex items-center justify-between px-2 shrink-0 relative">
                 <div className="flex items-center gap-2">

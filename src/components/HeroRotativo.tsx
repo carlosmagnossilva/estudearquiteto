@@ -83,7 +83,7 @@ export function HeroRotativo({ pinned, setPinned, activeTab, onSourceChange }: H
 
   return (
     <section
-      className="absolute inset-0 w-full h-full rounded-[32px] overflow-hidden shadow-2xl group pointer-events-auto glass-stroke"
+      className="relative w-full h-full rounded-[32px] overflow-y-auto overflow-x-hidden shadow-2xl group pointer-events-auto glass-stroke custom-scrollbar"
     >
       {/* Imagem de Fundo com leve Zoom para movimento */}
       <div
@@ -99,7 +99,7 @@ export function HeroRotativo({ pinned, setPinned, activeTab, onSourceChange }: H
       <div className="absolute inset-0 bg-gradient-to-t from-[#05111b] via-[#05111b]/40 to-transparent" />
       <div className="absolute inset-0 bg-gradient-to-r from-[#05111b]/60 via-transparent to-transparent" />
 
-      <div className="absolute inset-0 z-10 p-8 lg:p-12 pl-10 sm:pl-14 pb-8 flex flex-col justify-between animate-fade-in pt-14 lg:pt-16">
+      <div className="relative z-10 min-h-full p-8 lg:p-12 pl-10 sm:pl-14 pb-8 flex flex-col justify-between animate-fade-in pt-14 lg:pt-16">
         <div className="flex flex-col">
           <div className="flex flex-wrap gap-4 items-center mb-8">
             <div className="bg-black/40 backdrop-blur-xl text-[12px] text-white/80 font-bold px-4 py-2 rounded-lg border border-white/10 shadow-lg tracking-widest uppercase">
