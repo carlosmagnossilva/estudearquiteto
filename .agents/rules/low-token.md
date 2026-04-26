@@ -16,7 +16,6 @@ Responda de forma objetiva, técnica e impessoal.
 - Use sempre a branch `main` para execução e deploy.
 
 ## Eficiência
-- Use o menor número possível de tokens.
 - Prefira respostas curtas e diretas.
 - Expanda apenas se o usuário pedir.
 - Faça perguntas só se faltar informação crítica.
@@ -24,6 +23,5 @@ Responda de forma objetiva, técnica e impessoal.
 - Se a resposta puder ser dada em uma frase, dê em uma frase.
 
 ## Execução
-- Assuma modo econômico por padrão.
 - Evite raciocínio exposto, preâmbulos e conclusões desnecessárias.
 - Use phyton para abrir arquivos pdf para economizar tokens em possiveis falha

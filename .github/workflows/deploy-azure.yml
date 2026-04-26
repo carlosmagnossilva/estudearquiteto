@@ -74,7 +74,7 @@ jobs:
             --name hub-integrator-app \
             --resource-group ${{ env.RESOURCE_GROUP }} \
             --image ${{ env.ACR_NAME }}.azurecr.io/hub-integrator:${{ github.sha }} \
-            --set-env-vars "SERVICE_BUS_QUEUE_NAME=fila_sgo" "CORE_API_URL=https://hub-core-app.internal.blackwater-be256f74.eastus.azurecontainerapps.io" "BFF_API_URL=http://hub-bff-app.internal.blackwater-be256f74.eastus.azurecontainerapps.io" "AZURE_TENANT_ID=7a9dfddd-2ce9-4d8a-80ce-7ee6f58c8db9" "AZURE_CLIENT_ID=f09f4ab4-94d1-4e3f-b94b-f6ff812f5e4d"
+            --set-env-vars "SERVICE_BUS_QUEUE_NAME=fila_sgo" "CORE_API_URL=https://hub-core-app.internal.blackwater-be256f74.eastus.azurecontainerapps.io" "BFF_API_URL=https://hub-bff-app.internal.blackwater-be256f74.eastus.azurecontainerapps.io" "AZURE_TENANT_ID=7a9dfddd-2ce9-4d8a-80ce-7ee6f58c8db9" "AZURE_CLIENT_ID=f09f4ab4-94d1-4e3f-b94b-f6ff812f5e4d"
 
   deploy-frontend:
     runs-on: ubuntu-latest

@@ -149,7 +149,7 @@ protectedRouter.get("/financeiro/indicadores", async (req, res) => {
 });
 
 // Endpoint para o Integrator avisar o BFF sobre sincronizações concluídas
-app.post("/bff/internal/notify-sync", (req, res) => {
+app.post("/internal/notify-sync", (req, res) => {
   const { count } = req.body;
   console.log(`[BFF] Sinalizando frontend via Socket: ${count} registros integrados.`);
   io.emit("sgo_sync_completed", {

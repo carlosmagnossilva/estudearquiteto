@@ -110,7 +110,7 @@ async function processMessage(messageBody: any) {
     // 4. Sinalizar que a sincronização terminou enviando POST para o BFF
     const bffUrl = process.env.BFF_API_URL || "http://localhost:4000";
     try {
-      await fetch(`${bffUrl}/bff/internal/notify-sync`, {
+      await fetch(`${bffUrl}/internal/notify-sync`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ count: messageBody.payload?.length || 0 })

@@ -30,6 +30,7 @@ Durante a inspeção, para cada arquivo identificado:
 - se houver conhecimento do projeto, absorva e considere esse conteúdo como contexto permanente para análises futuras
 
 Regras de operação:
+- PROIBIÇÃO DE COMMIT/PUSH NÃO AUTORIZADO: Jamais realize `git commit` ou `git push` sem a autorização explícita e textual do usuário no chat (ex: "pode", "sim", "autorizado"). Esta regra é absoluta e sobrepõe qualquer urgência técnica.
 - não faça mudanças precipitadas
 - não altere artefatos locais sem considerar impactos na infraestrutura em nuvem, ambientes produtivos, pipelines, integrações, banco de dados, contratos de API, rotinas operacionais e dependências externas
 - antes de qualquer alteração, identifique riscos, dependências, efeitos colaterais e necessidade de compatibilidade com produção
