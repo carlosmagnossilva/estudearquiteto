@@ -52,6 +52,12 @@
 - [x] Implementar Filtro de Status (Pipeline FEL completo).
 - [x] Implementar Filtro de Tipo de Obra (Código - Descrição).
 - [x] Implementar a lógica de Upsert completa no Integrator.
+- [x] Implementar hook `useResponsive` para detecção centralizada de viewport.
+- [x] Implementar Skeleton Screens no Módulo Financeiro.
+- [x] Otimizar Sidebar (Drawer) e Kanban para Mobile.
+- [x] Implementar exibição condicional e responsiva da "Taxinha" (Pin).
+- [x] Corrigir scroll vertical na home em resoluções menores.
+- [x] Criar script de sumário de portas para desenvolvedores.
 
 ## 🚀 Melhorias de DevOps
 - [x] Configurar `pnpm-workspace.yaml` para suporte nativo a monorepo.

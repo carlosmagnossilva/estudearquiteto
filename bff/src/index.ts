@@ -91,6 +91,16 @@ protectedRouter.post("/paradas/publish", async (req, res) => {
   }
 });
 
+protectedRouter.post("/protheus/publish", async (req, res) => {
+  try {
+    const core = getCoreClient(req);
+    const response = await core.post(`/core/protheus/publish`, req.body);
+    res.json(response.data);
+  } catch (error: any) {
+    res.status(error.response?.status || 500).json({ ok: false, error: error.message });
+  }
+});
+
 protectedRouter.get("/updates", async (req, res) => {
   try {
     const core = getCoreClient(req);

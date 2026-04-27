@@ -9,8 +9,10 @@ const app = express();
 const port = process.env.PORT_HUBCORE_SERVICES || 5001;
 
 const SB_CONN = process.env.SERVICE_BUS_CONNECTION_STRING;
-// Fallback para lista de filas se não houver variável definida
+// Filas do SGO (dados técnicos) — replicado para múltiplas filas
 const SB_QUEUES = (process.env.SERVICE_BUS_QUEUES || "fila_sgo").split(",").map(q => q.trim());
+// Fila do Protheus (dados financeiros) — fila única dedicada
+const SB_QUEUE_PROTHEUS = process.env.SERVICE_BUS_QUEUE_PROTHEUS || "fila_protheus";
 
 app.use(cors({ origin: "*" }));
 app.use(express.json());
@@ -20,13 +22,22 @@ async function ensureQueuesExist() {
   if (!SB_CONN) return;
   try {
     const adminClient = new ServiceBusAdministrationClient(SB_CONN);
+
+    // Filas do SGO
     for (const queueName of SB_QUEUES) {
       if (queueName === "fila_sgo") continue; // Evita mexer na fila principal de produção
       const exists = await adminClient.queueExists(queueName);
       if (!exists) {
-        console.log(`[CORE] Criando fila auxiliar: ${queueName}`);
+        console.log(`[CORE] Criando fila auxiliar SGO: ${queueName}`);
         await adminClient.createQueue(queueName);
       }
+    }
+
+    // Fila do Protheus
+    const existsProtheus = await adminClient.queueExists(SB_QUEUE_PROTHEUS);
+    if (!existsProtheus) {
+      console.log(`[CORE] Criando fila Protheus: ${SB_QUEUE_PROTHEUS}`);
+      await adminClient.createQueue(SB_QUEUE_PROTHEUS);
     }
   } catch (e: any) {
     console.warn(`[CORE] Aviso infra Service Bus: ${e.message}`);
@@ -60,6 +71,22 @@ serviceRouter.post("/paradas/publish", async (req, res) => {
   try {
     await ensureQueuesExist();
     const data = req.body.payload || await queryParadas();
+
+    // Filtrar: SGO publica apenas dados técnicos.
+    // Campos financeiros (realizado_brl_m, outlook_brl_m, *_perc) passarão a ser
+    // responsabilidade do Protheus via fila_protheus.
+    const technicalPayload = (Array.isArray(data) ? data : [data]).map((p: any) => ({
+      parada_id:    p.paradaId    ?? p.parada_id,
+      embarcacao_id: p.embarcacao_id,
+      fel_codigo:   p.fel         ?? p.fel_codigo,
+      condicao:     p.condicao,
+      inicio_rp:    p.inicioRP    ?? p.inicio_rp,
+      termino_rp:   p.terminoRP   ?? p.termino_rp,
+      dur_rp:       p.durRP       ?? p.dur_rp,
+      tipo_obra:    p.tipo_obra   ?? p.tags ?? []
+    }));
+    console.log(`[CORE] Enviando payload técnico: ${JSON.stringify(technicalPayload).substring(0, 300)}...`);
+
     const sbClient = new ServiceBusClient(SB_CONN);
 
     // Replicação para múltiplas filas (Prod + Local)
@@ -70,13 +97,13 @@ serviceRouter.post("/paradas/publish", async (req, res) => {
           timestamp: new Date().toISOString(),
           servico: "hub-core",
           acao: "snapshot_paradas",
-          payload: data
+          payload: technicalPayload
         },
         contentType: "application/json",
         subject: "SNAPSHOT_PARADAS"
       });
       await sender.close();
-      console.log(`[CORE] Mensagem enviada para: ${queueName}`);
+      console.log(`[CORE] Mensagem técnica enviada para: ${queueName}`);
     });
 
     await Promise.all(sendPromises);
@@ -84,6 +111,88 @@ serviceRouter.post("/paradas/publish", async (req, res) => {
     res.json({ ok: true, message: `Comando replicado em ${SB_QUEUES.length} filas.` });
   } catch (e: any) {
     console.error("[CORE] Erro Service Bus:", e.message);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+// ─── PROTHEUS: Simulação de integração financeira ─────────────────────────────
+//
+// Este endpoint simula o recebimento de um payload financeiro do Protheus.
+// Em produção, o Protheus publicará diretamente na fila_protheus.
+// Durante a fase de integração, este endpoint permite testar o fluxo completo
+// sem depender do Protheus estar configurado.
+//
+// Payload esperado (body.payload):
+// [
+//   {
+//     "parada_id": 501,
+//     "realizado_brl_m": 38.2,
+//     "outlook_brl_m": 42.5,
+//     "re_perc": 85,
+//     "em_perc": 70,
+//     "co_perc": 60,
+//     "es_perc": 90,
+//     "nc_perc": 45
+//   }
+// ]
+serviceRouter.post("/protheus/publish", async (req, res) => {
+  if (!SB_CONN) return res.status(500).json({ error: "SERVICE_BUS_CONNECTION_STRING não configurada" });
+
+  const financialPayload: any[] = req.body.payload;
+
+  if (!Array.isArray(financialPayload) || financialPayload.length === 0) {
+    return res.status(400).json({
+      error: "Body inválido",
+      expected: { payload: "[{ parada_id, realizado_brl_m, outlook_brl_m, re_perc, em_perc, co_perc, es_perc, nc_perc }]" }
+    });
+  }
+
+  // Valida campos obrigatórios
+  const invalid = financialPayload.filter(p => !p.parada_id);
+  if (invalid.length > 0) {
+    return res.status(400).json({ error: "Campo obrigatório ausente: parada_id", invalid });
+  }
+
+  // Normaliza payload — garante que apenas campos financeiros sejam publicados
+  const normalized = financialPayload.map((p: any) => ({
+    parada_id:       Number(p.parada_id),
+    realizado_brl_m: p.realizado_brl_m != null ? Number(p.realizado_brl_m) : null,
+    outlook_brl_m:   p.outlook_brl_m   != null ? Number(p.outlook_brl_m)   : null,
+    re_perc:         p.re_perc != null ? Number(p.re_perc) : null,
+    em_perc:         p.em_perc != null ? Number(p.em_perc) : null,
+    co_perc:         p.co_perc != null ? Number(p.co_perc) : null,
+    es_perc:         p.es_perc != null ? Number(p.es_perc) : null,
+    nc_perc:         p.nc_perc != null ? Number(p.nc_perc) : null,
+  }));
+
+  try {
+    await ensureQueuesExist();
+    const sbClient = new ServiceBusClient(SB_CONN);
+    const sender   = sbClient.createSender(SB_QUEUE_PROTHEUS);
+
+    await sender.sendMessages({
+      body: {
+        timestamp: new Date().toISOString(),
+        servico:   "protheus-sim",
+        acao:      "snapshot_financeiro",
+        payload:   normalized
+      },
+      contentType: "application/json",
+      subject:     "SNAPSHOT_FINANCEIRO"
+    });
+
+    await sender.close();
+    await sbClient.close();
+
+    console.log(`[CORE-PROTHEUS] Payload financeiro publicado em ${SB_QUEUE_PROTHEUS} (${normalized.length} registros).`);
+    res.json({
+      ok:      true,
+      queue:   SB_QUEUE_PROTHEUS,
+      records: normalized.length,
+      message: `Payload financeiro publicado. O Integrator irá processar e gravar em fato_financeiro_parada.`
+    });
+  } catch (e: any) {
+    console.error("[CORE-PROTHEUS] Erro ao publicar:", e.message);
     res.status(500).json({ error: e.message });
   }
 });

@@ -136,27 +136,31 @@ export async function queryCapex(ano: number) {
 export async function queryObrasFinanceiras() {
   try {
     const pool = await getPool();
-    // Agora consultamos diretamente do modelo hub_frontend
+    // LEFT JOIN com fato_financeiro_parada:
+    // - COALESCE prioriza dados do Protheus (tabela financeira separada)
+    // - Fallback para fato_parada enquanto o Protheus não enviar dados
+    // - O contrato de saída (aliases) é idêntico ao anterior — frontend não percebe diferença
     const result = await pool.request().query(`
-      SELECT 
+      SELECT
         p.parada_id as id,
         p.parada_id as id_parada,
         e.nome as embarcacao_nome,
         p.fel_codigo as statusFinanceiro,
-        p.realizado_brl_m as realizadoBRL,
-        p.outlook_brl_m as outlookBRL,
-        p.re_perc as percRE,
-        p.em_perc as percEM,
-        p.co_perc as percCO,
-        p.es_perc as percES,
-        p.nc_perc as percNC,
+        COALESCE(f.realizado_brl_m, p.realizado_brl_m) as realizadoBRL,
+        COALESCE(f.outlook_brl_m,   p.outlook_brl_m)   as outlookBRL,
+        COALESCE(f.re_perc, p.re_perc) as percRE,
+        COALESCE(f.em_perc, p.em_perc) as percEM,
+        COALESCE(f.co_perc, p.co_perc) as percCO,
+        COALESCE(f.es_perc, p.es_perc) as percES,
+        COALESCE(f.nc_perc, p.nc_perc) as percNC,
         p.condicao,
         p.inicio_rp as inicio,
         p.termino_rp as termino,
         p.dur_rp as duracaoTotal,
         p.atualizado_em as dataUltimaAtualizacao,
+        f.origem as fonteFinanceira,
         (
-          SELECT t.tag, c.descricao, c.cor 
+          SELECT t.tag, c.descricao, c.cor
           FROM hub_frontend.fato_parada_tags t
           JOIN hub_frontend.dim_coletor c ON t.tag = c.codigo
           WHERE t.parada_id = p.parada_id
@@ -164,6 +168,7 @@ export async function queryObrasFinanceiras() {
         ) as tags_json
       FROM hub_frontend.fato_parada p
       JOIN hub_frontend.dim_embarcacao e ON p.embarcacao_id = e.id
+      LEFT JOIN hub_frontend.fato_financeiro_parada f ON f.parada_id = p.parada_id
       ORDER BY p.atualizado_em DESC
     `);
 

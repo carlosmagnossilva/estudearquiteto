@@ -45,10 +45,58 @@ export default function PublishSgoPage() {
     }
   }
 
+  async function onPublishProtheus() {
+    if (accounts.length === 0) return;
+    setLoading(true);
+    setStatus(null);
+
+    try {
+      const tokenResponse = await instance.acquireTokenSilent({
+        scopes: [process.env.REACT_APP_AZURE_SCOPE as string],
+        account: accounts[0]
+      });
+
+      // Payload mockado para simular o Protheus
+      const payload = [
+        { parada_id: 501, realizado_brl_m: 88.5, outlook_brl_m: 90.0, re_perc: 98, em_perc: 80, co_perc: 70, es_perc: 95, nc_perc: 50 },
+        { parada_id: 502, realizado_brl_m: 25.4, outlook_brl_m: 28.1, re_perc: 90, em_perc: 75, co_perc: 65, es_perc: 85, nc_perc: 40 }
+      ];
+
+      const baseUrl = process.env.REACT_APP_BFF_URL || "";
+      const resp = await fetch(`${baseUrl}/bff/protheus/publish`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${tokenResponse.accessToken}`,
+        },
+        body: JSON.stringify({ payload })
+      });
+      
+      const json = await resp.json();
+
+      if (!resp.ok || !json.ok) {
+        throw new Error(json.error || `HTTP ${resp.status}`);
+      }
+
+      setStatus({
+        ok: true,
+        message: "Carga Financeira (Protheus) publicada com sucesso.",
+        data: json
+      });
+    } catch (e: any) {
+      setStatus({ ok: false, message: e.message || "Erro desconhecido" });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const triggerCustom = () => {
+    // Simulação do payload técnico do SGO (incluindo tags para Tipo de Obra)
+    // Usando códigos reais encontrados no banco (ex: 100, 101, 102, 301)
     const payload = [
-      { parada_id: 501, embarcacao_id: 1, fel_codigo: "FEL-3", realizado_brl_m: 42.5, outlook_brl_m: 42.5, nc_perc: 95, es_perc: 2, co_perc: 1, em_perc: 1, re_perc: 1, condicao: "Seco", inicio_rp: "2026-05-01", termino_rp: "2026-08-15", dur_rp: 106 },
-      { parada_id: 502, embarcacao_id: 2, fel_codigo: "FEL-4", realizado_brl_m: 12.8, outlook_brl_m: 15.2, nc_perc: 80, es_perc: 5, co_perc: 5, em_perc: 5, re_perc: 5, condicao: "Molhado", inicio_rp: "2026-06-10", termino_rp: "2026-07-10", dur_rp: 30 }
+      { parada_id: 501, embarcacao_id: 1, fel_codigo: "FEL-3", condicao: "Seco", inicio_rp: "2026-05-01", termino_rp: "2026-08-15", dur_rp: 106, tipo_obra: ["102", "103", "105"] },
+      { parada_id: 502, embarcacao_id: 2, fel_codigo: "FEL-4", condicao: "Molhado", inicio_rp: "2026-06-10", termino_rp: "2026-07-10", dur_rp: 30, tipo_obra: ["100", "101", "102"] },
+      { parada_id: 503, embarcacao_id: 3, fel_codigo: "FEL-2", condicao: "Molhado", inicio_rp: "2026-09-01", termino_rp: "2026-09-20", dur_rp: 20, tipo_obra: ["301"] }
     ];
     onPublish(payload);
   };
@@ -90,7 +138,33 @@ export default function PublishSgoPage() {
               disabled={loading}
               className="px-8 py-3.5 rounded-xl font-bold text-[13px] bg-[var(--accent)] text-black hover:brightness-110 transition-all uppercase tracking-widest flex items-center gap-3 shadow-[0_0_20px_rgba(56,189,248,0.3)]"
             >
-              Publicar Custom
+              Simular Carga SGO (Apenas Técnico)
+            </button>
+          </div>
+        </div>
+
+        <div className="bg-[var(--bg-card)] backdrop-blur-xl border border-[var(--border-card)] p-8 rounded-3xl shadow-2xl flex flex-col items-center justify-center min-h-[350px] mt-8">
+          <div className="w-16 h-16 rounded-2xl bg-green-500/10 flex items-center justify-center border border-green-500/20 mb-6 shadow-[0_0_20px_rgba(34,197,94,0.1)]">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-8 h-8 text-green-400">
+              <rect x="2" y="6" width="20" height="12" rx="2" />
+              <circle cx="12" cy="12" r="2" />
+              <path d="M6 12h.01M18 12h.01" />
+            </svg>
+          </div>
+
+          <h3 className="text-xl font-bold text-white mb-3">Sincronização Protheus</h3>
+          <p className="text-center text-[var(--text-dim)] max-w-md mb-8 text-[14px]">
+            Este processo publica na fila os dados financeiros vinculados às paradas. O Integrator combinará esses dados aos técnicos via COALESCE.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+            <button
+              type="button"
+              onClick={onPublishProtheus}
+              disabled={loading}
+              className="px-8 py-3.5 rounded-xl font-bold text-[13px] bg-green-500 text-black hover:brightness-110 transition-all uppercase tracking-widest flex items-center gap-3 shadow-[0_0_20px_rgba(34,197,94,0.3)]"
+            >
+              Simular Carga Protheus
             </button>
           </div>
         </div>

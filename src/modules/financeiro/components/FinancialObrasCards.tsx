@@ -181,7 +181,7 @@ const FinancialObrasCards: React.FC<FinancialObrasCardsProps> = ({ data }) => {
                   </div>
                 ) : (
                   groupedObras[status].map(obra => {
-                    const percTotal = (obra.realizadoBRL / obra.outlookBRL) * 100;
+                    const percTotal = obra.outlookBRL ? (obra.realizadoBRL / obra.outlookBRL) * 100 : 0;
                     const isExpanded = isGlobalCollapsed ? expandedIds.has(obra.id) : !expandedIds.has(obra.id);
                     
                     return (
@@ -244,17 +244,17 @@ const FinancialObrasCards: React.FC<FinancialObrasCardsProps> = ({ data }) => {
                             <div className="space-y-2 mb-5 mt-4">
                               <div className="flex justify-between items-end">
                                 <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-tighter">Realizado / Outlook</span>
-                                <span className="text-[11px] font-black text-[var(--accent)]">{percTotal.toFixed(0)}%</span>
+                                <span className="text-[11px] font-black text-[var(--accent)]">{percTotal ? percTotal.toFixed(0) : 0}%</span>
                               </div>
                               <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden border border-white/5 p-[1px]">
                                 <div 
                                   className="h-full bg-gradient-to-r from-[#00A3AD] to-[var(--accent)] rounded-full shadow-[0_0_10px_rgba(56,189,248,0.3)] transition-all duration-1000"
-                                  style={{ width: `${percTotal}%` }}
+                                  style={{ width: `${percTotal || 0}%` }}
                                 ></div>
                               </div>
                               <div className="flex justify-between text-[11px] font-mono font-bold">
-                                <span className="text-[var(--text-main)]">R$ {obra.realizadoBRL.toFixed(1)}M</span>
-                                <span className="text-[var(--text-muted)]">R$ {obra.outlookBRL.toFixed(1)}M</span>
+                                <span className="text-[var(--text-main)]">R$ {obra.realizadoBRL != null ? obra.realizadoBRL.toFixed(1) : '-'}M</span>
+                                <span className="text-[var(--text-muted)]">R$ {obra.outlookBRL != null ? obra.outlookBRL.toFixed(1) : '-'}M</span>
                               </div>
                             </div>
 
@@ -268,7 +268,7 @@ const FinancialObrasCards: React.FC<FinancialObrasCardsProps> = ({ data }) => {
                               ].map(stat => (
                                 <div key={stat.label} className="text-center">
                                   <div className="text-[9px] font-black text-[var(--text-muted)] mb-1">{stat.label}</div>
-                                  <div className="text-[11px] font-bold text-[var(--text-main)]">{stat.val}%</div>
+                                  <div className="text-[11px] font-bold text-[var(--text-main)]">{stat.val ?? '-'}%</div>
                                 </div>
                               ))}
                             </div>

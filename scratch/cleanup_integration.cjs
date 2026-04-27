@@ -14,8 +14,18 @@ async function cleanup() {
     const pool = await sql.connect(config);
     
     console.log("--- Removendo registros de simulação (parada_id >= 500) ---");
-    const result = await pool.request().query("DELETE FROM hub_frontend.fato_parada WHERE parada_id >= 500");
-    console.log(`Registros removidos: ${result.rowsAffected[0]}`);
+    
+    // 1. Limpar tipos de obra primeiro (devido à constraint FK)
+    const resTags = await pool.request().query("DELETE FROM hub_frontend.fato_parada_tags WHERE parada_id >= 500");
+    console.log(`Registros removidos (Tipo de Obra): ${resTags.rowsAffected[0]}`);
+
+    // 2. Limpar tabela financeira
+    const resFin = await pool.request().query("DELETE FROM hub_frontend.fato_financeiro_parada WHERE parada_id >= 500");
+    console.log(`Registros removidos (Financeiro): ${resFin.rowsAffected[0]}`);
+
+    // 3. Limpar tabela técnica base
+    const resTec = await pool.request().query("DELETE FROM hub_frontend.fato_parada WHERE parada_id >= 500");
+    console.log(`Registros removidos (Técnico SGO): ${resTec.rowsAffected[0]}`);
 
     await pool.close();
   } catch (err) {

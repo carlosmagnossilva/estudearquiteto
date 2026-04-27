@@ -164,11 +164,11 @@ const FinancialObrasGrid: React.FC<FinancialObrasGridProps> = ({
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-[var(--text-dim)]">Outlook:</span>
-                      <span className="font-bold text-[var(--accent)]">R$ {row.outlookBRL.toFixed(1)}M</span>
+                      <span className="font-bold text-[var(--accent)]">{row.outlookBRL != null ? `R$ ${row.outlookBRL.toFixed(1)}M` : '-'}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-[var(--text-dim)]">Realizado:</span>
-                      <span className="font-bold text-[var(--text-main)]">R$ {row.realizadoBRL.toFixed(1)}M</span>
+                      <span className="font-bold text-[var(--text-main)]">{row.realizadoBRL != null ? `R$ ${row.realizadoBRL.toFixed(1)}M` : '-'}</span>
                     </div>
                     <div className="pt-2 border-t border-white/5 flex justify-between items-center">
                       <div className="flex gap-1">
@@ -234,16 +234,16 @@ const FinancialObrasGrid: React.FC<FinancialObrasGridProps> = ({
                         </div>
                       </td>
                       <td className="px-6 py-5 text-[14px] text-[var(--text-main)] font-bold text-right font-mono">
-                        {row.realizadoBRL ? `R$ ${row.realizadoBRL.toFixed(1)}M` : '-'}
+                        {row.realizadoBRL != null ? `R$ ${row.realizadoBRL.toFixed(1)}M` : '-'}
                       </td>
                       <td className="px-6 py-5 text-[14px] text-[var(--accent)] font-bold text-right font-mono">
-                        R$ {row.outlookBRL.toFixed(1)}M
+                        {row.outlookBRL != null ? `R$ ${row.outlookBRL.toFixed(1)}M` : '-'}
                       </td>
-                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percRE}%</td>
-                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percEM}%</td>
-                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percCO}%</td>
-                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percES}%</td>
-                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percNC}%</td>
+                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percRE ?? '-'}%</td>
+                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percEM ?? '-'}%</td>
+                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percCO ?? '-'}%</td>
+                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percES ?? '-'}%</td>
+                      <td className="px-6 py-5 text-sm text-[var(--text-dim)] text-center font-medium">{row.percNC ?? '-'}%</td>
                       <td className="px-6 py-5">
                         <span className={`text-[12px] font-bold ${row.condicao === 'Seco' ? 'text-emerald-400' : 'text-blue-400'}`}>
                           {row.condicao}
