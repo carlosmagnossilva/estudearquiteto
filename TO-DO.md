@@ -59,7 +59,14 @@
 - [x] Corrigir scroll vertical na home em resoluções menores.
 - [x] Criar script de sumário de portas para desenvolvedores.
 
-## 🚀 Melhorias de DevOps
-- [x] Configurar `pnpm-workspace.yaml` para suporte nativo a monorepo.
-- [ ] Configurar logs centralizados.
-- [ ] Implementar testes unitários nos middlewares de segurança.
+## 📦 Modelagem Transacional (hub_core)
+- [x] Mapear hierarquia real: Obra -> Tipo Obra -> Entrega -> Serviço -> Material.
+- [x] Mapear requisitos de Estaleiro (PPUs e VORs).
+- [x] Definir estratégia de Snapshots para integridade histórica.
+- [ ] Implementar migrations para criação do schema `hub_core`.
+- [ ] Implementar trigger/job de sincronização entre `hub_core` e `hub_frontend`.
+- [ ] Adaptar o `hub-integrator` para gravar simultaneamente no transacional.
+- [ ] **US05**: Detalhamento Administrativo (Aba Sobre a Obra).
+- [ ] **US06**: Dashboard Executivo de Obra (Aba Visão Geral).
+- [ ] **US07**: Gestão de Entregas e Resumo de Facilidades (Aba Entrega).
+- [ ] **US08**: Centro de Controle de Serviços (Aba Serviços - TM Master & Hub).

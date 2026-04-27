@@ -5,7 +5,19 @@
 - **Hub-Core**: Core da aplicação (`hub-core-app`), conecta ao Azure SQL. Agora operando com o esquema unificado `hub_frontend` para Dashboards.
 - **Hub-Integrator**: Consumidor de filas do Service Bus, responsável por persistir simulações no banco (via MERGE). Agora opera em modo dual (SGO e Protheus).
 - **Service Bus**: Estratégia de "Multi-Fila" ativa para contornar limitações do Basic Tier (sem Tópicos). O Hub-Core replica mensagens para `fila_sgo` e `fila_sgo_local`. Criada `fila_protheus` para carga financeira.
-- **Banco de Dados**: Azure SQL Server `sqlhub04171601`. Esquemas ativos: `hub_frontend` (Novo/Dashboard) e `Financeiro` (Legado/Gestão).
+
+### 🗄️ Banco de Dados (Azure SQL)
+- **Schema `hub_frontend`**: (ESTÁVEL) Utilizado exclusivamente para leitura dos dashboards. Não deve ser alterado.
+- **Schema `hub_core`**: (EM MODELAGEM) Novo schema transacional para operações, governança e integridade histórica.
+    - **Hierarquia**: Obra (Parada) -> Tipo Obra (Coletor) -> Entrega (Demanda) -> Serviço/Material.
+    - **Integridade**: Uso de Snapshots para Coordenadores, Gerentes e Especificações Técnicas para evitar corrupção de histórico.
+    - **Estaleiro**: Gestão via Tabelas de PPU (versão de preços) e VOR (Variation Orders).
+    - **Financeiro**: Esteira de 4 colunas de valor (Estimado, Cotado, Empenhado, Realizado) por item.
+
+### 🚀 Próximos Passos
+1. **Migrations Hub_Core**: Gerar scripts SQL para criação do novo schema e tabelas (Mapeamento US05 a US08 concluído).
+2. **Auditoria de Integração**: Mapear payloads do TM Master (FEL2), Fluig e Protheus para a esteira financeira.
+3. **Módulo de Lançamento Físico**: Desenvolver interface no Hub para digitação manual do progresso de serviços.
 
 ## 🛠️ Ferramentas e Utilitários Recentes
 - **`kill-ports.ps1`**: Utilitário para limpeza de processos zumbis em portas locais (5001, 4000, 3000).
@@ -49,4 +61,6 @@
 - **Cache de Workers**: O Hub-Integrator não usa porta. Sempre execute `taskkill /f /im node.exe` antes de iniciar o desenvolvimento para garantir que versões antigas não "roubem" as mensagens da fila.
 - **Segurança**: MSAL configurado e obrigatório. Bypass de autenticação deve ser usado apenas para diagnóstico local e revertido imediatamente.
 - **Deploy ACA**: O Azure Container Apps requer tags únicas (ex: `github.sha`) para forçar novas revisões.
+- **Data Flow Definido**: SGO (Estrutura inicial) -> TM Master (Serviços FEL2) -> Fluig (Aprovação) -> App Medição -> Protheus (Pedido de Compra).
+- **Progresso Físico**: Será via digitação manual no Hub, não automatizado via SGO.
  HTTPS (443). Jamais incluir a porta exposta do container (ex: `:5001`) na variável `CORE_API_URL`, senão ocorrerá timeout infinito (pending).
