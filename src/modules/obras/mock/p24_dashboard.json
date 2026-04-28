@@ -78,5 +78,45 @@
         { "color": "#5ab2d3", "percent": 5 }
       ]
     }
-  }
+  },
+  "statusServicos": [
+    { "name": "Obra", "naoExecutado": 12, "concluido": 12, "aprovada": 10, "pcAprovado": 6, "pago": 12 },
+    { "name": "Elétrica/ Eletrônica", "naoExecutado": 10, "concluido": 16, "aprovada": 8, "pcAprovado": 11, "pago": 12 },
+    { "name": "NavTI", "naoExecutado": 6, "concluido": 6, "aprovada": 12, "pcAprovado": 18, "pago": 8 },
+    { "name": "Operação", "naoExecutado": 15, "concluido": 12, "aprovada": 8, "pcAprovado": 11, "pago": 16 },
+    { "name": "Mecânica", "naoExecutado": 8, "concluido": 18, "aprovada": 12, "pcAprovado": 15, "pago": 6 },
+    { "name": "Planejamento", "naoExecutado": 6, "concluido": 10, "aprovada": 16, "pcAprovado": 12, "pago": 11 }
+  ],
+  "statusMateriais": [
+    { "name": "Obra", "naoSolicitado": 80, "aguardandoAprovacao": 45, "aguardandoEntrega": 85, "entregue": 100 },
+    { "name": "Elétrica/ Eletrônica", "naoSolicitado": 65, "aguardandoAprovacao": 88, "aguardandoEntrega": 55, "entregue": 28 },
+    { "name": "NavTI", "naoSolicitado": 68, "aguardandoAprovacao": 82, "aguardandoEntrega": 48, "entregue": 85 },
+    { "name": "Operação", "naoSolicitado": 85, "aguardandoAprovacao": 48, "aguardandoEntrega": 58, "entregue": 60 },
+    { "name": "Mecânica", "naoSolicitado": 78, "aguardandoAprovacao": 45, "aguardandoEntrega": 95, "entregue": 100 },
+    { "name": "Planejamento", "naoSolicitado": 75, "aguardandoAprovacao": 60, "aguardandoEntrega": 75, "entregue": 70 }
+  ],
+  "consumoFacilidades": [
+    { "name": "Energia Elétrica", "contratado": 12.5, "consumido": 17.2 },
+    { "name": "Água Doce", "contratado": 7.2, "consumido": 11.5 },
+    { "name": "Água Salgada", "contratado": 8.0, "consumido": 5.8 },
+    { "name": "Esgoto Sanitário", "contratado": 3.8, "consumido": 4.2 },
+    { "name": "Resíduo Oleoso", "contratado": 2.8, "consumido": 4.5 },
+    { "name": "Lixo Contaminado", "contratado": 2.8, "consumido": 2.8 }
+  ],
+  "pendenciasPorArea": [
+    { "name": "Obras", "criticas": 3, "normais": 4 },
+    { "name": "Elétrica / Eletrônica", "criticas": 2, "normais": 3 },
+    { "name": "Mecânica", "criticas": 4, "normais": 2 },
+    { "name": "NAVTI", "criticas": 5, "normais": 3 },
+    { "name": "Planejamento", "criticas": 2, "normais": 2 }
+  ],
+  "rankingPendencias": [
+    { "tipo": "Crítica", "pendencia": "OS sem BM aprovado", "area": "Obras", "aging": "111d" },
+    { "tipo": "Normal", "pendencia": "Material aguardando emissão fluig", "area": "Elétrica", "aging": "51d" },
+    { "tipo": "Normal", "pendencia": "Material aguardando vínculo com serviço", "area": "Mecânica", "aging": "33d" },
+    { "tipo": "Normal", "pendencia": "Pedido de Compra aguardando aprovação", "area": "Mecânica", "aging": "28d" },
+    { "tipo": "Crítica", "pendencia": "Aprovar nova contingência", "area": "FP&A", "aging": "6d" },
+    { "tipo": "Crítica", "pendencia": "Aprovar inclusão de nova entrega", "area": "Planejamento AT", "aging": "6d" },
+    { "tipo": "Normal", "pendencia": "Serviço sem Job Vinculado", "area": "Obras", "aging": "4d" }
+  ]
 }

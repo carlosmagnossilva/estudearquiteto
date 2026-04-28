@@ -49,7 +49,7 @@ Como Gestor de Obra, desejo visualizar os dados administrativos, prazos e equipe
 ## US06: Dashboard Executivo (Aba Visão Geral)
 
 ### Descrição
-Como Diretor, desejo ver o cruzamento financeiro (Protheus) e operacional (Hub) para monitorar desvios.
+Como Diretor, desejo ver o cruzamento financeiro (Protheus) e operacional (Hub) para monitorar desvios. Para garantir performance, esta tela consome uma **Tabela de Cache (US09)** atualizada assincronamente.
 
 ### Critérios de Aceite
 - Indicador de Outlook: Valor total vs Orçamento FEL.
@@ -128,6 +128,19 @@ Como Gestor de Contratos, desejo gerenciar serviços do TM Master e lançar prog
     - `timestamp` (DATETIME)
 
 ---
+
+---
+
+## US09: Infraestrutura de Sincronização e Cache de Dashboard
+
+### Descrição
+Como Arquiteto de Sistemas, desejo implementar um mecanismo de cache assíncrono (Job de 1 min) para consolidar dados do `hub_core` no `hub_frontend`, garantindo performance executiva (sub-segundo).
+
+### Critérios de Aceite
+- Tabela de cache `obra_dashboard_cache` criada.
+- Job de consolidação executando a cada 1 minuto (após término da rodada).
+- BFF consumindo exclusivamente da tabela de cache.
+- Exibição de timestamp de última atualização no frontend.
 
 ---
 

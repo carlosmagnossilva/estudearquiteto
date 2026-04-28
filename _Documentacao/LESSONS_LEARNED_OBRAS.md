@@ -1,6 +1,28 @@
 # Post-Mortem & Lições Aprendidas: Módulo Obras (CRUD Sobre a Obra)
 **Data**: 28/04/2026
 
+## 🎨 UI/UX High-Fidelity (Dashboard Cockpit)
+
+### 1. Hierarquia de "Boneca Russa"
+- **Padrão**: Um Dashboard Executivo de alta fidelidade exige 3 níveis de containers.
+  - **Nível 1 (Pai)**: Card principal com borda grossa e background principal do módulo.
+  - **Nível 2 (Filho)**: Seções internas (ex: Outlook Sections) com bordas de 1px e background levemente translúcido.
+  - **Nível 3 (Neto)**: Metric boxes individuais com background sólido e bordas finas.
+- **Erro a evitar**: Remover bordas intermediárias achando que fica "clean". A borda é o que dá a sensação de Cockpit/Instrumentação.
+
+### 2. Simetria Vertical Absoluta
+- **Regra**: Todos os cards em uma mesma linha horizontal **devem** ter a mesma altura, independentemente do volume de conteúdo.
+- **Técnica**: Usar `align-items: stretch` no container Flex e definir um `min-height` base (ex: `140px`) para as seções irmãs.
+
+### 3. DNA do Card (Design Tokens)
+- **Fundo**: `#1e293b` (Deep Navy) para cards de métrica.
+- **Borda**: `1.5px solid rgba(255, 255, 255, 0.15)`.
+- **Cantos**: `16px` a `20px` (Rounded).
+- **Tipografia**: Contrastante (Branco puro para valores, Slate-400 para labels).
+
+### 4. Vanilla CSS vs Tailwind
+- **Decisão**: Para telas de alta fidelidade "pixel-perfect", o **Vanilla CSS com variáveis** é superior. O Tailwind deve ser evitado em componentes complexos de Dashboard para garantir controle total sobre paddings e simetrias finas.
+
 ## 📌 Visão Geral
 Esta sessão focou na implementação de um CRUD completo e revitalização da interface "Sobre a Obra" no módulo Obras. Apesar do sucesso técnico final, a sessão foi marcada por regressões de layout e problemas de comunicação que devem ser evitados.
 
@@ -19,6 +41,7 @@ Esta sessão focou na implementação de um CRUD completo e revitalização da i
 5. **User Stories de Alta Granularidade**: Para evitar ambiguidades, as histórias de usuário devem descrever não apenas a meta, mas a experiência completa: nomes exatos de campos, comportamentos de clique, aparências específicas por tema (claro/escuro) e estados de componente (edição/visualização). Este nível de detalhe é o novo padrão para o projeto.
 6. **Fidelidade Frame-a-Frame**: Vídeos de tela fornecidos pelo usuário são a "verdade única". Ordem de colunas, nomenclaturas e alinhamentos devem ser validados frame a frame antes da entrega.
 7. **Glossário da Esteira Financeira**: Internalizar os termos RE (Realizado), EM (Empenhado), CO (Comprometido), ES (Estimado) e NC (Não comprometido) como o padrão de comunicação do sistema.
+8. **Gestão de Credenciais de Design**: O link e o token do Figma (MCP) devem estar sempre registrados no `.env` do projeto para garantir acesso autônomo e imediato à fonte da verdade visual (Figma File Key e Access Token).
 
 ## 🛡️ Novas Diretrizes de Trabalho (Para futuras tarefas)
 Para evitar que esses erros se repitam, os agentes devem seguir este checklist antes de propor qualquer mudança em código validado:

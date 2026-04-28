@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from "react";
 import ObrasGrid from "./components/ObrasGrid";
 import SobreObra from "./components/SobreObra";
+import ObraDashboard from "./components/ObraDashboard";
 import { useBff } from "../../hooks/useBff";
 import { IBffResponse } from "@hub/shared";
 
@@ -17,6 +18,7 @@ const ObrasModule: React.FC = () => {
   const [statusFilter, setStatusFilter] = useState("Todos os Status");
   const [typeFilter, setTypeFilter] = useState("Todos os Tipos");
   const [selectedObraId, setSelectedObraId] = useState<number | null>(null);
+  const [activeDetailTab, setActiveDetailTab] = useState("Visão geral");
 
   const { data, loading } = useBff<IBffResponse<any>>("/bff/financeiro/obras");
 
@@ -68,23 +70,48 @@ const ObrasModule: React.FC = () => {
           </div>
         </div>
 
-        {/* Tabs de Detalhes */}
         <div className="px-6 flex gap-8 border-b border-[var(--border-card)] bg-[var(--bg-card)]">
           {["Visão geral", "Entregas", "Serviços", "Materiais", "Facilidades", "GMUDs", "Log de Alterações", "Fatos Relevantes", "Sobre a Obra"].map(tab => (
             <button
               key={tab}
-              className={`py-4 text-xs font-bold transition-all relative ${tab === "Sobre a Obra" ? "text-[var(--text-main)]" : "text-[var(--text-dim)] hover:text-[var(--text-main)]"}`}
+              onClick={() => setActiveDetailTab(tab)}
+              className={`py-4 text-xs font-bold transition-all relative ${activeDetailTab === tab ? "text-[var(--text-main)]" : "text-[var(--text-dim)] hover:text-[var(--text-main)]"}`}
             >
               {tab}
-              {tab === "Sobre a Obra" && (
+              {activeDetailTab === tab && (
                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-[var(--accent)] rounded-t-full"></div>
               )}
             </button>
           ))}
         </div>
 
-        <div className="flex-1 overflow-y-auto no-scrollbar">
-          <SobreObra obraId={selectedObraId} />
+        <div className="flex-1 overflow-y-auto no-scrollbar p-6">
+          {activeDetailTab === "Visão geral" && (
+            <ObraDashboard data={{
+              realizado: 154.2,
+              outlook: 285.5,
+              fel: 279.7,
+              mixGastos: [
+                { name: 'Materiais', value: 60, color: '#3b82f6' },
+                { name: 'Serviços', value: 25, color: '#f97316' },
+                { name: 'Facilidades', value: 15, color: '#a855f7' }
+              ],
+              curvaS: [
+                { month: 'Jan', planejado: 10, realizado: 12, outlook: 12 },
+                { month: 'Fev', planejado: 25, realizado: 28, outlook: 28 },
+                { month: 'Mar', planejado: 45, realizado: 42, outlook: 45 },
+                { month: 'Abr', planejado: 65, realizado: 60, outlook: 68 },
+                { month: 'Mai', planejado: 85, realizado: null as any, outlook: 92 },
+                { month: 'Jun', planejado: 100, realizado: null as any, outlook: 110 },
+              ]
+            }} />
+          )}
+          {activeDetailTab === "Sobre a Obra" && <SobreObra obraId={selectedObraId} />}
+          {activeDetailTab !== "Visão geral" && activeDetailTab !== "Sobre a Obra" && (
+            <div className="flex-1 flex items-center justify-center text-[var(--text-muted)] italic p-20">
+              Módulo {activeDetailTab} em desenvolvimento...
+            </div>
+          )}
         </div>
       </div>
     );

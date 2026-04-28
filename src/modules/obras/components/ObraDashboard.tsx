@@ -10,7 +10,12 @@ import {
   Pie,
   Cell,
   ReferenceLine,
-  Label
+  Label,
+  BarChart,
+  Bar,
+  Tooltip,
+  Legend,
+  LabelList
 } from 'recharts';
 import './ObraDashboard.css';
 import p24Data from '../mock/p24_dashboard.json';
@@ -276,14 +281,14 @@ const ObraDashboard: React.FC<ObraDashboardProps> = () => {
         </div>
       </div>
 
-      {/* Layer 3: Operational Grids */}
+      {/* Layer 3: Operational Cards (Quick Stats) */}
       <div className="operational-grid">
         <OperationalCard title="Serviços"
           rows={[
             { full: { label: 'Total Serv. Aprovado', value: operacional.servicos.totalAprovado.toString(), sub: operacional.servicos.valorAprovado } },
             {
               split: [
-                { label: 'Concluídos', value: `${operacional.servicos.concluidos} (${operacional.servicos.concluidosPercent}%)`, sub: 'R$ X M' },
+                { label: 'Concluídos', value: `${operacional.servicos.concluidos} (${operacional.servicos.concluidosPercent}%)`, sub: 'R$ 11.8 M' },
                 { label: 'Cancelados ou transferidos', value: operacional.servicos.cancelados.toString() }
               ]
             }
@@ -306,6 +311,117 @@ const ObraDashboard: React.FC<ObraDashboardProps> = () => {
             { full: { label: 'Facilidades Consumidas', value: `${operacional.estaleiros.consumidas} (${operacional.estaleiros.consumidasPercent}%)`, sub: operacional.estaleiros.valorConsumido } }
           ]}
         />
+      </div>
+
+      {/* Layer 4: Detailed Operational Charts */}
+      <div className="operational-grid" style={{ marginTop: '24px' }}>
+        {/* Status dos Serviços */}
+        <div className="dashboard-card">
+          <h3 className="card-title">Status dos Serviços</h3>
+          <div style={{ height: '350px', width: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart layout="vertical" data={p24Data.statusServicos} margin={{ left: 40, right: 20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
+                <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
+                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'var(--dash-card)', borderColor: 'var(--dash-border)', borderRadius: '8px' }} />
+                <Legend verticalAlign="top" align="left" iconSize={10} wrapperStyle={{ paddingBottom: '20px', fontSize: '11px' }} />
+                <Bar dataKey="naoExecutado" name="Não executado" stackId="a" fill="#475569" radius={[0, 0, 0, 0]} />
+                <Bar dataKey="concluido" name="Concluído" stackId="a" fill="#166534" />
+                <Bar dataKey="aprovada" name="Aprovada" stackId="a" fill="#f59e0b" />
+                <Bar dataKey="pcAprovado" name="Pedidos compra aprov." stackId="a" fill="#0891b2" />
+                <Bar dataKey="pago" name="Pago" stackId="a" fill="#a855f7" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Status dos Materiais */}
+        <div className="dashboard-card">
+          <h3 className="card-title">Status dos Materiais</h3>
+          <div style={{ height: '350px', width: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart layout="vertical" data={p24Data.statusMateriais} margin={{ left: 40, right: 20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
+                <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
+                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'var(--dash-card)', borderColor: 'var(--dash-border)', borderRadius: '8px' }} />
+                <Legend verticalAlign="top" align="left" iconSize={10} wrapperStyle={{ paddingBottom: '20px', fontSize: '11px' }} />
+                <Bar dataKey="naoSolicitado" name="Não solicitado" stackId="a" fill="#475569" />
+                <Bar dataKey="aguardandoAprovacao" name="Aguardando aprov." stackId="a" fill="#166534" />
+                <Bar dataKey="aguardandoEntrega" name="Aguardando entrega" stackId="a" fill="#0891b2" />
+                <Bar dataKey="entregue" name="Entregue" stackId="a" fill="#a855f7" radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Consumo de Facilidades */}
+        <div className="dashboard-card">
+          <h3 className="card-title">Consumo de Facilidades</h3>
+          <div style={{ height: '350px', width: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart layout="vertical" data={p24Data.consumoFacilidades} margin={{ left: 40, right: 20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
+                <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
+                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'var(--dash-card)', borderColor: 'var(--dash-border)', borderRadius: '8px' }} />
+                <Legend verticalAlign="top" align="left" iconSize={10} wrapperStyle={{ paddingBottom: '20px', fontSize: '11px' }} />
+                <Bar dataKey="contratado" name="Contratado" fill="#334155" barSize={12} radius={[0, 4, 4, 0]} />
+                <Bar dataKey="consumido" name="Consumido" fill="#0ea5e9" barSize={12} radius={[0, 4, 4, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="dashboard-card" style={{ gridColumn: 'span 3' }}>
+          <h3 className="card-title">Pendências por Área</h3>
+          <div style={{ height: '350px', width: '100%' }}>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart layout="vertical" data={p24Data.pendenciasPorArea} margin={{ left: 60, right: 20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
+                <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
+                <YAxis dataKey="name" type="category" stroke="var(--dash-text)" fontSize={11} width={120} tickLine={false} axisLine={false} />
+                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'var(--dash-card)', borderColor: 'var(--dash-border)', borderRadius: '8px' }} />
+                <Legend verticalAlign="top" align="left" iconSize={10} wrapperStyle={{ paddingBottom: '20px', fontSize: '11px' }} />
+                <Bar dataKey="criticas" name="Críticas" stackId="a" fill="#0ea5e9" radius={[0, 0, 0, 0]}>
+                  <LabelList dataKey="criticas" position="center" fill="#fff" style={{ fontSize: '10px', fontWeight: 'bold' }} />
+                </Bar>
+                <Bar dataKey="normais" name="Normais" stackId="a" fill="#64748b" radius={[0, 4, 4, 0]}>
+                  <LabelList dataKey="normais" position="center" fill="#fff" style={{ fontSize: '10px', fontWeight: 'bold' }} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+        <div className="dashboard-card" style={{ gridColumn: 'span 3' }}>
+          <h3 className="card-title">Ranking de Pendências</h3>
+          <div className="table-responsive">
+            <table className="ranking-table">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Pendência</th>
+                  <th>Área Responsável</th>
+                  <th>Aging</th>
+                </tr>
+              </thead>
+              <tbody>
+                {p24Data.rankingPendencias.map((item, index) => (
+                  <tr key={index}>
+                    <td>
+                      <span className={`badge badge-${item.tipo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}>
+                        {item.tipo === 'Crítica' ? '⚠️ ' : '⚪ '}{item.tipo}
+                      </span>
+                    </td>
+                    <td className="text-highlight">{item.pendencia}</td>
+                    <td>{item.area}</td>
+                    <td className="aging-value">{item.aging}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
   );

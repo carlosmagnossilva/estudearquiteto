@@ -65,7 +65,29 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.2s ease;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+/* Legend Styling */
+.recharts-legend-wrapper {
+  background: rgba(15, 23, 42, 0.4) !important;
+  border-radius: 6px;
+  backdrop-filter: blur(8px);
+  padding: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme='light'] .recharts-legend-wrapper {
+  background: rgba(255, 255, 255, 0.6) !important;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.recharts-legend-item-text {
+  color: var(--dash-text) !important;
+  font-size: 11px !important;
+  font-weight: 500 !important;
 }
 
 .metric-box:hover, .op-item:hover {
@@ -277,4 +299,86 @@
     width: 80px;
     font-size: 10px;
   }
+}
+
+/* Ranking Table & Badges */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ranking-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.ranking-table th {
+  text-align: left;
+  padding: 12px;
+  color: var(--dash-dim);
+  font-weight: 600;
+  border-bottom: 1px solid var(--dash-border);
+  text-transform: uppercase;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+}
+
+.ranking-table td {
+  padding: 14px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  color: var(--dash-text);
+}
+
+[data-theme='light'] .ranking-table td {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.03);
+}
+
+.text-highlight {
+  font-weight: 500;
+  color: var(--dash-text) !important;
+}
+
+.aging-value {
+  font-family: 'JetBrains Mono', 'Roboto Mono', monospace;
+  font-weight: 600;
+  color: #ef4444;
+}
+
+[data-theme='light'] .aging-value {
+  color: #dc2626;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.badge-critica {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.1);
+}
+
+.badge-normal {
+  background: rgba(245, 158, 11, 0.15);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.1);
+}
+
+[data-theme='light'] .badge-critica {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+[data-theme='light'] .badge-normal {
+  background: #fef3c7;
+  color: #b45309;
 }
