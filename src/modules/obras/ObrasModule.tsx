@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from "react";
-import ObrasGrid from "./components/FinancialObrasGrid";
+import ObrasGrid from "./components/ObrasGrid";
 import SobreObra from "./components/SobreObra";
 import { useBff } from "../../hooks/useBff";
 import { IBffResponse } from "@hub/shared";
@@ -92,6 +92,11 @@ const ObrasModule: React.FC = () => {
 
   return (
     <div className="flex-1 flex flex-col min-h-0 animate-fade-in h-full">
+      <div className="px-6 py-4 border-b border-[var(--border-card)] bg-[var(--bg-card)] shrink-0">
+        <div className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Módulo Obras</div>
+        <h1 className="text-xl font-black text-[var(--text-main)]">Painel de Obras</h1>
+      </div>
+
       <div className="px-6 py-0 flex gap-8 border-b border-[var(--border-card)] shrink-0 z-20">
         {TABS.map((tab) => (
           <button
@@ -108,26 +113,33 @@ const ObrasModule: React.FC = () => {
         ))}
       </div>
 
-      <div className="flex-1 overflow-hidden flex flex-col min-h-0">
-        {activeTab === "detalhamento" && (
-          <div className="flex-1 flex flex-col overflow-hidden" onClick={(e) => {
-            const row = (e.target as HTMLElement).closest("tr");
-            if (row) {
-              const id = parseInt(row.querySelector("td")?.textContent || "0");
-              if (id) setSelectedObraId(id);
-            }
-          }}>
-            <ObrasGrid
-              filteredObras={filteredObras}
-              loading={loading}
-              filters={{
-                searchTerm, setSearchTerm,
-                statusFilter, setStatusFilter,
-                typeFilter, setTypeFilter
-              }}
-            />
-          </div>
-        )}
+        <div className="flex-1 overflow-hidden flex flex-col min-h-0">
+          {activeTab === "detalhamento" && (
+            <div className="flex-1 flex flex-col overflow-hidden" onClick={(e) => {
+              const row = (e.target as HTMLElement).closest("tr");
+              if (row) {
+                const idCell = row.querySelector("td");
+                if (idCell) {
+                  const id = parseInt(idCell.textContent || "0");
+                  if (id) setSelectedObraId(id);
+                }
+              }
+            }}>
+              <ObrasGrid
+                filteredObras={filteredObras.map(o => ({
+                  ...o,
+                  cp_fisico: o.obra?.serPerc || 0, 
+                  local_estaleiro: o.local_estaleiro || o.condicao
+                }))}
+                loading={loading}
+                filters={{
+                  searchTerm, setSearchTerm,
+                  statusFilter, setStatusFilter,
+                  typeFilter, setTypeFilter
+                }}
+              />
+            </div>
+          )}
         {activeTab === "indicadores" && (
           <div className="flex-1 flex items-center justify-center text-[var(--text-muted)] italic">
             Indicadores de Obras em desenvolvimento...

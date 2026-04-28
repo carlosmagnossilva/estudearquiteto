@@ -14,6 +14,7 @@ Esta sessão focou na implementação de um CRUD completo e revitalização da i
 1. **Fidelidade Visual é Prioridade Máxima**: O usuário forneceu vídeo e protótipos claros. Qualquer desvio (como campos esticados ou cores sem contraste) gera retrabalho imediato.
 2. **Preservação de Propriedades (Golden Rule)**: Funções de utilidade de estilo (como `getInputWidth` ou `getEditValue`) uma vez validadas, **jamais** devem ser removidas ou alteradas em patches subsequentes, a menos que solicitado.
 3. **Verificação Dupla de Temas**: O "Modo Claro" e "Modo Escuro" possuem comportamentos distintos para componentes nativos (como o DatePicker). O uso de `color-scheme` e sombras é mandatório para visibilidade.
+4. **User Stories de Alta Granularidade**: Para evitar ambiguidades, as histórias de usuário devem descrever não apenas a meta, mas a experiência completa: nomes exatos de campos, comportamentos de clique, aparências específicas por tema (claro/escuro) e estados de componente (edição/visualização). Este nível de detalhe é o novo padrão para o projeto.
 
 ## 🛡️ Novas Diretrizes de Trabalho (Para futuras tarefas)
 Para evitar que esses erros se repitam, os agentes devem seguir este checklist antes de propor qualquer mudança em código validado:

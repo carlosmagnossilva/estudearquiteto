@@ -1,4 +1,4 @@
-# Contexto Atual do Projeto (Última Atualização: 28/04/2026 - 16:51)
+# Contexto Atual do Projeto (Última Atualização: 28/04/2026 - 17:55)
 
 ## 🏗️ Arquitetura e Infraestrutura
 - **BFF**: Container App em Azure (`hub-bff-app`), rota `PUT /bff/obras/:id/sobre` operacional com suporte a tokens MSAL.
@@ -10,26 +10,30 @@
 - **Integridade**: Migrations e seeds concluídos para a Austral Abrolhos (Obra 24).
 
 ## ✅ Entregas Concluídas (Módulo Obras)
-- ✅ **CRUD "Sobre a Obra"**: Ciclo completo de leitura e escrita para dados administrativos e técnicos.
+- ✅ **CRUD "Sobre a Obra" (US05)**: Ciclo completo de leitura e escrita para dados administrativos e técnicos.
+- ✅ **Painel de Obras Operacional (US03)**: Grid de alta fidelidade com 16 colunas, focado na "Esteira Financeira" (RE, EM, CO, ES, NC).
 - ✅ **Fidelidade ao Protótipo (Vídeo)**: Interface modularizada com seções em acordeão e tabela de equipe técnica.
+- ✅ **Terminologia de Negócio**: Implementação dos status oficiais (FEL, FECH, EXEC).
 - ✅ **Otimização Multi-Tema**: Estilização 100% via variáveis de CSS, compatível com Dark/Light Mode.
-- ✅ **UX de Edição**: Suporte nativo a calendário (DatePicker) e campos com dimensões inteligentes.
-- ✅ **Eliminação de Hardcode**: Remoção total de mocks locais. Dependência única do backend.
+- ✅ **Padronização de Documentação**: Implementação de User Stories de alta granularidade para US03 e US05.
 
 ## 🛠️ Estado Atual do Sistema
 
 ### Módulo Obras (ObrasModule)
+- **Painel de Obras**: 
+  - Grid operacional completo com suporte a Drag-Scroll.
+  - Colunas de progresso físico (CP%) e financeiro macro (Outlook/Realizado) integradas.
 - **Aba "Sobre a Obra"**: 
   - Layout balanceado com restrições de largura (`max-w-3xl`) para legibilidade.
   - Sincronização em tempo real com o banco de dados via BFF.
-  - Duração total calculada dinamicamente no frontend.
 
 ## 🧠 Aprendizados e Padrões Estabelecidos
-1. **Multi-Theme Inputs**: Uso de `[color-scheme:dark]` condicional para garantir visibilidade do calendário nativo do navegador em temas escuros.
-2. **Layout Balance**: Limitação de largura em tabelas e grids para manter a consistência com protótipos de alta fidelidade em telas ultra-wide.
-3. **Refetch Workflow**: Padrão de atualização de estado via `refetch()` do hook `useBff` após operações bem-sucedidas de `PUT`.
+1. **Fidelidade Visual é Prioridade**: Qualquer desvio de coluna ou nomenclatura gera inconsistência de negócio. O vídeo/protótipo é a verdade única.
+2. **User Stories PO Sênior**: Novo padrão de documentação que descreve experiência, aparência, comportamentos de clique e estados de tema.
+3. **Glossário da Esteira Financeira**: RE (Realizado), EM (Empenhado), CO (Comprometido), ES (Estimado), NC (Não comprometido).
+4. **Multi-Theme Inputs**: Uso de `[color-scheme:dark]` condicional para garantir visibilidade do calendário nativo.
 
 ## 📝 Notas de Operação
 - **Migrations**: Usar `scratch/run_migrations.mjs` para atualizações de schema no Azure SQL.
-- **Bypass Auth**: Utilizar `?bypass=true` para testes locais rápidos, mantendo `AUTH_BYPASS_DEV=true` no backend.
-- **Limpeza de Porta**: Executar `kill-ports.ps1` se houver conflitos nas portas 3000, 4000 ou 5001.
+- **Bypass Auth**: Utilizar `?bypass=true` para testes locais rápidos.
+- **Limpeza de Porta**: Executar `kill-ports.ps1` se houver conflitos.
