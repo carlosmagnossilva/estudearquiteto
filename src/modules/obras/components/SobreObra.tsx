@@ -105,8 +105,9 @@ const SobreObra: React.FC<SobreObraProps> = ({ obraId }) => {
 
       {/* 👥 Seção 2: Equipe Técnica */}
       <Accordion title="Equipe Técnica">
-        <div className="p-4 overflow-hidden rounded-xl border border-white/5">
-          <table className="w-full text-left border-collapse">
+        <div className="p-4 max-w-3xl">
+          <div className="overflow-hidden rounded-xl border border-[var(--border-card)]">
+            <table className="w-full text-left border-collapse bg-[var(--bg-input)]/30">
             <thead>
               <tr className="border-b border-white/10">
                 <th className="py-3 px-4 text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">Função</th>
@@ -121,27 +122,32 @@ const SobreObra: React.FC<SobreObraProps> = ({ obraId }) => {
               <TeamRow role="Responsável pelo Cronograma" name={data?.equipe?.obra?.responsavel_cronograma?.nome} />
             </tbody>
           </table>
+          </div>
         </div>
       </Accordion>
 
       {/* 🚢 Seção 3: Informações da Embarcação */}
       <Accordion title="Informações da Embarcação">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-6 p-4">
-          <DetailItem label="Embarcação" value={data.embarcacao_nome} />
-          <div /> {/* Spacer */}
-          <DetailItem label="Bandeira" value={data.embarcacao_bandeira} isEditing={isEditing} field="embarcacao_bandeira" formData={formData} setFormData={setFormData} />
-          <DetailItem label="Nacionalidade" value={data.embarcacao_nacionalidade} isEditing={isEditing} field="embarcacao_nacionalidade" formData={formData} setFormData={setFormData} />
-          <DetailItem label="Coordenador (a) de frota" name={data?.equipe?.frota?.coordenador?.nome} />
-          <DetailItem label="Gerente de frota" name={data?.equipe?.frota?.gerente?.nome} />
+        <div className="p-4 max-w-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-6">
+            <DetailItem label="Embarcação" value={data.embarcacao_nome} />
+            <div /> {/* Spacer */}
+            <DetailItem label="Bandeira" value={data.embarcacao_bandeira} isEditing={isEditing} field="embarcacao_bandeira" formData={formData} setFormData={setFormData} />
+            <DetailItem label="Nacionalidade" value={data.embarcacao_nacionalidade} isEditing={isEditing} field="embarcacao_nacionalidade" formData={formData} setFormData={setFormData} />
+            <DetailItem label="Coordenador (a) de frota" name={data?.equipe?.frota?.coordenador?.nome} />
+            <DetailItem label="Gerente de frota" name={data?.equipe?.frota?.gerente?.nome} />
+          </div>
         </div>
       </Accordion>
 
       {/* 📍 Seção 4: Localização e Condição */}
       <Accordion title="Localização e Condição">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-6 p-4">
-          <DetailItem label="Local" value={data.local_estaleiro} isEditing={isEditing} field="local_estaleiro" formData={formData} setFormData={setFormData} />
-          <DetailItem label="Condição" value={data.condicao_docagem} isEditing={isEditing} field="condicao_docagem" formData={formData} setFormData={setFormData} />
-          <DetailItem label="Inspeção de casco" value={data.inspecao_casco_status} isEditing={isEditing} field="inspecao_casco_status" formData={formData} setFormData={setFormData} />
+        <div className="p-4 max-w-3xl">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-6">
+            <DetailItem label="Local" value={data.local_estaleiro} isEditing={isEditing} field="local_estaleiro" formData={formData} setFormData={setFormData} />
+            <DetailItem label="Condição" value={data.condicao_docagem} isEditing={isEditing} field="condicao_docagem" formData={formData} setFormData={setFormData} />
+            <DetailItem label="Inspeção de casco" value={data.inspecao_casco_status} isEditing={isEditing} field="inspecao_casco_status" formData={formData} setFormData={setFormData} />
+          </div>
         </div>
       </Accordion>
 
@@ -178,6 +184,25 @@ const Accordion = ({ title, children }: any) => {
 const DetailItem = ({ label, value, name, isEditing, field, type = "text", formData, setFormData, suffix, highlight }: any) => {
   const displayValue = name || value;
   
+  // Para campos de data, precisamos converter o valor ISO do formData para YYYY-MM-DD para o input type="date"
+  const getEditValue = () => {
+    const val = formData?.[field] || "";
+    if (type === "date" && val) {
+      try {
+        return new Date(val).toISOString().split('T')[0];
+      } catch (e) {
+        return val;
+      }
+    }
+    return val;
+  };
+
+  const getInputWidth = () => {
+    if (type === "number") return "max-w-[100px]";
+    if (type === "date") return "max-w-[180px]";
+    return "w-full";
+  };
+
   return (
     <div className="flex flex-col space-y-1.5">
       <span className="text-[10px] font-black text-[var(--text-muted)] uppercase tracking-widest">
@@ -187,9 +212,9 @@ const DetailItem = ({ label, value, name, isEditing, field, type = "text", formD
         <div className="flex items-center gap-2">
             <input 
                 type={type}
-                value={formData[field] || ""}
+                value={getEditValue()}
                 onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                className="bg-white/5 border border-white/10 rounded-lg px-3 py-1.5 text-sm font-bold text-[var(--text-main)] focus:border-[var(--accent)] outline-none w-full"
+                className={`bg-[var(--bg-input)] border border-[var(--border-card)] border-opacity-50 rounded-lg px-3 py-1.5 text-sm font-bold text-[var(--text-main)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/30 outline-none ${getInputWidth()} transition-all dark:[color-scheme:dark] shadow-sm`}
             />
             {suffix && <span className="text-xs font-bold text-[var(--text-muted)]">{suffix}</span>}
         </div>
@@ -203,9 +228,9 @@ const DetailItem = ({ label, value, name, isEditing, field, type = "text", formD
 };
 
 const TeamRow = ({ role, name }: { role: string, name: string }) => (
-  <tr className="border-b border-white/5 hover:bg-white/5 transition-colors group">
+  <tr className="border-b border-[var(--border-card)] hover:bg-[var(--bg-input)] transition-colors group">
     <td className="py-3 px-4 text-[var(--text-muted)] group-hover:text-[var(--text-main)] transition-colors">{role}</td>
-    <td className="py-3 px-4 text-[var(--text-main)]">{name || "-"}</td>
+    <td className="py-3 px-4 text-[var(--text-main)] font-bold">{name || "-"}</td>
   </tr>
 );
 
