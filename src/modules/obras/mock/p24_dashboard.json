@@ -1,0 +1,82 @@
+{
+  "id": 24,
+  "nome": "Austral Abrolhos",
+  "outlook": {
+    "valorProjetado": 38.1,
+    "variacaoFel": -12,
+    "nc": 5,
+    "cp": 95.5,
+    "mc": 171.0,
+    "pp": 13.2
+  },
+  "mixGastos": [
+    { "name": "Materiais", "value": 60, "color": "#1a252c", "percent": 60 },
+    { "name": "Serviços", "value": 25, "color": "#284b63", "percent": 25 },
+    { "name": "Facilidades", "value": 15, "color": "#5ab2d3", "percent": 15 }
+  ],
+  "curvaS": [
+    { "month": "Fev/22", "materiais": 500, "servicos": 0, "facilidades": 0 },
+    { "month": "Mai/22", "materiais": 1200, "servicos": 0, "facilidades": 0 },
+    { "month": "Ago/22", "materiais": 2500, "servicos": 0, "facilidades": 0 },
+    { "month": "Nov/22", "materiais": 3200, "servicos": 0, "facilidades": 0 },
+    { "month": "Fev/23", "materiais": 3800, "servicos": 100, "facilidades": 0 },
+    { "month": "Maio/23", "materiais": 4200, "servicos": 200, "facilidades": 50 },
+    { "month": "Ago/23", "materiais": 4500, "servicos": 300, "facilidades": 100 },
+    { "month": "Nov/23", "materiais": 4850, "servicos": 450, "facilidades": 180 },
+    { "month": "Fev/24", "materiais": 5400, "servicos": 600, "facilidades": 250 },
+    { "month": "Maio/24", "materiais": 6500, "servicos": 1000, "facilidades": 350 },
+    { "month": "Ago/24", "materiais": 11500, "servicos": 2200, "facilidades": 550 },
+    { "month": "Nov/24", "materiais": 15500, "servicos": 3600, "facilidades": 900 },
+    { "month": "Fev/25", "materiais": 17800, "servicos": 4800, "facilidades": 1800 },
+    { "month": "Maio/25", "materiais": 18400, "servicos": 5200, "facilidades": 2500 },
+    { "month": "Jun/25", "materiais": 18450, "servicos": 5250, "facilidades": 2600 },
+    { "month": "Ago/25", "materiais": 18500, "servicos": 5300, "facilidades": 2700 },
+    { "month": "Nov/25", "materiais": 18600, "servicos": 5350, "facilidades": 2750 },
+    { "month": "Fev/26", "materiais": 18700, "servicos": 5400, "facilidades": 2800 },
+    { "month": "Maio/26", "materiais": 18800, "servicos": 5450, "facilidades": 2850 },
+    { "month": "Ago/26", "materiais": 18900, "servicos": 5500, "facilidades": 2900 },
+    { "month": "Nov/26", "materiais": 19000, "servicos": 5550, "facilidades": 2950 },
+    { "month": "Fev/27", "materiais": 19100, "servicos": 5600, "facilidades": 3000 }
+  ],
+  "operacional": {
+    "servicos": {
+      "totalAprovado": 542,
+      "valorAprovado": "R$ 12.4 M",
+      "concluidos": 518,
+      "concluidosPercent": 95,
+      "cancelados": 12
+    },
+    "materiais": {
+      "totalSolicitar": 890,
+      "totalSolicitacoes": 845,
+      "valorSolicitacoes": "R$ 18.2 M",
+      "entregue": 782,
+      "entreguePercent": 92,
+      "valorEntregue": "R$ 16.8 M"
+    },
+    "estaleiros": {
+      "contratadas": 45,
+      "valorContratado": "R$ 5.2 M",
+      "consumidas": 42,
+      "consumidasPercent": 93,
+      "valorConsumido": "R$ 4.8 M"
+    },
+    "statusBarras": {
+      "servicos": [
+        { "color": "#1a252c", "percent": 60 },
+        { "color": "#0088a9", "percent": 30 },
+        { "color": "#5ab2d3", "percent": 10 }
+      ],
+      "materiais": [
+        { "color": "#1a252c", "percent": 75 },
+        { "color": "#0088a9", "percent": 20 },
+        { "color": "#5ab2d3", "percent": 5 }
+      ],
+      "facilidades": [
+        { "color": "#1a252c", "percent": 85 },
+        { "color": "#0088a9", "percent": 10 },
+        { "color": "#5ab2d3", "percent": 5 }
+      ]
+    }
+  }
+}
