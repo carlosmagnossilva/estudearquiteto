@@ -1,0 +1,1361 @@
+﻿HUB DE OBRAS
+Book de Macro ProcessosÚltima atualização em 22 de Outubro 2025
+HUB de Obrasvisão geral de escopo e funções
+Fases
+Marcos de início
+Status
+Pós-Obra
+1. Cadastro da Parada
+2. Templates
+3. Status e Dinâmica de FEL’s
+4. Plan Escopo / Demanda
+5. Sim. Cenários
+6. Esteira Financeira
+7. Outlook
+8. Lançamento Materiais
+9. Lançamento Serviços
+10. Não conformidades
+12. Movimentação de Obras e Escopos
+13. Fechamento
+14. Post Mortem
+Etapas do Processo
+Tempos Típicos
+Planejamento de Longo Prazo
+Backlog
+Abertura ID e Escopos Iniciais
+Até 5 anos antes
+FEL 0
+Estimativas Financeiras
+~ 2anos antes
+FEL 1
+Abertura Orçamentos
+~ 6 a 7meses
+FEL 2
+Importação Lista TMM
+~ 2 a 3meses
+Fechamento
+Conclusão do Comissionamento
+~ 3meses
+Pós-Audit
+Fechamento Orçamento
+~ 3meses
+Concluída
+Pós-Audit apresentado
+~ 1mês
+11. GMUDs
+FEL 3
+Congela-mento
+~ 2 a 3meses
+Obra
+Em Execução
+Execução
+~ 10 a 120 dias
+FEL 4
+D-1Obra(s)
+1 dia
+Pré-Obra(Planejamento Técnico e Financeiro)
+
+TM Master
+Protheus
+Nota: Mapa das principais ferramentas com alguma relação com o financeiro das Paradas e Obras, produzido no final do 1º semestre de 2025.
+Conexão Direta com PCS
+Conexão Indireta com PCS
+Visão ecossistema de ferramentas e sistemas no modelo atual
+
+
+
+
+
+
+
+
+
+
+FERRAMENTA
+
+HUB de Obrasstatus da Documentação de Processos
+Tema 01: Cadastro da ParadaTema 02: TemplatesTema 03: Status e Dinâmica de FEL’sTema 04: Planejamento de Escopo / DemandasTema 05: Simulação de CenáriosTema 06: Esteira FinanceiraTema 07: Outlook (em desenvolvimento)Tema 08: Lançamento Materiais (em desenvolvimento)Tema 09: Lançamento Serviços (em desenvolvimento)Tema 10: Não Conformidades (em desenvolvimento)Tema 11: GMUDsTema 12: Movimentação de Obras e Escopos (em desenvolvimento)Tema 13: Fechamento (em desenvolvimento)Tema 14: Post Morten (em desenvolvimento)
+100%90%85%100%100%70%50%30%30%50%100%30%50%50%
+Capítulo
+% Completo
+Ordem
+telas mock-upstatus ANDA e FECHfluxos, processos
+#2#1#6#7#4#5#9#8#10#11
+Prazo Est.
+1d1d3d2d3d3d2d2d2d2d
+Comunicações / disparos de acompanhamento via WhatsApp, onde entra? Outlook?
+Fluxo de Aprovação do Planejamento = entra na GMUD?
+Tema 01: Cadastro da ParadaTema 02: TemplatesTema 03: Status e Dinâmica de FEL’sTema 04: Planejamento de Escopo / DemandasTema 05: Simulação de CenáriosTema 06: Esteira FinanceiraTema 07: Outlook (em desenvolvimento)Tema 08: Lançamento Materiais (em desenvolvimento)Tema 09: Lançamento Serviços (em desenvolvimento)Tema 10: Não Conformidades (em desenvolvimento)Tema 11: GMUDsTema 12: Movimentação de Obras e Escopos (em desenvolvimento)Tema 13: Fechamento (em desenvolvimento)Tema 14: Post Morten (em desenvolvimento)Anexo: BI Capex
+Tema 01: Cadastro da ParadaTema 02: TemplatesTema 03: Status e Dinâmica de FEL’sTema 04: Planejamento de Escopo / DemandasTema 05: Simulação de CenáriosTema 06: Esteira FinanceiraTema 07: Outlook (em desenvolvimento)Tema 08: Lançamento Materiais (em desenvolvimento)Tema 09: Lançamento Serviços (em desenvolvimento)Tema 10: Não Conformidades (em desenvolvimento)Tema 11: GMUDsTema 12: Movimentação de Obras e Escopos (em desenvolvimento)Tema 13: Fechamento (em desenvolvimento)Tema 14: Post Morten (em desenvolvimento)Anexo: BI Capex
+
+
+1. Cadastro da Parada
+2. Templates
+4. Plan Escopo / Demanda
+5. Sim. Cenários
+6. Esteira Financeira
+7. Outlook
+8. Lançamento Materiais
+9. Lançamento Serviços
+10. Não conformidades
+11. GMUDs
+12. Movimentação de Obras e Escopos
+13. Fechamento
+14. Post Mortem
+Funções HUB
+Fases
+Marcos de início
+Status
+Pré-Obra(Planejamento Técnico e Financeiro)
+Pós-Obra
+Tempos Típicos
+Planejamento de Longo Prazo
+Backlog
+Abertura ID e Escopos Iniciais
+Até 5 anos antes
+FEL 0
+Estimativas Financeiras
+~ 2anos antes
+FEL 1
+Abertura Orçamentos
+~ 6 a 7meses
+FEL 2
+Importação Lista TMM
+~ 2 a 3meses
+FEL 3
+Congela-mento
+~ 2 a 3meses
+Obra
+Em Execução
+Execução
+~ 10 a 120 dias
+FEL 4
+D-1Obra(s)
+1 dia
+Fechamento
+Conclusão do Comissionamento
+~ 3meses
+Pós-Audit
+Fechamento Orçamento
+~ 3meses
+Concluída
+Pós-Audit apresentado
+~ 1mês
+3. Status e Dinâmica de FEL’s
+HUB de Obrastema 03: Status e Dinâmica de FEL’s
+Status da Parada 		(1/2)Marcos de início e pré-requisitos mínimos para a mudança de status
+Fases
+Marcos de início
+Status
+Pré-Obra(Planejamento Técnico e Financeiro)
+Pós-Obra
+Tempos Típicos
+Planejamento de Longo Prazo
+Backlog
+Abertura ID e Escopos Iniciais
+Até 5 anos antes
+FEL 0
+Estimativas Financeiras
+~ 2anos antes
+FEL 1
+Abertura Orçamentos
+~ 6 a 7 meses
+FEL 2
+Importação Lista TMM
+~ 2 a 3 meses
+FEL 3
+Congela-mento
+~ 2 a 3 meses
+Obra
+Em Execução
+Execução
+~ 10 a 120 dias
+FEL 4
+D-1Obra(s)
+1 dia
+Fechamento
+Conclusão do Comissionamento
+~ 3meses
+Pós-Audit
+Fechamento Orçamento
+~ 3meses
+Concluída
+Pós-Audit apresentado
+~ 1mês
+Pré-requisitos mínimos para formalização do FEL-0Parada criada no SGO com ID cadastrado ...... e em Backlog no HUB (atualização SGO > HUB de forma automatizada)Pelo menos 1 demanda por Obra com custos estimados e mensalizados
+
+Pré-requisito mínimo para formalização do FEL-1Orçamento(s) aberto no Protheus (via habilitação da Controladoria dos coletores de Obra para o ID da Parada)
+
+Pré-requisitos mínimos para formalização FEL-2 Lista de serviços importada do TM Master (importação arquivo excel)Estimativas de custos para todas as linhas de serviço (Estaleiro e Oficinas)Novas demandas que surjam devem ter custos estimados associados
+
+Pré-requisitos mínimos para formalizar o FEL-3Todos os serviços e materiais mapeados devem ter pelo menos a estimativa de custosTodas as demandas devem ter saldos financeiros maiores ou iguais a zeroEventuais cenários alternativos da Parada devem ser descartados
+
+Pré-requisitos mínimos para formalizar o FEL-4Todos os serviços e materiais mapeados devem ter pelo menos a estimativa de custosTodas as GMUD’s abertas até o momento devem estar aprovadas e ter valores definidos
+
+
+
+Fases
+Marcos de início
+Status
+Pré-Obra(Planejamento Técnico e Financeiro)
+Pós-Obra
+Tempos Típicos
+Planejamento de Longo Prazo
+Backlog
+Abertura ID e Escopos Iniciais
+Até 5 anos antes
+FEL 0
+Estimativas Financeiras
+~ 2anos antes
+FEL 1
+Abertura Orçamentos
+~ 6 a 7 meses
+FEL 2
+Importação Lista TMM
+~ 2 a 3 meses
+FEL 3
+Congela-mento
+~ 2 a 3 meses
+Obra
+Em Execução
+Execução
+~ 10 a 120 dias
+FEL 4
+D-1Obra(s)
+1 dia
+Fechamento
+Conclusão do Comissionamento
+~ 3meses
+Pós-Audit
+Fechamento Orçamento
+~ 3meses
+Concluída
+Pós-Audit apresentado
+~ 1mês
+
+Pré-requisitos mínimos para status “Em Execução”Todos os serviços e materiais mapeados devem ter pelo menos a estimativa de custosTodas as GMUD’s abertas até o momento devem estar aprovadas e ter valores definidos
+
+Pré-requisitos mínimos para para status “Em Fechamento”Obra finalizadaTodos os serviços devem estar atrelados a uma OSTodos os materiais devem estar atrelados a pelo menos um serviço
+
+Pré-requisitos mínimos para para status “Pós Audit”Todos os serviços com OS devem ter pedidos de compra emitidos e aprovadosTodas as VOR devem ter pedidos de compra aprovadosTodos os materiais devem ter pedidos de compra aprovados ou cancelados
+
+Pré-requisitos mínimos para para status “Concluída”Todas as pendências financeiras devem estar saneadas; Pedidos de compra ainda em aberto devem estar formalmente justificados
+
+Status da Parada 		(2/2)Marcos de início e pré-requisitos mínimos para a mudança de status
+[FEL-0 para FEL-1] Da primeira estimativa financeira à abertura de Orçamento e Coletores 
+
+Planejamento AT
+
+Necessidade de parada identificada
+Nasce o ID da Parada
+Simulação de Cenários
+Abrir Orçamento e Coletores para ID no Protheus
+Registro do FEL-1 a partir de ação manual no HUB até 7 dias após a abertura do orçamento
+Solicitar abertura de Orçamento e Coletores para ID
+1
+1
+
+Orçamento e Coletores habilitados
+Controladoria
+Dados da Parada são importados para o HUB
+
+Necessário simular diferentes cenários?
+~ 10 a 12 meses antes da parada
+
+Protheus comunica ao HUB que o orçamento foi aberto
+
+Sim
+Não
+
+Usar modelo existente?
+Não
+Selecionar modelos
+Sim
+Pré-requisito mínimo para formalização do FEL-1: Orçamento(s) aberto no Protheus (via habilitação da Controladoria dos coletores de Obra para o ID da Parada)
+Parada entra em FEL-0
+Parada cadastrada no HUB
+
+Salvar FEL-1
+
+FEL-1 salvo
+Parada em status “backlog” até primeiro cadastro de estimativa financeira
+Abertura de parada no SGO
+Imp: processo de inclusão do ID da Parada nos sistemas sendo desenvolvido em paralelo a este projeto do HUB
+[FEL-1 para FEL-2] Importação da Lista de Serviços TM Master
+
+Planejamento AT
+
+FEL-1
+Atribuir uma demanda ao serviço
+Registro do FEL-2 a partir de ação manual no HUB até 7 dias após a importação da lista
+Pré-requisitos mínimos para formalização FEL-2: Lista de serviços importada do TM Master (importação arquivo excel)Estimativas de custos para todas as linhas de serviço (Estaleiro e Oficinas)Novas demandas que surjam devem ter custos estimados associados
+Cadastrar JOB/ONE das áreas no TM Master 
+
+1
+1
+Manut. Prev.
+Salvar FEL-2
+Revisar estimativas não comprometidas e saldos
+Revisar estimativas de custos
+
+Há necessidade de materiais?
+Cadastrar material no HUB
+Sim
+Não
+Avaliar serviços, eliminar duplicidades e aglutinar serviços de escopo semelhante
+
+Escopo da parada atualizado
+Visitar embarcação para detalhar necessidades
+
+FEL-2 salvo
+2
+2
+A Job List é um agrupador dos JOB/ONE que os vincula ao ID da Parada (similar a um “diretório”)
+Criar Job List no TM Master
+Selecionar e importar Job List para o HUB
+Estimar custos dos JOB/ONE
+
+
+Integração com outro sistema
+Atividade executada sem integração
+Legenda:
+Ação manual para acionar integração
+
+[FEL-2 para FEL-3] Refinamento e congelamento do(s) Escopo(s) da(s) Obra(s)
+
+FEL-2
+Revisar escopo e custos estimados
+
+Atribuir responsáveis
+Planejamento AT
+Definir nível de criticidade dos serviços
+
+Reunião de Congelamento (3 meses antes do início da obra)
+Revisar escopo
+Revisar responsáveis
+
+FEL-3 salvoEscopo revisado e entregue à Gerência de Obras eContingência da Parada definida
+1
+1
+Revisar estimativas não comprometidas e saldos
+Salvar FEL-3
+Registro do FEL-3 a partir de ação manual no HUB até 7 dias após o congelamento
+Pré-requisitos mínimos para formalizar o FEL-3: Todos os serviços e materiais mapeados devem ter pelo menos a estimativa de custosTodas as demandas devem ter saldos financeiros maiores ou iguais a zeroEventuais cenários alternativos da Parada devem ser descartados
+
+
+Escopo CongeladoFEL-3
+Levar fornecedores a bordo
+Equipe de Obras / Manutenção Mecânica / Manutenção Elétrica / Telecomunicações
+Cotar serviços com fornecedores
+Definir fornecedores e emitir OS via TMM
+Registrar fornecedor, nº OS e valor cotado no HUB
+1
+1
+[FEL-3 para FEL-4] Processo de Cotação de Serviços
+
+Mudança no escopo?
+Abertura de GMUD
+Balancear contingências das demandas
+Salvar FEL-4
+
+FEL-4 salvoMaior parte dos serviços cotados e fornecedores de serviços definidos
+Registro do FEL-4 a partir de ação manual no HUB até 3 dias após o início da Parada
+Pré-requisitos mínimos para formalizar o FEL-4:Todos os serviços e materiais mapeados devem ter pelo menos a estimativa de custosTodas as GMUD’s abertas até o momento devem estar aprovadas e ter valores definidos
+ver Cap 07 para detalhes do processo de Outlook
+ver Cap 11 para detalhes do processo de GMUD
+Detalhes importantes
+No momento da criação no SGO, a Parada é registrada no HUB através de integração (ativa) no status Backlog. O FEL 0 inicia a partir do registro das primeiras estimativas financeiras nas demandas.O HUB será capaz de fazer um check entre os tipos de obras abertas vs Orçamentos/Coletores abertos no Protheus...Caso exista alguma divergência, será exibido um alerta no HUB, o botão do FEL-1 não será habilitado e não será possível formalizar essa etapa até que o problema seja normalizadoAs obras da parada deverão ser alteradas no SGO e o HUB deverá ser atualizado (refresh) para que os coletores estejam corretamente refletidos entre HUB e ProtheusOs FEL’s 1, 2, 3 e 4 serão formalizados de maneira manual a partir do cumprimento de marcos e pré-requisitos, como demonstrado no slide 06O HUB será capaz de salvar versões intermediárias dos FEL’s em cada data de comitê (1 comitê por mês – limite máx 25 versões dentro do mesmo FEL, podendo sobrescrever o que não foi pro comitê)FEL’s vamos ter sempre a visão por portfolio (várias paradas), por linha de serviço e por linha de material, considerando todas as da esteira financeira (estimado, cotado, empenhado e realizado)A Importação da lista de serviços TM Master será feita de maneira manual uma única vez. Outros serviços vindos de qualquer origem deverão ser cadastrados de maneira manualUma vez a lista de serviços consolidada enviada pela área de Manutenção deverá ter uma estimativa de custos para cada serviço. A importação da lista só será possível se todas as linhas de serviço tenham estimativas de custo. Caso contrário não será possível realizar a importação.
+@Carlos, avaliar sobreposição com documentação técnica
+Tema 01: Cadastro da ParadaTema 02: TemplatesTema 03: Status e Dinâmica de FEL’sTema 04: Planejamento de Escopo / DemandasTema 05: Simulação de CenáriosTema 06: Esteira FinanceiraTema 07: Outlook (em desenvolvimento)Tema 08: Lançamento Materiais (em desenvolvimento)Tema 09: Lançamento Serviços (em desenvolvimento)Tema 10: Não Conformidades (em desenvolvimento)Tema 11: GMUDsTema 12: Movimentação de Obras e Escopos (em desenvolvimento)Tema 13: Fechamento (em desenvolvimento)Tema 14: Post Morten (em desenvolvimento)Anexo: BI Capex
+
+
+1. Cadastro da Parada
+FEL 3
+Congela-mento
+~ 2 a 3 meses
+Obra
+Em Execução
+Execução
+~ 10 a 120 dias
+FEL 4
+D-1Obra(s)
+1 dia
+Pré-Obra(Planejamento Técnico e Financeiro)
+11. GMUDs
+HUB de Obrastema 04: Planejamento por Escopo/Demanda
+Fases
+Marcos de início
+Status
+Pós-Obra
+2. Templates
+3. Status e Dinâmica de FEL’s
+5. Sim. Cenários
+6. Esteira Financeira
+7. Outlook
+8. Lançamento Materiais
+9. Lançamento Serviços
+10. Não conformidades
+12. Movimentação de Obras e Escopos
+13. Fechamento
+14. Post Mortem
+Funções HUB
+Tempos Típicos
+FEL 0
+Estimativas Financeiras
+~ 2anos antes
+FEL 1
+Abertura Orçamentos
+~ 6 a 7 meses
+FEL 2
+Importação Lista TMM
+~ 2 a 3 meses
+Fechamento
+Conclusão do Comissionamento
+~ 3meses
+Pós-Audit
+Fechamento Orçamento
+~ 3meses
+Concluída
+Pós-Audit apresentado
+~ 1mês
+
+Planejamento de Longo Prazo
+Backlog
+Abertura ID e Escopos Iniciais
+Até 5 anos antes
+4. Plan Escopo / Demanda
+O planejamento financeiro da Parada começa, em média, de 2 a 3 anos antes da execução. A partir do calendário de Paradas (SGO), o time de Planejamento da Área Técnica (AT) define:O que será realizado – o Escopo da(s) Obra(s)Como será realizado – tanto em termos de Serviços de Estaleiros e Oficinas quanto Materiais Nacionais e ImportadosO custo estimado – em USD (dólar dos Estados Unidos) e mensalizado conforme premissas / históricos
+Planejamento por Escopo/DemandaEstrutura de Dados – Modelo Atual
+Calendário de Paradas SGO
+Escopo das Obras
+SGOSistema de Gestão de Obras
+Exemplo de Escopo (ID-83) emFicha de Abertura de Parada Técnica
+Custo Estimado em USD e Mensalizado 
+Exemplo de Detalhamento (ID-83) em Executável Orçamento 24-28 – V3.2
+
+
+HUB de ObrasExemplo de Descrição de Escopo em Ficha de Abertura/Atualização de Paradas Técnicas
+ID-83 Parcel do Bandolim
+
+
+HUB de ObrasExemplo de Detalhamento (ID-83) em Executável Orçamento 24-28 – V3.2
+
+Embora o planejamento financeiro da Parada inicie a partir das demandas, as estimativas são registradas em uma estrutura de coletores, fazendo com que a conexão entre demanda e custos estimados das Obras seja “perdida” ao longo do processo
+Planejamento por Escopo/DemandaEstrutura de Dados – Gaps do Modelo Atual
+
+
+
+
+
+
+
+
+
+
+VISÃO COLETORES FINANCEIROS
+VISÃO ESCOPO / DEMANDAS
+Planejamento por Escopo/DemandaColetores Financeiros Analíticos Categorizados em Materiais, Oficinas e Estaleiro
+Fonte: Treinamento Operação V6 - Controladoria
+Coletores SintéticosIdentificam o tipo de Obra
+Coletores AnalíticosIdentificam o tipo de Custo
+Demanda 2
+O novo modelo do HUB prevê que o planejamento financeiro seja feito a partir das Demandas previstas e as estimativas de custos de Materiais, Oficinas e Estaleiro mensalizados.
+Planejamento por Escopo/DemandaEstrutura de Dados – Novo Modelo
+Σ Valor total estimado 103 - Parada Programada
+ID-XX
+Σ Valor total estimado 101 - Parada Especial
+Demanda 3
+Demanda 4
+ID da Parada
+Material
+Oficina
+Estaleiro
+Material
+Oficina
+Estaleiro
+Material
+Oficina
+Estaleiro
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+Σ Valor total estimado 100 - Upgrade – Ativo/Contrato
+Demanda 1
+DemandasPlanejadas
+ObrasPlanejadas
+Material
+Oficina
+Estaleiro
+Gruposde Custo
+Custo Estimado Mensalizado
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+Demanda 2
+Dessa forma, temos a visão executiva dos das grandes linhas de custos e conseguimos rastrear as estimativas por Demandas e Obra
+Planejamento por Escopo/DemandaEstrutura de Dados – Novo Modelo
+Σ Valor total estimado 103 - Parada Programada
+Σ Valor total estimado 101 - Parada Especial
+Demanda 3
+Demanda 4
+ID da Parada
+Material
+Oficina
+Estaleiro
+Material
+Oficina
+Estaleiro
+Material
+Oficina
+Estaleiro
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+DemandasPlanejadas
+ObrasPlanejadas
+Gruposde Custo
+Custo Estimado Mensalizado
+
+ID-XX
+Σ Valor total estimado 100 - Upgrade – Ativo/Contrato
+Demanda 1
+Material
+Oficina
+Estaleiro
+
+Mês 1
+R$ X mil
+...
+Mês n
+R$ X mil
+...
+Parada Programada
+Parada Upgrade – Ativo/Contrato
+Vistoria, reparos e pintura de casco e tanques
+Azimuth thruster retractable (OVH de 10 anos)
+Planejamento por Escopo/DemandaEstrutura de Dados - Exemplo
+ID da Parada
+Obras da Parada
+Demandas
+Tipos de Custo
+Custo Estimado Mensalizado
+
+Parada Especial
+
+
+
+Cadastrar e/ou atualizar cenários de Parada no SGO
+Cadastrar Demandas e Estimativas financeiras no HUB
+EXEMPLO
+24
+Oficina
+Material
+Estaleiro
+Tunnel thrusters (selagem – escopo 2,5 anos) 
+
+
+
+
+Planejamento por Escopo/DemandaConceito dos diferentes níveis da estrutura de dados do novo modelo
+
+
+
+
+ID da Parada
+Coletor Sintético
+Escopo/Demandas
+Tipos de Custo
+“CPF” da ParadaNúmero identificador único e sequencial que identifica a parada e grande agrupador de custos
+
+Tipos de obra executadas na paradaExemplo: Parada Upgrade - Ativo/Contrato, Parada Especial, Parada Intermediária, Parada Programada, Parada Emergencial
+
+Entregas planejadas da ParadaDefinidas pela área de Planejamento, as demandas são grandes agrupadores de escopo e custos do HUB.Exemplos: Revisão MCP’s 20k / Adequar guindaste
+
+Grandes linhas de custo de uma ParadaMateriais, Oficinas e Estaleiro
+
+Origem da DemandaFonte onde a demanda foi identificadaEx.: Manual de Motores da Carterpilar, Gap Analisys Contrato X
+Requisito da DemandaNecessidade que a demanda atendeEx.: Lista de itens da revisão de 20k do motor, Item 2 do Contrato X
+Planejamento por Escopo/DemandaMacro Processo
+
+O time de Planejamento da Área Técnica define as grandes entregas de cada ObraConforme descrito no capítulo ‘Cadastro de Parada’, o time de Planejamento deve acessar o SGO e liberar a Parada para edição no HUB. A partir desse momento, o HUB permite a edição e inclusão dos custosNesse momento o usuário poderá também selecionar um template de Obra com demandas e suas respectivas estimativas financeiras pré-preenchidas. Essa opção será detalhada no próximo capítulo
+Definir Obras eGrandes Entregas
+
+
+Na tela inicial do HUB, o time de Planejamento seleciona a Parada e escolhe a opção “Editar Parada”. O sistema direciona o usuário para a tela “Ficha da Parada”, onde estão lista dos todos os escopos/demandasNa tela “Ficha da Parada” o usuário deve clicar em “Editar demanda” para abrir a página “Ficha da Demanda”Nessa tela o usuário deve incluir as estimativas financeiras de Materiais, Oficinas e Estaleiro para cada demandaO HUB, então, gera automaticamente uma proposta de mensalização com base nas curvas padrão de cada tipo de custo, permitindo que o usuário edite a distribuição mensal quando necessárioAo salvar as alterações, elas são refletidas nas projeções financeiras, a Parada passa para o status FEL-0 e o time de FP&A é notificado
+Estimar Custos Mensalizados
+
+
+Caso seja necessário, as estimativas podem ser atualizadas durante todo o ciclo de vida da Parada a partir do FEL-0A cada nova atualização, o time de FP&A recebe uma notificação alertando que uma mudança foi realizadaNo momento em que for necessário realizar a primeira compra de material, o usuário gera o “Relatório de Ficha de Abertura”, contendo todas as demandas/escopos e seus valores de Materiais, Oficinas e Estaleiro, e envia à Controladoria para abertura do orçamento da Parada
+Atualizar Estimativas e Enviar Ficha de Abertura
+
+
+A Controladoria recebe a Ficha de Abertura e cadastra o novo orçamento no Protheus (FEL-0  FEL-1), preenchendo as estimativas financeiras conforme os coletores sintéticos por tipo de Obra e os coletores analíticos definidos no “De/Para” abaixo:Materiais – 10X.01 - A - EstruturaEstaleiro – 10X.11 – K - Despesas em GeralOficinas – 10X.12 - L - Subcontratação de ServiçosConcluído o cadastro no Protheus, o HUB recebe a informação via integração e notifica a Área Técnica e o FP&A de que o orçamento foi criado, permitindo a formalização do FEL-1IMPORTANTE: No FEL-4, o Planejamento da Área Técnica gera relatório atualizado com custos por Coletor Analítico, para a Controladoria atualizar o orçamento no Protheus
+Registrar Estimativas no Protheus
+
+Planejamento por Escopo/DemandaObservações importantes
+Diferentemente do processo atual, as estimativas financeiras devem ser registradas no HUB de Obras em reais (BRL) e não mais em dólar (USD). A possibilidade de inclusão de moedas estrangeiras será estudada para uma fase posteriorAs curvas de mensalização das estimativas devem ser parametrizáveis no HUB a partir das datas início e fim das Paradas por cada tipo de custo (material, oficina e estaleiro). Contudo, essa funcionalidade deve permitir ajustes manuais por parte do usuárioO HUB deve ser capaz de gerar um relatório financeiro da Parada, em PDF, com a seguinte estrutura de dados:Σ Estimativas por Obra  Σ Estimativas por Demandas  Σ  Estimativas por tipo de custo (Materiais, Oficinas e Estaleiro)Esse relatório será utilizado como a Ficha de Abertura de Orçamento. O envio dessa ficha para a Controladoria é o principal marco para formalização do FEL-1 da ParadaNovas demandas podem ser adicionadas a qualquer momento até o fim da fase de execução da Parada:Até o fim do FEL-2 o responsável por incluir novas demandas é a área de Planejamento da Área Técnica. A partir do FEL-3 o responsável é a Área de Planejamento da Gerência de ObrasToda e qualquer inclusão de nova demanda, exclusão ou alteração da estimativa de alguma demanda existente deve ser justificada a partir do FEL-1Novas demandas podem ser adicionadas manualmente a partir do HUB ou ainda através a funcionalidade “Template de Obra” que será detalhada no próximo Capítulo
+
+
+[Σ  R$ Estimado]
+[Σ R$ Comprometido]
+
+Informações básicas
+Previsto em Orçamento?
+Condição
+
+Seco
+
+Molhado
+
+
+Demandas
++ Cadastrar Demanda
+
+Obras da Parada
+
+
+
+Visão Geral
+Detalhamento Financeiro
+
+Sim
+
+Não
+
+[Σ Saldo]
+Planejamento por Escopo/DemandaMockup Ficha da Parada
+
+
+Planejamento por Escopo/DemandaMockup Ficha de Demanda
+
+Cadastro da demanda
+Excluir
+Editar
+Salvar
+
+Visão do Custo Estimado Mensalizado
+
+Cadastro de Estimativas
+Salvar
+Materiais
+
+
+
+
+
+Oficina
+Estaleiro
+Contingência
+[materiais]
+[oficina]
+[estaleiro]
+[contingencia]
+Estimativa
+[materiais]
+[oficina]
+[estaleiro]
+[contingencia]
+Comprometido
+[estimativa]
+[oficina]
+[estaleiro]
+[contingencia]
+Saldo
+
+Esteira Financeira (Comprometido)
+Comprometido
+Cotado
+Empenhado
+Realizado
+[estimativa]
+[oficina]
+[estaleiro]
+[estimativa]
+[oficina]
+[estaleiro]
+[estimativa]
+[oficina]
+[estaleiro]
+[estimativa]
+[oficina]
+[estaleiro]
+Tema 01: Cadastro da ParadaTema 02: TemplatesTema 03: Status e Dinâmica de FEL’sTema 04: Planejamento de Escopo / DemandasTema 05: Simulação de CenáriosTema 06: Esteira FinanceiraTema 07: Outlook (em desenvolvimento)Tema 08: Lançamento Materiais (em desenvolvimento)Tema 09: Lançamento Serviços (em desenvolvimento)Tema 10: Não Conformidades (em desenvolvimento)Tema 11: GMUDsTema 12: Movimentação de Obras e Escopos (em desenvolvimento)Tema 13: Fechamento (em desenvolvimento)Tema 14: Post Morten (em desenvolvimento)Anexo: BI Capex
+
+
+Planejamento de Longo Prazo
+Backlog
+Abertura ID e Escopos Iniciais
+Até 5 anos antes
+1. Cadastro da Parada
+11. GMUDs
+HUB Capextema 06: Esteira Financeira
+Fases
+Marcos de início
+Status
+2. Templates
+3. Status e Dinâmica de FEL’s
+4. Plan Escopo / Demanda
+5. Sim. Cenários
+7. Outlook
+8. Lançamento Materiais
+9. Lançamento Serviços
+10. Não conformidades
+12. Movimentação de Obras e Escopos
+13. Fechamento
+14. Post Mortem
+Funções HUB
+Tempos Típicos
+Concluída
+Pós-Audit apresentado
+~ 1mês
+
+6. Esteira Financeira
+FEL 3
+Congela-mento
+~ 2 a 3 meses
+Obra
+Em Execução
+Execução
+~ 10 a 120 dias
+FEL 4
+D-1Obra(s)
+1 dia
+Pré-Obra(Planejamento Técnico e Financeiro)
+FEL 0
+Estimativas Financeiras
+~ 2anos antes
+FEL 1
+Abertura Orçamentos
+~ 6 a 7 meses
+FEL 2
+Importação Lista TMM
+~ 2 a 3 meses
+Fechamento
+Conclusão do Comissionamento
+~ 3meses
+Pós-Audit
+Fechamento Orçamento
+~ 3meses
+Pós-Obra
+Esteira FinanceiraProposta HUB
+O HUB utiliza uma esteira com 05 estágios financeiros ao longo de todo o ciclo de vida de uma Parada e suas Obras, aplicáveis tanto para materiais quanto oficinas e estaleiro
+Estágio da esteira financeira que define a primeira visão de custo da Parada e ObrasEstimativas são realizadas de maneira agregada, no nível de demanda e por grupo de custo:EstaleiroOficinasMateriaisEstimativas são mensalizadas a partir de premissas cadastradas no HUB para a Parada e Obras
+Estimado
+Definição
+1
+Respon-sável(is)
+Planejamento AT
+Não inclui custos de consultoria aduaneira que são considerados como OpexO custo total da importação de materiais inclui diferentes fornecedores (fabricante, transportadora, governo etc.)
+
+Estágio da Esteira
+100 - Upgrade
+103 - Parada Progamada
+Σ R$ Demanda 1
+Σ R$ Material
+Σ R$ Oficina
+Σ R$ Estaleiro
+ID-XX
+ID da Parada
+DemandasPlanejadas
+ObrasPlanejadas
+
+
+Σ R$ Demanda 2
+...
+$100
+...
+$60
+$40
+$--
+Exemplo Demanda 1:(números fictícios)MANUTENÇÃO DO TIPO OVERHAULDO BOW THRUSTER TÚNEL 1
+Esteira FinanceiraProposta HUB
+O HUB utiliza uma esteira com 05 estágios financeiros ao longo de todo o ciclo de vida de uma Parada e suas Obras, aplicáveis tanto para materiais quanto oficinas e estaleiro
+Estágio da esteira financeira que define a primeira visão de custo da Parada e ObrasEstimativas são realizadas de maneira agregada, no nível de demanda e por grupo de custo:EstaleiroOficinasMateriaisEstimativas são mensalizadas a partir de premissas cadastradas no HUB para a Parada e Obras
+Comprometido
+Estimado
+Definição
+1
+2
+Respon-sável(is)
+Planejamento AT
+Estágio de desdobramento das estimativas das demandas em “linhas de serviço” e materiais específicosO saldo positivo entre os valores comprometidos e o valor estimado para a demanda assume o status de Não Comprometido (NC)
+Não inclui custos de consultoria aduaneira que são considerados como OpexO custo total da importação de materiais inclui diferentes fornecedores (fabricante, transportadora, governo etc.)
+Estágio da Esteira
+100 - Upgrade
+103 - Parada Progamada
+Σ R$ Demanda 1
+Σ R$ Material
+Σ R$ Oficina
+Σ R$ Estaleiro
+ID-XX
+ID da Parada
+DemandasPlanejadas
+ObrasPlanejadas
+
+
+Exemplo Demanda 1:(números fictícios)MANUTENÇÃO DO TIPO OVERHAULDO BOW THRUSTER TÚNEL 1
+Σ R$ Demanda 2
+...
+$100
+...
+$60
+$40
+$--
+Σ R$ Não Comprometido (NC)
+Material 1
+Material 2
+Oficina 1
+$40
+$10
+$40
+$10
+
+Contabilizado
+Esteira FinanceiraProposta HUB
+O HUB utiliza uma esteira com 05 estágios financeiros ao longo de todo o ciclo de vida de uma Parada e suas Obras, aplicáveis tanto para materiais quanto oficinas e estaleiro
+Estágio da esteira financeira que define a primeira visão de custo da Parada e ObrasEstimativas são realizadas de maneira agregada, no nível de demanda e por grupo de custo:EstaleiroOficinasMateriaisEstimativas são mensalizadas a partir de premissas cadastradas no HUB para a Parada e Obras
+Empenhado
+Cotado
+Estimado
+Não Comprometido
+Definição
+1
+2
+3
+4
+5
+Respon-sável(is)
+Planejamento AT
+Estágio de desdobramento das estimativas das demandas em “linhas de serviço” e materiais específicosO saldo positivo entre os valores comprometidos e o valor estimado para a demanda assume o status de Não Comprometido (NC)
+Estágio de Cotação dos materiais e serviços de oficinas e estaleiros junto aos fornecedores, a partir do escopo aprovado para a Parada e Obras:Estaleiro: valor da PPU e PPU adicional (se houver) Oficinas: valor da Ordem de Serviço (OS) emitida via TM MasterMateriais: valor da cotação obtida por Suprimentos após abertura da Solicitação de Compras (SC)Nacionais: Módulo de cotação do ProtheusImportados: Simulação de Importação (SI)
+Equipe de ObrasSuprimentos
+Estágio de formalização da compra de materiais e serviços via aprovação de Pedido de Compra (PC) e registro no ProtheusEstaleiro: PCs aprovados para a PPU, PPU adicional e VOR’s (se houver) Oficinas: PCs aprovados após a validação do Boletim de Medição (BM)Materiais Importados1: PCs aprovados2 no valor total da importação (material + custos importação + impostos)Materiais Nacionais: PCs aprovados com base na quantidade atendida
+Estágio final da esteira financeira ...... com o recebimento e classificação no Protheus do documento para pagamento ao fornecedor ...... e contabilização da valor realizado para o material ou serviço utilizado pela Parada e Obras
+Contabilidade
+Aprovadores, de acordo com alçada
+Não inclui custos de consultoria aduaneira que são considerados como OpexO custo total da importação de materiais inclui diferentes fornecedores (fabricante, transportadora, governo etc.)
+
+Estágio da Esteira
+Comprometido
+Pago
+6
+Para reporte ao FMM
+Contabilidade
+Contabilizado
+Esteira FinanceiraProposta HUB
+Resumo sobre marcos de cada estágio da esteira financeira e suas fontes de dados / informação
+Empenhado
+Cotado
+Comprometido
+Estimado
+1
+2
+3
+4
+5
+Estágio da Esteira
+Materiais
+Naci-onais
+Impor-tados
+Serviços
+Ofici-nas
+Estalei-ros
+Marco do estágio: primeiros lançamentos de valores estimados, agregados no nível de materiaisFonte de dado: Input manual no HUB
+Marco do estágio: desdobramento dos valores estimados de materiais por origem nacional ou importadoFonte de dado: Input manual no HUB
+Marco do estágio: cotação recebida do fornecedorFonte de dado: módulo de cotação do Protheus
+Marco do estágio: Simulação de importação (SI) abertaFonte de dado: Fluig
+Marco do estágio: OS emitida para fornecedor selecionadoFonte de dado: TM Master
+Marco do estágio: PPUs e VOR’s aprovadasFonte de dado: Input manual no HUB
+Marco do estágio: primeiros lançamentos de valores estimados para oficinasFonte de dado: Input manual no HUB
+Marco do estágio: Pedido de Compra (PC) aprovadoFonte de dado: Protheus
+Marco do estágio SI/PC aprovado (no valor total incluindo item + custos de importação)Fonte de dado: Fluig
+Marco do estágio: primeiros lançamentos de valores estimados para EstaleiroFonte de dado: Input manual no HUB
+Marco do estágio: desdobramento dos valores estimados de OficinasFonte de dado: Input manual no HUB
+Marco do estágio: desdobramento dos valores estimados de EstaleiroFonte de dado: Input manual no HUB
+Marco do estágio: Pedido de Compra (PC) aprovado após envio do Boletim de Medição (BM)Fonte de dado: Protheus
+Marco do estágio: Pedido de Compra (PC)Fonte de dado: Protheus
+Marco do estágio: recebimento, classificação e contabilização da NF e/ou Guia de Pagamento do Fornecedor ou GovernoFonte de dado: Protheus
+
+
+Esteira FinanceiraProposta HUB
+Exemplo do Financeiro ao longo da Esteira
+
+Estágio da Esteira
+Contabilizado
+Empenhado
+Cotado
+Comprometido
+Estimado
+1
+2
+3
+4
+5
+103 - Parada Progamada
+Σ R$ Demanda 1
+Σ R$ Material
+Σ R$ Oficina
+Σ R$ Estaleiro
+$100
+$60
+$40
+$--
+Σ R$ Não Comprometido (NC)
+Material 1
+Material 2
+Oficina 1
+$40
+$10
+$40
+$10
+Contingência
+$10
+A partir do Congelamento no FEL3:O valor de referência da demanda passa a ser o ComprometidoO valor Não Comprometido, se houver, passa a ser considerado Contingência
+Σ R$ Demanda 1
+$90
+Material 1
+Material 2
+Oficina 1
+$36
+$10
+$42
+Valor da Demanda = $90 (= Comprometido)Cotado = $88 ($36 + $10 + $42)Saldo = $2 (Demanda – Cotado)Contingência = $10
+EXEMPLO NÃO EXAUTIVO
+Contingência
+$4
+Σ R$ Demanda 1
+$90
+Material 1
+Material 2
+Oficina 1
+$36
+$10
+$50
+Valor da Demanda = $90Empenhado = $96 ($36 + $10 + $50)Saldo = – $6Contingência = $4 ($10 – $6)Empenhado de Oficina aprovado utlizando Contingência
+Σ R$ Demanda 1
+$96
+Material 1
+Material 2
+Oficina 1
+$36
+$10
+$50
+Contingência
+$4
+Valor Realizado da Demanda = $96Contingênciaresidual = $4Contingência sob gestão da Parada até Fechamento
+Esteira Financeira
+Embora as etapas da esteira financeira sejam lineares, a contabilização dos custos da Parada tem dinâmicas temporais muito distintas.
+
+Ano e Mês
+R$ mil
+Parada07/24 – 08/24
+Exemplo de curva de contabilização de custos Parada ID-23 | I. S. Pedro
+Materiais iniciam tipicamente entre 7 a 12 meses antes do início da Parada
+Estaleiro inicia tipicamente entre 2 a 3 meses antes do início da Parada
+Oficinas iniciam tipicamente durante o período de execução da Parada
+Esteira FinanceiraFluxo de Dados | Pedidos de Compras de Serviços - Oficinas
+Através da integração entre o HUB, TM Master, Fluig e Protheus todos os dados da esteira financeira de oficinas serão registrados.
+FLUIG BM
+ID ServiçoRegistro no HUB
+PCPedido de Compras
+Valor empenhado do serviço com base nas informações inseridas no FLUIG
+
+NF Nota Fiscal
+Valor contabilizado das notas fiscais
+
+ONE/JOBRegistro no TM Master
+Ordem de Serviço (OS)Registro no TM Master
+Valor Cotado dos serviços registrados manualmente no TM Master e registrados automaticamente no HUB
+
+Valor estimado registrado manualmente no HUB
+
+Chave primária utilizada para integração dos dadosTM Master x Fluig
+Chave primária utilizada para integração dos dados HUB x TM Master
+ID do serviço registrado no campo Job Tag (TM Master)
+Ordem de Serviço registrada no campo OS (Fluig)
+
+Necessidade de serviço identificada
+
+Serviço contabilizado
+Prever o caso N pra N entre ID de Serviço e JobPrever adiantamentos e pagamentos parcelados Colocar uma observação sobre o valor cotado, que é um processo manual e pode não cobrir todos os casosAtualizar o box “importante” que o Fluig continua em homologação
+Esteira FinanceiraProcesso | Pedidos de Compras de Serviços - Oficinas
+
+Área Técnica
+
+Fornecedor
+
+Nota fiscal classificada e contabilizada
+
+Serviço registrado no HUB
+Orçar serviço com fornecedor
+
+Fornecedor definido
+Emitir OS com valor orçado
+
+CSC
+Executar o serviço
+Enviar medição para aprovação
+Analisar medição
+
+Aprovado?
+Negociar ajustes
+Não
+Enviar medição via Fluig
+Sim
+Alterar status da OS para Completed/Received no TM Master
+
+1
+1
+Abrir Pedido de Compras (PC)
+Aprovação de Pedido de Compra
+
+Aprovado?
+1
+Não
+Emitir nota fiscal
+Sim
+
+Contabilidade
+Fluxos de Pedido de Compras para regularização de serviços de Oficinas
+Levar fornecedores a bordo
+
+Necessidade de serviço identificado(PCS congelada)
+Baixa do empenho na base compras / PCO
+Registro da NF na CT2
+Empenho do valor do serviço segundo BM aprovado
+Orçar serviço (fornecedor)
+Definir fornecedor (AT)
+Emitir OS com valor orçado (AT)
+Executar serviço (fornecedor)
+Enviar medição para aprovação (fornecedor)
+Aprovar medição (AT)
+Atualizar PCS (Obras - AT)
+Valor da medição aprovada no campo Relatório Final
+Enviar medição aprovada para o fornecedor (AT)
+Abrir ticket medição aprovada no Movidesk (fornecedor)
+
+NF contabilizada
+Fornecedor preenche algumas informações e envia: OS assinadaBoletim de mediçãoEvidências da execução do serviço(ver próximo slide)
+Preencher informações (backoffice)
+Backoffice analisa o ticket e atualiza com informações internas (ver próximo slide)
+Abrir PC e dar baixa na OS(RPA backoffice)
+Aprovar PC(AT)
+Capturar NF e Registrar no Protheus (V360)
+Emitir NF(fornecedor)
+Esteira FinanceiraFluxo de Dados | Pedidos de Compras de Serviços - Estaleiro
+ID PPU ou ID VORRegistro no HUB
+FLUIG’s PCAprovações dos PC’s
+FLUIG’s PCAprovações dos PC’s
+NF’sNotas Fiscais
+NF’sNotas Fiscais
+PCPedido de Compras
+PCPedido de Compras
+ID ServiçoRegistro no HUB
+PC’sPedidos de Compras
+Valor empenhado de acordo com os pedidos de compra aprovados
+
+NF’sNotas Fiscais
+Valor contabilizado das notas fiscais conforme os Pedidos de Compra aprovados
+
+ID PPU ou ID VORRegistro no HUB
+ID PPU ou ID VORRegistro no HUB
+Valor Cotado dos serviços registrados no HUB
+
+Valor estimado registrado manualmente
+
+PPU’s e VOR’s
+Chave primária utilizada para integração dos dados
+FLUIG’s PCAprovações dos PC’s
+ID’s do HUB registrados em campo exclusivo no documento
+Outros Custos EstaleiroRegistro no HUB
+Premissa importante:Cada instrumento de “contrato” (PPU’s e VOR’s) deve ter um fluxo de pagamento exclusivo. Ou seja, não será permitido ao estaleiro emitir uma invoice/fatura consolidando dois ou mais documentos. Ex.: Fatura com o pagamento de parte da PPU e parte de uma VOR
+
+ID’s das PPU’s e VOR’s registradas em campo exclusivo no Protheus
+
+Definição do estaleiro da Parada
+
+Custos de Estaleiro contabilizados
+Em Desenvolvimento
+Esteira FinanceiraProcesso | Pedidos de Compras de Serviços - Estaleiro
+Esteira FinanceiraFluxo de Dados | Pedidos de Compras de Materiais Nacionais
+FLUIG SA
+SASolicitação de Armazém
+SCSolicitação de Compras
+PCPedido de Compras
+NFNota Fiscal
+ID MaterialRegistro do material no HUB
+WMSGestão de Estoque
+
+
+
+
+Valor estimado registrado manualmente
+Fluxo de redundância para pedidos de compra abertos fora do Fluig, integrados ao HUB por meio da chave “ID da Parada”
+Módulo de CotaçãoProtheus
+FLUIG PCAprovação PC
+
+Chave primária utilizada para integração dos dadosHUB x Fluig x Protheus
+
+Quantidade de material atendido pelo estoque do almoxarifado
+Valor cotado dos materiais
+Valor empenhado dos materiais
+Valor contabilizado das notas fiscais
+ID do Fluig SA registrado no grupo de material do HUB
+
+Necessidade de material identificada
+
+Material contabilizado
+Esteira FinanceiraProcesso | Pedidos de Compras de Materiais Nacionais
+Em Desenvolvimento
+Esteira FinanceiraFluxo de Dados | Pedidos de Compras de Materiais Importados
+FLUIG SA
+SASolicitação de Armazém
+SCSolicitação de Compras
+FLUIG SISimulação da Importação
+PCPedido de Compras(Materiais + Impostos)
+WMSGestão de Estoque
+NARWAL²Sistema de Importação
+Quantidade de material atendido pelo estoque do almoxarifado
+Valor cotado total da importação incluindo custo do material, frete, impostos e outros custos
+
+
+Valor empenhado total da importação incluindo custo de material, frete, impostos e outros custos
+
+Valor contabilizado real das notas fiscais e pagamentos de impostos
+
+Fluxo de redundância para pedidos de compra abertos fora do Fluig, integrados ao HUB por meio da chave “ID da Parada”
+Pontos Importantes:Uma solução para abertura de pedidos de compra de materiais de manutenção via TM Master está em discussão. No momento, não há previsão de entrada em produção para solicitações de materiais de ObrasO acompanhamento operacional e a consolidação de custos das importações ainda ocorrem via planilha de importação. Sob a ótica financeira, o sistema Narwal ainda não está plenamente funcional
+ID MaterialRegistro do material no HUB
+
+ID do Fluig SA registrado no grupo de material do HUB
+Valor estimado registrado manualmente
+PCPedido de Compras(Transporte)
+NFNota Fiscal(Materiais)
+PGPagamentos de Impostos
+NFNota Fiscal(Transporte)
+
+Necessidade de material identificada
+
+Material contabilizado
+
+Transporte contabilizado
+
+Impostos contabilizados
+Esteira FinanceiraProcesso| Pedidos de Compras de Materiais Importados
+Em Desenvolvimento
+HUB de Obrastema 11: GMUD
+Fases
+Marcos de início
+Status
+Pós-Obra
+1. Cadastro da Parada
+2. Templates
+3. Status e Dinâmica de FEL’s
+4. Plan Escopo / Demanda
+5. Sim. Cenários
+6. Esteira Financeira
+7. Outlook
+8. Lançamento Materiais
+9. Lançamento Serviços
+10. Não conformidades
+12. Movimentação de Obras e Escopos
+13. Fechamento
+14. Post Mortem
+Funções HUB
+Tempos Típicos
+Planejamento de Longo Prazo
+Backlog
+Abertura ID e Escopos Iniciais
+Até 5 anos antes
+FEL 0
+Estimativas Financeiras
+~ 2anos antes
+FEL 1
+Abertura Orçamentos
+~ 6 a 7 meses
+FEL 2
+Importação Lista TMM
+~ 2 a 3 meses
+Fechamento
+Conclusão do Comissionamento
+~ 3meses
+Pós-Audit
+Fechamento Orçamento
+~ 3meses
+Concluída
+Pós-Audit apresentado
+~ 1mês
+11. GMUDs
+
+FEL 3
+Congela-mento
+~ 2 a 3 meses
+Obra
+Em Execução
+Execução
+~ 10 a 120 dias
+FEL 4
+D-1Obra(s)
+1 dia
+Pré-Obra(Planejamento Técnico e Financeiro)
+
+
+
+GMUDSolução e processo “as is”
+Atualmente, a GMUD é registrada em um formulário do Microsoft Forms, desenvolvido pelo time de PMO.As respostas são enviadas para uma planilha no SharePoint, onde o time de Planejamento da Gerência de Obras adiciona informações de processo para controlar fluxos de aprovação e a atualização da PCS, Cronograma/Project, TM Master e PGC.Essa planilha, por sua vez, abastece BI’s de controle e análise das GMUD’s
+
+Acesse o Formulário da GMUD Aqui
+Planilha para download
+
+Acesse o BI da GMUD Aqui
+Formulário GMUD
+Planilha de Controle
+BI de Controle e Análise
+
+
+GMUDProcesso “to be”
+
+Os dados ficam disponíveis para consulta no Power BI e em outras ferramentas de análise, mantendo os indicadores atualmente monitorados pelo PMO, Área Técnica e Operações
+Fluxos de Dados e Análises
+
+Após a aprovação da GMUD, o analista de planejamento da gerência de obras recebe uma notificação (por e-mail e HUB), analisa as alterações e aceita as mudanças e a linha de serviço do HUB é atualizada automa-ticamente de acordo com o tipo de GMUDApós atualização do HUB, os times de comissionamento, Obras, Operações e Manutenção Preventiva recebem alerta para atualização manual do cronograma, OneTimeJobs /Jobs, OS’s e PGCCada responsável registra, no HUB, a conclusão da atualização
+Atualização de Sistemas
+
+Especialista revisa o detalhamento do administrativo, faz os ajustes, se necessário, e envia para aprovaçãoA GMUD segue para a seguinte alçada de aprovaçãoCoord de Obras  Diretor ATEm alguns casos, após análise da GMUD, o Diretor da Área Técnica pode delegar a aprovação para o Diretor de OperaçõesNo HUB, a alçada de aprovação será customizável através de um perfil admin
+Fluxo de Aprovação
+
+O HUB exibe um alerta na página inicial da Parada com a mensagem “Existem GMUD’s pendentes de detalhamento”O administrativo, em conjunto com o especialista, detalha o conteúdo da GMUD dentro do HUB, preenchendo os demais campos necessários por tipoApós a conclusão, o administrativo submete as alterações para aprovação via HUB
+Detalhamento
+
+Abertura
+Ao receber a demanda ou identificar uma necessidade, o especialista inicia a GMUD pelo app mobileO especialista define o Tipo de GMUD ...... e preenche, pelo menos, o conjunto de informações mínimas obrigatórias para abertura da GMUD:ID ParadaTipo de GMUDDisciplina da MudançaResumoAo submeter o formulário do app para o HUB, o ID da GMUD é  registrado no HUB com o status de “pendente de detalhamento”
+Resp.: Especialista
+Resp.: Adm com apoio do Especialista
+Resp.: Especialista, Coord Obras, Dir AT e Dir Operações
+Resp.: An Planejamento eGer de Comissionamento
+Resp.: PMO
+
+
+
+
+GMUDOs 7 tipos de GMUD
+Tipos de GMUD
+Cancelamentode Entrega
+Alteraçãode Entrega
+Postergaçãode Entrega
+Quebra deEntrega Planejada
+Mudança de Responsável
+Mudança de Fornecedor
+NovaEntrega
+Inclusão de novo item de serviço no escopo da paradaHavendo necessidade de  materiais ou equipamentos, é necessário criar o lançamento de material e, em seguida, fazer o vínculo com a linha do novo serviço criado
+Exclusão de item de serviço do escopo da paradaPedidos de compra não aprovados são canceladosCustos previstos na esteira financeira de serviços são excluídos do custo total da paradaMateriais já contabilizados: exclusão gerencial no HUB, mantendo a contabilização na parada (tema ainda em discussão)
+Postergação de um item de serviço para parada futuraPedidos de compra não aprovados são canceladosCustos previstos na esteira financeira de serviços são excluídos do custo total da paradaMateriais já contabilizados: transferência gerencial no HUB, mantendo a contabilização na parada de origem (tema ainda em discussão)
+Alteração da descrição de um item de serviço nos campos “escopo do serviço” ou “descrição do serviço”Custos estimados ou cotados de serviços de oficinas são atualizados de acordo com previsto na GMUDMateriais são ajustados manualmente refletindo as necessidades dos serviços alterados
+Divisão de um item de serviço em dois ou mais itensCustos estimados de serviços de oficinas devem ser atualizados manualmente no campo “valor estimado” Materiais são ajustados manualmente refletindo as necessidades dos serviços alterados
+Alteração do fornecedor definido para executar o serviço no campo “fornecedor”Custos estimados ou cotados de serviços de oficinas são atualizados de acordo com previsto na GMUDMateriais são ajustados refletindo as necessidades dos do novo fornecedor
+Alteração da área e ponto focal responsável por acompanhar a execução do serviço no decorrer da paradaCustos previstos na esteira financeira de serviços e materiais não são alterados
+Tipos de GMUD
+GMUDProcesso Detalhado por Tipo de GMUD
+Tema 01: Cadastro da ParadaTema 02: TemplatesTema 03: Status e Dinâmica de FEL’sTema 04: Planejamento de Escopo / DemandasTema 05: Simulação de CenáriosTema 06: Esteira FinanceiraTema 07: Outlook (em desenvolvimento)Tema 08: Lançamento Materiais (em desenvolvimento)Tema 09: Lançamento Serviços (em desenvolvimento)Tema 10: Não Conformidades (em desenvolvimento)Tema 11: GMUDsTema 12: Movimentação de Obras e Escopos (em desenvolvimento)Tema 13: Fechamento (em desenvolvimento)Tema 14: Post Morten (em desenvolvimento)Anexo: BI Capex
+
+BI CapexVisualizações possíveis no atual BI de Acompanhamento de Capex – para referência
+BI CapexVisualizações possíveis no atual BI de Acompanhamento de Capex – para referência
+BI CapexVisualizações possíveis no atual BI de Acompanhamento de Capex – para referência
+HUB DE OBRASMacro Processos
+

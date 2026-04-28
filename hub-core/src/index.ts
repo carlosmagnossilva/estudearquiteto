@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { ServiceBusClient, ServiceBusAdministrationClient } from "@azure/service-bus";
-import { queryParadas, queryUpdates, queryCapex, queryObrasFinanceiras, queryFinancialIndicadores, queryLastSync, closePool } from "./database.js";
+import { queryParadas, queryUpdates, queryCapex, queryObrasFinanceiras, queryFinancialIndicadores, queryLastSync, queryObraSobre, saveObraSobre, closePool } from "./database.js";
 import { authMiddleware } from "./authMiddleware.js";
 
 const app = express();
@@ -217,6 +217,28 @@ serviceRouter.get("/capex", async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+serviceRouter.get("/obras/:id/sobre", async (req, res) => {
+  const id = parseInt(req.params.id);
+  try {
+    const data = await queryObraSobre(id);
+    if (!data) return res.status(404).json({ error: "Detalhes da obra não encontrados" });
+    res.json(data);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+serviceRouter.put("/obras/:id/sobre", async (req, res) => {
+  const id = parseInt(req.params.id);
+  try {
+    const result = await saveObraSobre(id, req.body);
+    res.json(result);
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
 
 serviceRouter.get("/financeiro/obras", async (req, res) => {
   try {

@@ -247,6 +247,111 @@ export async function queryLastSync(): Promise<string | null> {
   }
 }
 
+export async function queryObraSobre(id: number) {
+  try {
+    const pool = await getPool();
+    const result = await pool.request()
+      .input("id", mssql.Int, id)
+      .query(`
+        SELECT 
+          d.*,
+          cf.nome as coord_frota_nome,
+          cf.email as coord_frota_email,
+          gf.nome as ger_frota_nome,
+          gf.email as ger_frota_email,
+          co.nome as coord_obra_nome,
+          co.email as coord_obra_email,
+          adm.nome as administrativo_nome,
+          adm.email as administrativo_email,
+          an1.nome as analista_1_nome,
+          an1.email as analista_1_email,
+          an2.nome as analista_2_nome,
+          an2.email as analista_2_email,
+          cron.nome as cronograma_nome,
+          cron.email as cronograma_email
+        FROM hub_core.obra_detalhes d
+        LEFT JOIN hub_core.equipe_tecnica cf   ON d.id_coordenador_frota = cf.id
+        LEFT JOIN hub_core.equipe_tecnica gf   ON d.id_gerente_frota = gf.id
+        LEFT JOIN hub_core.equipe_tecnica co   ON d.id_coordenador_obra = co.id
+        LEFT JOIN hub_core.equipe_tecnica adm  ON d.id_administrativo = adm.id
+        LEFT JOIN hub_core.equipe_tecnica an1  ON d.id_analista_1 = an1.id
+        LEFT JOIN hub_core.equipe_tecnica an2  ON d.id_analista_2 = an2.id
+        LEFT JOIN hub_core.equipe_tecnica cron ON d.id_responsavel_cronograma = cron.id
+        WHERE d.id_obra = @id
+      `);
+
+    const data = result.recordset[0];
+    if (!data) return null;
+
+    // Cálculo da Duração Total (Obra + Testes + Aceitação)
+    const duracaoTotal = (data.duracao_obra_dias || 0) +
+      (data.duracao_testes_dias || 0) +
+      (data.duracao_aceitacao_dias || 0);
+
+    return {
+      ...data,
+      duracao_total_dias: duracaoTotal,
+      equipe: {
+        frota: {
+          coordenador: { nome: data.coord_frota_nome, email: data.coord_frota_email },
+          gerente: { nome: data.ger_frota_nome, email: data.ger_frota_email }
+        },
+        obra: {
+          coordenador: { nome: data.coord_obra_nome, email: data.coord_obra_email },
+          administrativo: { nome: data.administrativo_nome, email: data.administrativo_email },
+          analista_1: { nome: data.analista_1_nome, email: data.analista_1_email },
+          analista_2: { nome: data.analista_2_nome, email: data.analista_2_email },
+          responsavel_cronograma: { nome: data.cronograma_nome, email: data.cronograma_email }
+        }
+      }
+    };
+  } catch (err: any) {
+    console.error(`[DB] Erro ao consultar detalhes da obra ${id}:`, err.message);
+    return null;
+  }
+}
+
+export async function saveObraSobre(id: number, data: any) {
+  try {
+    const pool = await getPool();
+    await pool.request()
+      .input("id", mssql.Int, id)
+      .input("data_inicio", mssql.DateTime2, data.data_inicio_obra)
+      .input("data_termino", mssql.DateTime2, data.data_termino_obra)
+      .input("data_contrato", mssql.DateTime2, data.data_termino_contrato)
+      .input("ano", mssql.Int, data.ano_orcamento)
+      .input("dur_obra", mssql.Int, data.duracao_obra_dias)
+      .input("dur_testes", mssql.Int, data.duracao_testes_dias)
+      .input("dur_aceitacao", mssql.Int, data.duracao_aceitacao_dias)
+      .input("local", mssql.VarChar, data.local_estaleiro)
+      .input("condicao", mssql.VarChar, data.condicao_docagem)
+      .input("inspecao", mssql.VarChar, data.inspecao_casco_status)
+      .input("bandeira", mssql.VarChar, data.embarcacao_bandeira)
+      .input("nacionalidade", mssql.VarChar, data.embarcacao_nacionalidade)
+      .query(`
+        UPDATE hub_core.obra_detalhes
+        SET data_inicio_obra = @data_inicio,
+            data_termino_obra = @data_termino,
+            data_termino_contrato = @data_contrato,
+            ano_orcamento = @ano,
+            duracao_obra_dias = @dur_obra,
+            duracao_testes_dias = @dur_testes,
+            duracao_aceitacao_dias = @dur_aceitacao,
+            local_estaleiro = @local,
+            condicao_docagem = @condicao,
+            inspecao_casco_status = @inspecao,
+            embarcacao_bandeira = @bandeira,
+            embarcacao_nacionalidade = @nacionalidade,
+            updated_at = GETDATE()
+        WHERE id_obra = @id
+      `);
+    return { ok: true };
+  } catch (err: any) {
+    console.error(`[DB] Erro ao salvar detalhes da obra ${id}:`, err.message);
+    throw err;
+  }
+}
+
 export async function closePool() {
   if (poolPromise) {
     const pool = await poolPromise;
@@ -254,3 +359,4 @@ export async function closePool() {
     poolPromise = null;
   }
 }
+

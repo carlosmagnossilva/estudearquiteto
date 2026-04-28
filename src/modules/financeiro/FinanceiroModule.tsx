@@ -1,11 +1,11 @@
 import React, { useState, useMemo } from "react";
 import FinancialIndicadores from "./components/FinancialIndicadores";
-import FinancialObrasGrid, { IFinanceiroObraLocal } from "./components/FinancialObrasGrid";
+import FinancialObrasGrid, { IFinanceiroObraLocal, ITag } from "../obras/components/FinancialObrasGrid";
 import PPUManager from "./components/PPUManager";
 import { useBff } from "../../hooks/useBff";
 import { IBffResponse } from "@hub/shared";
 import { FINANCIAL_STATUSES } from "./constants/financialConstants";
-import { FINANCIAL_OBRAS_MOCK } from "./mocks/financialMocks";
+import { OBRAS_MOCK as FINANCIAL_OBRAS_MOCK } from "../obras/mocks/obrasMocks";
 
 const TABS = [
   { id: "obras", label: "Obras" },
@@ -43,7 +43,7 @@ const FinanceiroModule: React.FC = () => {
         obra.statusFinanceiro === statusFilter;
 
       const matchesType = typeFilter === "Todos os Tipos" ||
-        obra.tags.some(t => `${t.tag} - ${t.descricao}` === typeFilter);
+        obra.tags.some((t: ITag) => `${t.tag} - ${t.descricao}` === typeFilter);
 
       return matchesSearch && matchesStatus && matchesType;
     });

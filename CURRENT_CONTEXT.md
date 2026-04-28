@@ -1,4 +1,4 @@
-# Contexto Atual do Projeto (Última Atualização: 26/04/2026 - 22:50)
+# Contexto Atual do Projeto (Última Atualização: 28/04/2026 - 15:05)
 
 ## 🏗️ Arquitetura e Infraestrutura
 - **BFF**: Container App em Azure (`hub-bff-app`), autenticação via MSAL/Azure AD.
@@ -39,16 +39,21 @@
 - **Produção**: Sem bypass — JWT obrigatório via `jose` + Azure AD JWKS.
 - **Frontend**: `?bypass=true` na URL pula login MSAL. Funciona end-to-end com `AUTH_BYPASS_DEV=true` nos backends.
 
-### Módulo Financeiro (FinanceiroModule)
-- **Status**: UX/UI Premium Concluída 🚀
+### Módulo Obras (ObrasModule)
+- **Status**: Reestruturado e Integrado 🏗️
+- **Arquitetura de Navegação**: 
+  - Transição de "Sobre a Obra" do Financeiro para o módulo Obras.
+  - Fluxo de entrada via clique na linha do Grid (drill-down).
+  - Interface de detalhes com Tabs internas (Visão Geral, Entregas, Sobre a Obra).
 - **Funcionalidades**:
-  - Visão Dupla: Alternância entre Grade (Lista) e Cards (Kanban).
-  - **Responsividade**: No mobile, a grade se transforma em stack de cards e o Kanban ganha um seletor de colunas.
-  - **Performance Visual**: Uso de Skeleton Screens (`FinancialSkeleton.tsx`) para loading.
-  - Sistema de Filtros: Busca textual, Status e Tipos de Obra (Coletores).
-  - Gestão Kanban: Ordenação dinâmica (Data/Valor), Expansão/Colapso individual e por coluna.
-  - Exportação Executiva (Excel/PDF) com suporte a temas claros e layouts otimizados.
-- **Arquitetura**: Estado de dados elevado para o módulo pai, permitindo ações globais sobre dados filtrados.
+  - Drill-down: Clique em qualquer obra na listagem abre a visão de detalhes.
+  - Detalhes da Obra: Cabeçalho dinâmico com ID, Nome e Status.
+  - Aba "Sobre a Obra": Visão consolidada de dados técnicos e da embarcação.
+
+### UX & Interatividade (Core improvements)
+- **Scroll Universal**: Roda do mouse habilitada em todo o sistema (removidos `overflow-hidden` restritivos).
+- **Interação Natural**: Removido `select-none` e `cursor-grab` das tabelas para permitir seleção de texto e uso padrão do mouse.
+- **Scroll Smooth**: Adicionado comportamento de rolagem suave em containers de dados.
 
 ## 🧠 Aprendizados e Padrões Estabelecidos
 1. **Adaptive Grid Patterns**: Uso de cards em mobile para substituir tabelas densas.

@@ -8,6 +8,7 @@ import LoginPage from "./LoginPage";
 import CapexDashboard from "./CapexDashboard";
 import IntegrationSimulationsPage from "./IntegrationSimulationsPage";
 import FinanceiroModule from "./modules/financeiro/FinanceiroModule";
+import ObrasModule from "./modules/obras/ObrasModule";
 import PublishSgoPage from "./PublishSgoPage";
 
 import { DataStatusBadge } from "./components/DataStatusBadge";
@@ -27,7 +28,7 @@ type NavTab = typeof NAV_TABS[number];
 
 export default function App() {
   const [updatesTab, setUpdatesTab] = useState("geral");
-  const [page, setPage] = useState<"home" | "simulations" | "financeiro" | "setup">("home");
+  const [page, setPage] = useState<"home" | "simulations" | "financeiro" | "obras" | "setup">("home");
   const [activeTab, setActiveTab] = useState<NavTab>("Visão Geral");
   const [pinned, setPinned] = useState(false);
   const [dataSource, setDataSource] = useState<string | null>(null);
@@ -82,7 +83,7 @@ export default function App() {
   if (!isAuthenticated && !isBypass) return <LoginPage />;
 
   return (
-    <div className="relative h-screen w-full overflow-hidden font-[var(--font-inter)] bg-[var(--bg-app)] transition-colors duration-1000" data-theme={theme}>
+    <div className="relative h-screen w-full font-[var(--font-inter)] bg-[var(--bg-app)] transition-colors duration-1000" data-theme={theme}>
       {/* NOTIFICAÇÃO GLOBAL FLUTUANTE (Camada superior) */}
       {globalToast && (
         <div className="fixed top-8 left-1/2 -translate-x-1/2 z-[200] animate-slide-down">
@@ -174,9 +175,13 @@ export default function App() {
                   <IconMoney className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Financeiro</span>}
                 </button>
 
-                <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/obras" title="Obras">
+                <button 
+                  className={`w-full flex items-center gap-4 py-3 rounded-xl transition-all duration-300 ${isSidebarOpen ? "px-4" : "justify-center"} ${page === "obras" ? "bg-[var(--accent)] text-black shadow-lg shadow-[var(--accent)]/20" : "text-[var(--text-nav-dim)] hover:bg-white/5 hover:text-[var(--text-nav)]"}`}
+                  onClick={() => { setPage("obras"); if (!isSidebarOpen) setIsSidebarOpen(true); }}
+                  title="Obras"
+                >
                   <IconGrid className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Obras</span>}
-                </a>
+                </button>
 
                 <a className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} href="/gmuds" title="GMUDs">
                   <IconDocEdit className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">GMUDs</span>}
@@ -250,7 +255,7 @@ export default function App() {
         )}
 
         {/* MAIN */}
-        <main className="flex-1 flex flex-col relative h-full min-w-0 p-2 sm:p-4 gap-4 overflow-hidden">
+        <main className="flex-1 flex flex-col relative h-full min-w-0 p-2 sm:p-4 gap-4 overflow-y-auto">
           {/* TOP BAR */}
           {!isFullScreen && (
             <header className="h-16 flex justify-between items-center px-4 sm:px-6 shrink-0 border border-[var(--border-nav)] bg-[var(--bg-card)] backdrop-blur-xl z-30 transition-all rounded-2xl shadow-2xl">
@@ -264,7 +269,7 @@ export default function App() {
                 <div className="flex items-center gap-2">
                   <div className="h-6 w-px bg-[var(--border-mini)] mx-2 hidden sm:block opacity-50"></div>
                   <h1 className="text-[17px] font-bold text-[var(--text-main)] tracking-tight">
-                    {page === "home" ? "Capex Dashboard" : page === "financeiro" ? "Financeiro" : page === "setup" ? "Setup / Integrações" : "Simulações"}
+                    {page === "home" ? "Capex Dashboard" : page === "financeiro" ? "Financeiro" : page === "obras" ? "Obras" : page === "setup" ? "Setup / Integrações" : "Simulações"}
                   </h1>
                 </div>
               </div>
@@ -384,6 +389,8 @@ export default function App() {
               </div>
             ) : page === "financeiro" ? (
               <FinanceiroModule />
+            ) : page === "obras" ? (
+              <ObrasModule />
             ) : page === "setup" ? (
               <PublishSgoPage />
             ) : (

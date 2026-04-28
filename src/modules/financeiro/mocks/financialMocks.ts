@@ -1,4 +1,4 @@
-import { IFinanceiroObraLocal } from "../components/FinancialObrasGrid";
+import { IFinanceiroObraLocal } from "../../obras/components/FinancialObrasGrid";
 
 export const FINANCIAL_OBRAS_MOCK: IFinanceiroObraLocal[] = [
   { id: 24, id_parada: 24, embarcacao_nome: "A. Abrolhos", statusFinanceiro: "FEL-3", tags: [{ tag: "100", descricao: "Mobilização Contratual", cor: "#FFC000" }, { tag: "101", descricao: "Parada Especial", cor: "#00B0F0" }], realizadoBRL: 38.0, outlookBRL: 38.0, percRE: 100, percEM: 1, percCO: 5, percES: 3, percNC: 90, condicao: "Seco", inicio: "2024-12-02", termino: "2025-02-26", duracaoTotal: 96, dataUltimaAtualizacao: "" },

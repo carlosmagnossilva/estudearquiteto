@@ -7,6 +7,7 @@ export function useBff<T = any>(url: string, deps: any[] = []) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [err, setErr] = useState<string | null>(null);
+  const [fetchTrigger, setFetchTrigger] = useState(0);
   const { instance, accounts } = useMsal();
 
   useEffect(() => {
@@ -61,8 +62,14 @@ export function useBff<T = any>(url: string, deps: any[] = []) {
     load();
     return () => controller.abort();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [...deps, accounts]);
+  }, [...deps, accounts, fetchTrigger]);
 
-  return { data, loading, err };
+  const refetch = () => {
+    // Para simplificar o refetch, podemos apenas mudar um estado interno ou chamar o load se ele for acessível.
+    // Como o load está dentro do useEffect, vamos usar um trigger de estado.
+    setFetchTrigger(prev => prev + 1);
+  };
+
+  return { data, loading, err, refetch };
 }
 

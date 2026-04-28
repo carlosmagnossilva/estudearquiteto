@@ -147,6 +147,30 @@ protectedRouter.get("/financeiro/indicadores", async (req, res) => {
   }
 });
 
+protectedRouter.get("/obras/:id/sobre", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const core = getCoreClient(req);
+    const response = await core.get(`/core/obras/${id}/sobre`);
+    res.json(wrapResponse(response.data, "database"));
+  } catch {
+    res.json(wrapResponse(null, "mock"));
+  }
+});
+
+protectedRouter.put("/obras/:id/sobre", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const core = getCoreClient(req);
+    const response = await core.put(`/core/obras/${id}/sobre`, req.body);
+    res.json(response.data);
+  } catch (error: any) {
+    res.status(error.response?.status || 500).json({ ok: false, error: error.message });
+  }
+});
+
+
+
 app.use("/bff", protectedRouter);
 app.get("/health", (_req, res) => res.json({ status: "ok", service: "bff" }));
 

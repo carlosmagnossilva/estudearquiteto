@@ -50,7 +50,7 @@
 
 @layer base {
   body {
-    @apply bg-[var(--bg-primary)] text-slate-800 antialiased overflow-hidden;
+    @apply bg-[var(--bg-primary)] text-slate-800 antialiased;
     font-family: var(--font-inter);
   }
 }
@@ -80,8 +80,8 @@
 
 /* Scrollbar styles to match the Figma prototype */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;

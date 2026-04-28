@@ -1,5 +1,5 @@
 import React from "react";
-import { 
+import {
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
   ComposedChart, Area, Line, PieChart, Pie, Cell, Legend
 } from "recharts";
@@ -56,7 +56,7 @@ const FinancialIndicadores: React.FC = () => {
 
   return (
     <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-6 custom-scrollbar">
-      
+
       {/* 1. Cards de Resumo Superior */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {[
@@ -77,7 +77,7 @@ const FinancialIndicadores: React.FC = () => {
 
       {/* 2. Grid de Gráficos Analíticos */}
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        
+
         {/* Evolução de Capex */}
         <div className="xl:col-span-2 bg-black/20 backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl min-w-0">
           <div className="flex justify-between items-center mb-6">
@@ -86,7 +86,7 @@ const FinancialIndicadores: React.FC = () => {
               Evolução do Capex Financeiro (2025)
             </h3>
             <div className="flex gap-2">
-               <span className="px-3 py-1 bg-white/5 rounded-full text-[10px] text-white/50 border border-white/5">Mensal</span>
+              <span className="px-3 py-1 bg-white/5 rounded-full text-[10px] text-white/50 border border-white/5">Mensal</span>
             </div>
           </div>
           <div className="h-[300px] min-w-0">
@@ -94,25 +94,25 @@ const FinancialIndicadores: React.FC = () => {
               <ComposedChart data={EVOLUCAO_DATA}>
                 <defs>
                   <linearGradient id="colorValue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0EA5E9" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#0EA5E9" stopOpacity={0}/>
+                    <stop offset="5%" stopColor="#0EA5E9" stopOpacity={0.3} />
+                    <stop offset="95%" stopColor="#0EA5E9" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--border-card)" vertical={false} />
-                <XAxis 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{fill: 'var(--text-muted)', fontSize: 11}} 
+                <XAxis
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
                   dy={10}
                 />
-                <YAxis 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{fill: 'var(--text-muted)', fontSize: 11}}
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'var(--text-muted)', fontSize: 11 }}
                   tickFormatter={(v) => `R$ ${v}M`}
                 />
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: 'var(--sidebar-bg)', border: '1px solid var(--border-card)', borderRadius: '12px' }}
                   itemStyle={{ color: 'var(--text-main)', fontSize: '12px' }}
                 />
@@ -143,12 +143,12 @@ const FinancialIndicadores: React.FC = () => {
                     <Cell key={`cell-${index}`} fill={entry.fill} stroke="rgba(255,255,255,0.1)" strokeWidth={2} />
                   ))}
                 </Pie>
-                <Tooltip 
+                <Tooltip
                   contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', border: 'none', borderRadius: '8px' }}
                   itemStyle={{ color: '#fff' }}
                 />
-                <Legend 
-                  verticalAlign="bottom" 
+                <Legend
+                  verticalAlign="bottom"
                   formatter={(value) => <span className="text-[11px] text-white/60">{value}</span>}
                 />
               </PieChart>
@@ -170,21 +170,21 @@ const FinancialIndicadores: React.FC = () => {
               <BarChart data={WATERFALL_DATA} layout="vertical" margin={{ left: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" horizontal={false} />
                 <XAxis type="number" hide />
-                <YAxis 
-                  type="category" 
-                  dataKey="name" 
-                  axisLine={false} 
-                  tickLine={false} 
-                  tick={{fill: 'rgba(255,255,255,0.6)', fontSize: 12}}
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fill: 'rgba(255,255,255,0.6)', fontSize: 12 }}
                 />
-                <Tooltip 
-                   cursor={{fill: 'rgba(255,255,255,0.05)'}}
-                   contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', border: 'none', borderRadius: '8px' }}
+                <Tooltip
+                  cursor={{ fill: 'rgba(255,255,255,0.05)' }}
+                  contentStyle={{ backgroundColor: 'rgba(0,0,0,0.8)', border: 'none', borderRadius: '8px' }}
                 />
                 <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={25}>
-                   {WATERFALL_DATA.map((entry, index) => (
-                     <Cell key={`cell-${index}`} fill={index === 0 ? '#1E293B' : index === 1 ? '#0EA5E9' : '#F59E0B'} />
-                   ))}
+                  {WATERFALL_DATA.map((entry, index) => (
+                    <Cell key={`cell-${index}`} fill={index === 0 ? '#1E293B' : index === 1 ? '#0EA5E9' : '#F59E0B'} />
+                  ))}
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
@@ -228,7 +228,7 @@ const FinancialIndicadores: React.FC = () => {
                         </div>
                       </td>
                       <td className="py-4 text-center">
-                         <span className="text-[10px] px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full font-bold border border-emerald-500/20">Healthy</span>
+                        <span className="text-[10px] px-2 py-0.5 bg-emerald-500/20 text-emerald-400 rounded-full font-bold border border-emerald-500/20">Healthy</span>
                       </td>
                     </tr>
                   );
