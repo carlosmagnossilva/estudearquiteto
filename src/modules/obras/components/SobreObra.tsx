@@ -74,6 +74,12 @@ const SobreObra: React.FC<SobreObraProps> = ({ obraId }) => {
     return new Date(date).toLocaleDateString("pt-BR");
   };
 
+  // Cálculo da Duração Total Reativo
+  const currentDurObra = parseInt(formData?.duracao_obra_dias || 0);
+  const currentDurTestes = parseInt(formData?.duracao_testes_dias || 0);
+  const currentDurAceitacao = parseInt(formData?.duracao_aceitacao_dias || 0);
+  const currentTotal = currentDurObra + currentDurTestes + currentDurAceitacao;
+
   return (
     <div className="p-8 space-y-12 animate-fade-in text-[var(--text-main)]">
       
@@ -96,10 +102,10 @@ const SobreObra: React.FC<SobreObraProps> = ({ obraId }) => {
           <DetailItem label="Data de término" value={formatDate(data.data_termino_obra)} isEditing={isEditing} field="data_termino_obra" type="date" formData={formData} setFormData={setFormData} />
           <DetailItem label="Término de contrato" value={formatDate(data.data_termino_contrato)} isEditing={isEditing} field="data_termino_contrato" type="date" formData={formData} setFormData={setFormData} />
           <DetailItem label="Ano do orçamento" value={data.ano_orcamento} isEditing={isEditing} field="ano_orcamento" type="number" formData={formData} setFormData={setFormData} />
-          <DetailItem label="Duração da obra" value={`${data.duracao_obra_dias} dias`} isEditing={isEditing} field="duracao_obra_dias" type="number" formData={formData} setFormData={setFormData} suffix="dias" />
-          <DetailItem label="Duração dos testes" value={`${data.duracao_testes_dias} dias`} isEditing={isEditing} field="duracao_testes_dias" type="number" formData={formData} setFormData={setFormData} suffix="dias" />
-          <DetailItem label="Duração da aceitação" value={`${data.duracao_aceitacao_dias} dias`} isEditing={isEditing} field="duracao_aceitacao_dias" type="number" formData={formData} setFormData={setFormData} suffix="dias" />
-          <DetailItem label="Duração total" value={`${data.duracao_total_dias} dias`} highlight />
+          <DetailItem label="Duração da obra" value={`${data.duracao_obra_dias || 0} dias`} isEditing={isEditing} field="duracao_obra_dias" type="number" formData={formData} setFormData={setFormData} suffix="dias" />
+          <DetailItem label="Duração dos testes" value={`${data.duracao_testes_dias || 0} dias`} isEditing={isEditing} field="duracao_testes_dias" type="number" formData={formData} setFormData={setFormData} suffix="dias" />
+          <DetailItem label="Duração da aceitação" value={`${data.duracao_aceitacao_dias || 0} dias`} isEditing={isEditing} field="duracao_aceitacao_dias" type="number" formData={formData} setFormData={setFormData} suffix="dias" />
+          <DetailItem label="Duração total" value={`${currentTotal} dias`} highlight />
         </div>
       </Accordion>
 
@@ -209,14 +215,19 @@ const DetailItem = ({ label, value, name, isEditing, field, type = "text", formD
         {label}
       </span>
       {isEditing && field ? (
-        <div className="flex items-center gap-2">
+        <div className={`flex items-center gap-2 relative group/input ${getInputWidth()}`}>
             <input 
                 type={type}
                 value={getEditValue()}
                 onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                className={`bg-[var(--bg-input)] border border-[var(--border-card)] border-opacity-50 rounded-lg px-3 py-1.5 text-sm font-bold text-[var(--text-main)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/30 outline-none ${getInputWidth()} transition-all dark:[color-scheme:dark] shadow-sm`}
+                className={`bg-[var(--bg-input)] border border-[var(--border-card)] dark:border-white/20 rounded-lg px-3 py-1.5 text-sm font-bold text-[var(--text-main)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/30 outline-none w-full transition-all [color-scheme:light] dark:[color-scheme:dark] shadow-sm pr-10`}
             />
-            {suffix && <span className="text-xs font-bold text-[var(--text-muted)]">{suffix}</span>}
+            {type === "date" && (
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-muted)] group-focus-within/input:text-[var(--accent)] transition-colors">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              </div>
+            )}
+            {suffix && <span className="text-xs font-bold text-[var(--text-muted)] whitespace-nowrap">{suffix}</span>}
         </div>
       ) : (
         <span className={`text-sm font-bold ${highlight ? 'text-[var(--accent)] font-black' : 'text-[var(--text-main)]'}`}>
