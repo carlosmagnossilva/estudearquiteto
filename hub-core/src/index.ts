@@ -244,11 +244,14 @@ serviceRouter.get("/obras/:id/dashboard", async (req, res) => {
     const id = parseInt(req.params.id);
     const snapshot = await getObraDashboardSnapshot(id);
     if (snapshot) {
+      console.log(`[CORE] Enviando snapshot para Obra ${id}:`, JSON.stringify(snapshot).substring(0, 100) + "...");
       res.json(snapshot);
     } else {
+      console.warn(`[CORE] Snapshot não encontrado para Obra ${id}`);
       res.status(404).json({ error: "Snapshot não encontrado" });
     }
   } catch (e: any) {
+    console.error(`[CORE] Erro ao buscar snapshot ${req.params.id}:`, e.message);
     res.status(500).json({ error: e.message });
   }
 });

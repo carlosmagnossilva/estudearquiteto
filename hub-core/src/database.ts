@@ -346,7 +346,7 @@ export async function saveObraSobre(id: number, data: any) {
  */
 export async function getObraDashboardSnapshot(idObra: number) {
   try {
-    const pool = await mssql.connect(config);
+    const pool = await getPool();
     const result = await pool.request()
       .input("id", mssql.Int, idObra)
       .query("SELECT snapshot_json FROM hub_frontend.dashboard_snapshots WHERE id_obra = @id");
@@ -356,13 +356,13 @@ export async function getObraDashboardSnapshot(idObra: number) {
     }
     return null;
   } catch (err) {
-    console.error("Erro ao buscar snapshot:", err);
-    throw err;
+    console.error("Erro ao buscar dashboard snapshot:", err);
+    return null;
   }
 }
 
 /**
- * Busca configuração por chave
+ * Busca configuração do sistema
  */
 export async function getSystemConfig(chave: string) {
   try {
@@ -371,7 +371,7 @@ export async function getSystemConfig(chave: string) {
       .input("chave", mssql.VarChar, chave)
       .query("SELECT valor FROM hub_core.configuracoes_sistema WHERE chave = @chave");
     return result.recordset[0]?.valor || null;
-  } catch (err) {
+  } catch (err: any) {
     console.error("Erro ao buscar config:", err);
     return null;
   }
@@ -401,4 +401,3 @@ export async function closePool() {
     poolPromise = null;
   }
 }
-

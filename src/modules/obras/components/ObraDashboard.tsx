@@ -18,7 +18,7 @@ import {
   LabelList
 } from 'recharts';
 import './ObraDashboard.css';
-import p24Data from '../mock/p24_dashboard.json';
+// import p24Data from '../mock/p24_dashboard.json'; // Mock removido para garantir fidelidade aos dados reais
 
 interface ObraDashboardProps {
   idObra?: string | number;
@@ -88,7 +88,7 @@ const OperationalCard: React.FC<{ title: string; rows: any[] }> = ({ title, rows
 
 const ObraDashboard: React.FC<ObraDashboardProps> = ({ idObra }) => {
   const [liveData, setLiveData] = useState<any>(null);
-  const id = idObra || 24; // Default para 24 se não vier ID
+  const id = idObra;
 
   useEffect(() => {
     async function loadDashboard() {
@@ -98,9 +98,12 @@ const ObraDashboard: React.FC<ObraDashboardProps> = ({ idObra }) => {
         if (response.ok) {
           const json = await response.json();
           setLiveData(json);
+        } else {
+          setLiveData({ empty: true });
         }
       } catch (err) {
         console.error("Erro ao carregar dashboard dinâmico:", err);
+        setLiveData({ empty: true });
       }
     }
     loadDashboard();
@@ -138,18 +141,39 @@ const ObraDashboard: React.FC<ObraDashboardProps> = ({ idObra }) => {
     return `${months[monthIdx]}/${year.slice(2)}`;
   };
 
-  // Usa dados live se existirem, senão usa o mock P24 de alta fidelidade
-  const dashboardData = liveData || p24Data;
+  // Se não houver ID ou os dados ainda estiverem carregando, mostramos um estado neutro
+  if (!id || !liveData) {
+    return (
+      <div className="dashboard-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '400px', opacity: 0.5 }}>
+        <h3 className="card-title">Selecione uma obra para visualizar o dashboard financeiro</h3>
+      </div>
+    );
+  }
+
+  // Se a obra existir mas não tiver dados integrados ainda
+  if (liveData.empty) {
+    return (
+      <div className="dashboard-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '400px', opacity: 0.5 }}>
+        <h3 className="card-title">Dados financeiros ainda não disponíveis para esta obra (Aguardando Integração)</h3>
+      </div>
+    );
+  }
+
+  const dashboardData = liveData;
 
   const { 
-    outlook = p24Data.outlook, 
-    mixGastos = p24Data.mixGastos, 
-    operacional = p24Data.operacional, 
-    rankingPendencias = p24Data.rankingPendencias 
+    outlook = { valorProjetado: 0, variacaoFel: 0, nc: 0, cp: 0, mc: 0, pp: 0 }, 
+    mixGastos = [], 
+    operacional = { 
+      servicos: { totalAprovado: 0, valorAprovado: "R$ 0", concluidos: 0, concluidosPercent: 0, cancelados: 0 },
+      materiais: { totalSolicitar: 0, totalSolicitacoes: 0, valorSolicitacoes: "R$ 0", entregue: 0, entreguePercent: 0, valorEntregue: "R$ 0" },
+      estaleiros: { contratadas: 0, valorContratado: "R$ 0", consumidas: 0, consumidasPercent: 0, valorConsumido: "R$ 0" }
+    }, 
+    rankingPendencias = [] 
   } = dashboardData;
-  
-  // Normaliza as datas da Curva S para bater com os marcos (Ago/23, etc)
-  const curvaS = (dashboardData.curvaS || p24Data.curvaS).map((item: any) => ({
+
+  // Normaliza as datas da Curva S
+  const curvaS = (dashboardData.curvaS || []).map((item: any) => ({
     ...item,
     month: formatMonthLabel(item.month)
   }));
@@ -402,7 +426,7 @@ const ObraDashboard: React.FC<ObraDashboardProps> = ({ idObra }) => {
           <h3 className="card-title">Status dos Serviços</h3>
           <div style={{ height: '350px', width: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart layout="vertical" data={dashboardData.statusServicos || p24Data.statusServicos} margin={{ left: 40, right: 20, bottom: 20 }}>
+              <BarChart layout="vertical" data={dashboardData.statusServicos || []} margin={{ left: 40, right: 20, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
                 <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
                 <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
@@ -423,7 +447,7 @@ const ObraDashboard: React.FC<ObraDashboardProps> = ({ idObra }) => {
           <h3 className="card-title">Status dos Materiais</h3>
           <div style={{ height: '350px', width: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart layout="vertical" data={dashboardData.statusMateriais || p24Data.statusMateriais} margin={{ left: 40, right: 20, bottom: 20 }}>
+              <BarChart layout="vertical" data={dashboardData.statusMateriais || []} margin={{ left: 40, right: 20, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
                 <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
                 <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
@@ -443,7 +467,7 @@ const ObraDashboard: React.FC<ObraDashboardProps> = ({ idObra }) => {
           <h3 className="card-title">Consumo de Facilidades</h3>
           <div style={{ height: '350px', width: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart layout="vertical" data={dashboardData.consumoFacilidades || p24Data.consumoFacilidades} margin={{ left: 40, right: 20, bottom: 20 }}>
+              <BarChart layout="vertical" data={dashboardData.consumoFacilidades || []} margin={{ left: 40, right: 20, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
                 <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
                 <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
@@ -459,7 +483,7 @@ const ObraDashboard: React.FC<ObraDashboardProps> = ({ idObra }) => {
           <h3 className="card-title">Pendências por Área</h3>
           <div style={{ height: '350px', width: '100%' }}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart layout="vertical" data={dashboardData.pendenciasPorArea || p24Data.pendenciasPorArea} margin={{ left: 60, right: 20, bottom: 20 }}>
+              <BarChart layout="vertical" data={dashboardData.pendenciasPorArea || []} margin={{ left: 60, right: 20, bottom: 20 }}>
                 <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
                 <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
                 <YAxis dataKey="name" type="category" stroke="var(--dash-text)" fontSize={11} width={120} tickLine={false} axisLine={false} />

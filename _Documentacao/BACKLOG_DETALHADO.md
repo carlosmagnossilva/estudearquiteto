@@ -131,16 +131,25 @@ Como Gestor de Contratos, desejo gerenciar serviços do TM Master e lançar prog
 
 ---
 
-## US09: Infraestrutura de Sincronização e Cache de Dashboard
+---
 
-### Descrição
-Como Arquiteto de Sistemas, desejo implementar um mecanismo de cache assíncrono (Job de 1 min) para consolidar dados do `hub_core` no `hub_frontend`, garantindo performance executiva (sub-segundo).
+## 🚀 Próxima Fase: Refinamento de Mapeamento de Dados Reais
 
-### Critérios de Aceite
-- Tabela de cache `obra_dashboard_cache` criada.
-- Job de consolidação executando a cada 1 minuto (após término da rodada).
-- BFF consumindo exclusivamente da tabela de cache.
-- Exibição de timestamp de última atualização no frontend.
+### [AMANHÃ] Substituição de Mocks por Queries Transacionais
+- [ ] **Alinhamento com Contrato p24_dashboard.json**: Refatorar `integrator.ts` para gerar o JSON seguindo fielmente a estrutura do mock de alta fidelidade (Disciplinas, Consumo de Facilidades, Status de Materiais).
+- [ ] **Mapeamento de Disciplinas**: Calcular o progresso (naoExecutado, concluido, aprovada, pcAprovado, pago) a partir da tabela `hub_core.obra_servicos`.
+- [ ] **Estatísticas de Materiais**: Implementar agregação real de solicitações vs. entregas.
+- [ ] **Consumo de Facilidades**: Conectar medidores de Energia e Água aos dados reais de medição.
+- [ ] **Validação Final (Obra 24)**: Garantir que o Dashboard Operacional reflita 100% da realidade de campo.
+
+---
+
+## ✅ Concluído Hoje
+- [x] Infraestrutura de Background Job contínuo.
+- [x] Gerenciamento de intervalo de sync via UI Administrativa.
+- [x] Mecanismo de Snapshot JSON (Schema Frontend).
+- [x] Restauração do Layout Operacional de alta fidelidade no Dashboard.
+- [x] Correção de conectividade ESM e variáveis de ambiente.
 
 ---
 

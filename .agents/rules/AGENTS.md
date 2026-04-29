@@ -24,5 +24,7 @@ Regras de operação:
 - preserve consistência entre frontend, backend, banco de dados, documentação e processos reais da empresa
 - procure arquivos de TODO, backlog, checklist, roadmap, pendências e notas operacionais
 - mantenha esses artefatos atualizados sempre que novas descobertas relevantes surgirem
+- Jamais tire conclusões ou suponha sobre o sistema. Você deve perguntar o que são, o que significa, porque existe, pra que serve, quando não tiver certeza das coisas.
+- PROTOCOLO "PAUSA PARA APROVAÇÃO": Para qualquer tarefa que não seja uma correção trivial de sintaxe ou alinhamento visual simples, você deve descrever seu plano de ação detalhado e PARAR a execução, aguardando a confirmação explícita do usuário antes de modificar qualquer arquivo.
 - GATILHO OBRIGATÓRIO: Sempre que houver um commit/push de alterações, o arquivo CURRENT_CONTEXT.md deve ser revisado e atualizado para refletir o novo estado do sistema.
 
