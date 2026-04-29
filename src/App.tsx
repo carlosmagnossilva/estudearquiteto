@@ -9,6 +9,7 @@ import CapexDashboard from "./CapexDashboard";
 import IntegrationSimulationsPage from "./IntegrationSimulationsPage";
 import FinanceiroModule from "./modules/financeiro/FinanceiroModule";
 import ObrasModule from "./modules/obras/ObrasModule";
+import AdminModule from "./modules/admin/AdminModule";
 import PublishSgoPage from "./PublishSgoPage";
 
 import { DataStatusBadge } from "./components/DataStatusBadge";
@@ -28,7 +29,7 @@ type NavTab = typeof NAV_TABS[number];
 
 export default function App() {
   const [updatesTab, setUpdatesTab] = useState("geral");
-  const [page, setPage] = useState<"home" | "simulations" | "financeiro" | "obras" | "setup">("home");
+  const [page, setPage] = useState<"home" | "simulations" | "financeiro" | "obras" | "admin" | "setup">("home");
   const [activeTab, setActiveTab] = useState<NavTab>("Visão Geral");
   const [pinned, setPinned] = useState(false);
   const [dataSource, setDataSource] = useState<string | null>(null);
@@ -223,7 +224,11 @@ export default function App() {
                   {isSidebarOpen && <span className="bg-[#f87171] text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full animate-fade-in">2</span>}
                 </button>
 
-                <button className={`w-full flex items-center gap-4 py-3 rounded-lg hover:bg-black/5 transition-all text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] ${isSidebarOpen ? "px-4" : "justify-center"}`} title="Painel de Controle">
+                <button 
+                  onClick={() => setPage("admin")}
+                  className={`w-full flex items-center gap-4 py-3 rounded-lg transition-all ${page === "admin" ? "bg-[var(--accent)] text-white shadow-[0_0_20px_rgba(56,189,248,0.3)]" : "text-[var(--text-nav-dim)] hover:text-[var(--text-nav)] hover:bg-black/5"} ${isSidebarOpen ? "px-4" : "justify-center"}`} 
+                  title="Painel de Controle"
+                >
                   <IconGear className="w-[18px] h-[18px] shrink-0" /> {isSidebarOpen && <span className="animate-fade-in">Painel de Controle</span>}
                 </button>
 
@@ -269,7 +274,7 @@ export default function App() {
                 <div className="flex items-center gap-2">
                   <div className="h-6 w-px bg-[var(--border-mini)] mx-2 hidden sm:block opacity-50"></div>
                   <h1 className="text-[17px] font-bold text-[var(--text-main)] tracking-tight">
-                    {page === "home" ? "Capex Dashboard" : page === "financeiro" ? "Financeiro" : page === "obras" ? "Obras" : page === "setup" ? "Setup / Integrações" : "Simulações"}
+                    {page === "home" ? "Capex Dashboard" : page === "financeiro" ? "Financeiro" : page === "obras" ? "Obras" : page === "admin" ? "Painel de Controle" : page === "setup" ? "Setup / Integrações" : "Simulações"}
                   </h1>
                 </div>
               </div>

@@ -87,24 +87,7 @@ const ObrasModule: React.FC = () => {
 
         <div className="flex-1 overflow-y-auto no-scrollbar p-6">
           {activeDetailTab === "Visão geral" && (
-            <ObraDashboard data={{
-              realizado: 154.2,
-              outlook: 285.5,
-              fel: 279.7,
-              mixGastos: [
-                { name: 'Materiais', value: 60, color: '#3b82f6' },
-                { name: 'Serviços', value: 25, color: '#f97316' },
-                { name: 'Facilidades', value: 15, color: '#a855f7' }
-              ],
-              curvaS: [
-                { month: 'Jan', planejado: 10, realizado: 12, outlook: 12 },
-                { month: 'Fev', planejado: 25, realizado: 28, outlook: 28 },
-                { month: 'Mar', planejado: 45, realizado: 42, outlook: 45 },
-                { month: 'Abr', planejado: 65, realizado: 60, outlook: 68 },
-                { month: 'Mai', planejado: 85, realizado: null as any, outlook: 92 },
-                { month: 'Jun', planejado: 100, realizado: null as any, outlook: 110 },
-              ]
-            }} />
+            <ObraDashboard idObra={selectedObraId} />
           )}
           {activeDetailTab === "Sobre a Obra" && <SobreObra obraId={selectedObraId} />}
           {activeDetailTab !== "Visão geral" && activeDetailTab !== "Sobre a Obra" && (

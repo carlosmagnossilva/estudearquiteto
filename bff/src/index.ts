@@ -169,6 +169,42 @@ protectedRouter.put("/obras/:id/sobre", async (req, res) => {
   }
 });
 
+// Nova rota para Dashboard Executivo (Snapshot)
+protectedRouter.get("/obras/:id/dashboard", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const core = getCoreClient(req);
+    const response = await core.get(`/core/obras/${id}/dashboard`);
+    res.json(response.data);
+  } catch (error) {
+    res.status(404).json({ error: "Snapshot não encontrado" });
+  }
+});
+
+// Rotas de Configuração do Sistema
+protectedRouter.get("/config/:chave", async (req, res) => {
+  const { chave } = req.params;
+  try {
+    const core = getCoreClient(req);
+    const response = await core.get(`/core/config/${chave}`);
+    res.json(response.data);
+  } catch (err: any) {
+    console.error(`[BFF] Erro ao buscar config ${chave}:`, err.message);
+    res.json({ valor: null });
+  }
+});
+
+protectedRouter.post("/config", async (req, res) => {
+  try {
+    const core = getCoreClient(req);
+    const response = await core.post(`/core/config`, req.body);
+    res.json(response.data);
+  } catch (error: any) {
+    console.error(`[BFF] Erro ao salvar config:`, error.message);
+    res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
 
 
 app.use("/bff", protectedRouter);

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMsal } from "@azure/msal-react";
+import { useSystemConfig } from "./hooks/useSystemConfig";
 
 interface SimulationResult {
   id: string;
@@ -9,6 +10,72 @@ interface SimulationResult {
   message: string;
   payload?: any;
 }
+
+const IntegratorConfigCard = () => {
+  const { valor, loading, saving, saveConfig } = useSystemConfig('INTEGRATOR_INTERVAL_MIN');
+  const [intervalo, setIntervalo] = useState('');
+  const [status, setStatus] = useState<{ type: 'success' | 'error', msg: string } | null>(null);
+
+  useEffect(() => {
+    if (valor) setIntervalo(valor);
+  }, [valor]);
+
+  const handleSave = async () => {
+    const ok = await saveConfig(intervalo);
+    if (ok) {
+      setStatus({ type: 'success', msg: 'Intervalo atualizado com sucesso!' });
+      setTimeout(() => setStatus(null), 3000);
+    } else {
+      setStatus({ type: 'error', msg: 'Erro ao salvar configuração.' });
+    }
+  };
+
+  return (
+    <div className="bg-gradient-to-br from-blue-600/10 to-transparent backdrop-blur-xl border border-blue-500/20 p-6 rounded-2xl shadow-xl">
+      <div className="flex justify-between items-start mb-6">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-blue-500/20 rounded-xl flex items-center justify-center text-blue-400">
+             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          </div>
+          <div>
+            <h4 className="text-lg font-bold text-white mb-0.5">Background Job: Dashboard Integrator</h4>
+            <p className="text-xs text-white/40">Frequência de atualização dos snapshots (Minutos).</p>
+          </div>
+        </div>
+        <div className="px-2 py-0.5 bg-emerald-500/10 text-emerald-500 text-[9px] font-black uppercase tracking-widest rounded-md border border-emerald-500/10 animate-pulse">
+           Auto-Run: Ativo
+        </div>
+      </div>
+
+      <div className="flex gap-4 items-end">
+        <div className="flex-1">
+          <label className="text-[10px] font-bold text-white/30 uppercase tracking-widest mb-2 block">Intervalo (minutos)</label>
+          <input 
+            type="number"
+            value={intervalo}
+            onChange={(e) => setIntervalo(e.target.value)}
+            disabled={loading}
+            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-xl font-bold text-white focus:outline-none focus:border-blue-500 transition-all"
+            placeholder="5"
+          />
+        </div>
+        <button 
+          onClick={handleSave}
+          disabled={saving || loading}
+          className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 px-8 rounded-xl transition-all shadow-lg shadow-blue-600/20 active:scale-95 disabled:opacity-50 disabled:active:scale-100"
+        >
+          {saving ? '...' : 'Aplicar'}
+        </button>
+      </div>
+
+      {status && (
+        <div className={`mt-4 text-[10px] font-bold uppercase tracking-widest ${status.type === 'success' ? 'text-emerald-400' : 'text-red-400'}`}>
+           {status.msg}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default function IntegrationSimulationsPage() {
   const [loading, setLoading] = useState<string | null>(null);
@@ -92,7 +159,10 @@ export default function IntegrationSimulationsPage() {
           
           {/* Cards de Ação */}
           <div className="space-y-4">
-            <h3 className="text-sm font-bold text-white/30 uppercase tracking-widest">Ações Disponíveis</h3>
+            {/* Configuração do Integrador */}
+            <IntegratorConfigCard />
+
+            <h3 className="text-sm font-bold text-white/30 uppercase tracking-widest mt-8">Simulações de Fluxo</h3>
             {SIMULATION_TYPES.map((sim) => (
               <div key={sim.id} className="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-2xl hover:bg-white/10 transition-all group shadow-lg">
                 <div className="flex justify-between items-start">

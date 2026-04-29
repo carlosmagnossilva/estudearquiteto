@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -9,33 +9,27 @@ import {
   PieChart,
   Pie,
   Cell,
-  ReferenceLine,
-  Label,
-  BarChart,
-  Bar,
-  Tooltip,
-  Legend,
-  LabelList
+  Tooltip
 } from 'recharts';
 import './ObraDashboard.css';
-import p24Data from '../mock/p24_dashboard.json';
 
 interface ObraDashboardProps {
+  idObra?: string | number;
   data?: any;
 }
 
 const COLORS = {
-  materiais: '#1a252c',
-  servicos: '#0088a9',
-  facilidades: '#5ab2d3'
+  servicos: '#3b82f6',
+  materiais: '#f97316',
+  facilidades: '#a855f7'
 };
 
-// --- Sub-components (Defined BEFORE main component to avoid ReferenceError) ---
+// --- Sub-components ---
 
 const LegendItem: React.FC<{ color: string; label: string }> = ({ color, label }) => (
-  <div className="legend-item">
-    <div className="legend-dot" style={{ backgroundColor: color }}></div>
-    <span className="legend-text">{label}</span>
+  <div className="flex items-center gap-2">
+    <div style={{ width: '12px', height: '12px', borderRadius: '3px', backgroundColor: color }} />
+    <span className="text-[10px] font-bold text-[var(--text-muted)] uppercase tracking-wider">{label}</span>
   </div>
 );
 
@@ -83,16 +77,42 @@ const OperationalCard: React.FC<{ title: string; rows: any[] }> = ({ title, rows
   </div>
 );
 
-// --- Main Component ---
+const ObraDashboard: React.FC<ObraDashboardProps> = ({ idObra }) => {
+  const id = idObra; 
+  const [dashboardData, setDashboardData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-const ObraDashboard: React.FC<ObraDashboardProps> = () => {
-  // Forçando o uso do mock P24 para garantir fidelidade visual imediata
-  const dashboardData = p24Data;
+  useEffect(() => {
+    async function loadDashboard() {
+      if (!id) return;
+      try {
+        setLoading(true);
+        // Fallback para localhost se env não estiver definido
+        const baseUrl = process.env.REACT_APP_BFF_URL || 'http://localhost:4000';
+        const response = await fetch(`${baseUrl}/bff/obras/${id}/dashboard`);
+        if (response.ok) {
+          const json = await response.json();
+          setDashboardData(json);
+        }
+      } catch (err) {
+        console.error("Erro ao carregar dashboard:", err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadDashboard();
+  }, [id]);
 
-  const outlook = dashboardData.outlook;
-  const mixGastos = dashboardData.mixGastos;
-  const curvaS = dashboardData.curvaS;
-  const operacional = dashboardData.operacional;
+  if (!id) return <div className="error-container">ID da obra não fornecido.</div>;
+  if (loading) return <div className="loading-container">Carregando Dashboard Executivo...</div>;
+  if (!dashboardData) return <div className="error-container">Snapshot do Dashboard não encontrado (Obra {id}). Rode o Integrador.</div>;
+
+  // Garantindo compatibilidade com o formato do snapshot do integrator
+  const outlook = dashboardData.outlook || { valorProjetado: 0, variacaoFel: 0, nc: 0, cp: 0, mc: 0, pp: 0 };
+  const mixGastos = dashboardData.mixGastos || dashboardData.gastosEvolucao || [];
+  const curvaS = dashboardData.curvaS || [];
+  const operacional = dashboardData.operacional || { servicos: { totalAprovado: 0, valorAprovado: 0, concluidos: 0, concluidosPercent: 0, cancelados: 0 }, materiais: { totalSolicitar: 0, totalSolicitacoes: 0, valorSolicitacoes: 0, entregue: 0, entreguePercent: 0, valorEntregue: 0 }, estaleiros: { contratadas: 0, valorContratado: 0, consumidas: 0, consumidasPercent: 0, valorConsumido: 0 } };
+  const rankingPendencias = dashboardData.rankingPendencias || [];
 
   return (
     <div className="dashboard-container">
@@ -104,7 +124,7 @@ const ObraDashboard: React.FC<ObraDashboardProps> = () => {
           <div className="outlook-section" style={{ flex: '0 0 260px' }}>
             <span className="section-label">Valor Projetado Atual</span>
             <div className="metric-highlight">
-              <div className="highlight-value">{outlook.valorProjetado.toLocaleString('pt-BR')}</div>
+              <div className="highlight-value">{outlook.valorProjetado?.toLocaleString('pt-BR') || 0}</div>
               <div className="gap-indicator">
                 <span className="gap-text">{outlook.variacaoFel}% Var Último FEL</span>
                 <div className="gap-icon-circle">
@@ -125,8 +145,8 @@ const ObraDashboard: React.FC<ObraDashboardProps> = () => {
           <div className="outlook-section" style={{ flex: '0 0 280px' }}>
             <span className="section-label">Tipo de Obra</span>
             <div style={{ display: 'flex', gap: '12px' }}>
-              <MetricBox label="MC" value={`${outlook.mc.toLocaleString('pt-BR')} M`} />
-              <MetricBox label="PP" value={outlook.pp.toString()} />
+              <MetricBox label="MC" value={`${outlook.mc?.toLocaleString('pt-BR') || 0} M`} />
+              <MetricBox label="PP" value={outlook.pp?.toString() || "0"} />
             </div>
           </div>
         </div>
@@ -138,7 +158,7 @@ const ObraDashboard: React.FC<ObraDashboardProps> = () => {
           <h3 className="card-title" style={{ width: '100%', marginBottom: '32px' }}>Custos por Tipo de Gasto</h3>
           <div style={{ height: '280px', width: '100%', position: 'relative' }}>
             <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none', zIndex: 10 }}>
-              <span style={{ fontSize: '38px', fontWeight: 900, color: 'var(--dash-text)' }}>127</span>
+              <span style={{ fontSize: '38px', fontWeight: 900, color: 'var(--dash-text)' }}>{mixGastos.length > 0 ? mixGastos.reduce((a: any, b: any) => a + b.value, 0) : 0}</span>
             </div>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -192,84 +212,7 @@ const ObraDashboard: React.FC<ObraDashboardProps> = () => {
                 <Area type="monotone" dataKey="servicos" stackId="1" stroke="#284b63" fill="#284b63" fillOpacity={1} />
                 <Area type="monotone" dataKey="facilidades" stackId="1" stroke="#5ab2d3" fill="#5ab2d3" fillOpacity={1} />
 
-                {/* Marcos Operacionais com Hierarquia, Datas e Suporte a Tema */}
-                {[
-                  { x: "Ago/23", label: "Início Obra", date: "15/08/23", major: true, yOffset: 0 },
-                  { x: "Fev/25", label: "Testes", date: "10/02/25", major: false, yOffset: 35 },
-                  { x: "Maio/25", label: "Aceite", date: "25/05/25", major: false, yOffset: 70 },
-                  { x: "Jun/25", label: "Término", date: "30/06/25", major: true, yOffset: 0 }
-                ].map((m, i) => (
-                  <ReferenceLine 
-                    key={i} 
-                    x={m.x} 
-                    stroke={m.major ? "rgba(56, 189, 248, 0.6)" : "rgba(148, 163, 184, 0.3)"} 
-                    strokeDasharray={m.major ? "0" : "3 3"}
-                    strokeWidth={m.major ? 2 : 1}
-                  >
-                    <Label 
-                      position="insideTopLeft" 
-                      content={({ viewBox }: any) => {
-                        const { x, y, height } = viewBox;
-                        const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-                        
-                        const bgColor = m.major 
-                          ? (isDark ? "rgba(56, 189, 248, 0.2)" : "rgba(56, 189, 248, 0.1)")
-                          : (isDark ? "rgba(30, 41, 59, 0.8)" : "rgba(255, 255, 255, 0.9)");
-                        
-                        const textColor = m.major 
-                          ? "#0284c7" 
-                          : (isDark ? "rgba(255, 255, 255, 0.7)" : "#475569");
-                        
-                        const borderColor = m.major ? "#0ea5e9" : (isDark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.1)");
-                        
-                        const finalY = y + m.yOffset;
-                        const isRightEdge = x > 300;
-                        
-                        return (
-                          <g>
-                            <title>{`${m.label}: ${m.date}`}</title>
-                            {/* Badge Superior */}
-                            <rect 
-                              x={isRightEdge ? x - (m.label.length * 7 + 15) : x + 5} 
-                              y={finalY - 15} 
-                              width={m.label.length * 7 + 12} 
-                              height={22} 
-                              fill={bgColor} 
-                              stroke={borderColor}
-                              strokeWidth={1}
-                              rx={4} 
-                            />
-                            <text 
-                              x={isRightEdge ? x - (m.label.length * 7 + 9) : x + 11} 
-                              y={finalY - 4} 
-                              fill={textColor} 
-                              fontSize={m.major ? 11 : 10} 
-                              fontWeight={m.major ? "bold" : "normal"} 
-                              dominantBaseline="middle"
-                            >
-                              {m.label}
-                            </text>
-
-                            {/* Data Inferior */}
-                            <g className="milestone-date">
-                              <text 
-                                x={x} 
-                                y={height - 17 - (m.yOffset * 0.6)} 
-                                fill={isDark ? "#94a3b8" : "#64748b"} 
-                                fontSize={9} 
-                                textAnchor="middle"
-                                dominantBaseline="middle"
-                                filter={isDark ? "drop-shadow(0px 1px 2px rgba(0,0,0,0.8))" : "none"}
-                              >
-                                {m.date.substring(0, 5)}
-                              </text>
-                            </g>
-                          </g>
-                        );
-                      }}
-                    />
-                  </ReferenceLine>
-                ))}
+                {/* Marcos Operacionais Dinâmicos virão do Snapshot no futuro */}
               </AreaChart>
             </ResponsiveContainer>
           </div>
@@ -285,114 +228,36 @@ const ObraDashboard: React.FC<ObraDashboardProps> = () => {
       <div className="operational-grid">
         <OperationalCard title="Serviços"
           rows={[
-            { full: { label: 'Total Serv. Aprovado', value: operacional.servicos.totalAprovado.toString(), sub: operacional.servicos.valorAprovado } },
+            { full: { label: 'Total Serv. Aprovado', value: operacional.servicos.totalAprovado?.toString() || "0", sub: operacional.servicos.valorAprovado } },
             {
               split: [
-                { label: 'Concluídos', value: `${operacional.servicos.concluidos} (${operacional.servicos.concluidosPercent}%)`, sub: 'R$ 11.8 M' },
-                { label: 'Cancelados ou transferidos', value: operacional.servicos.cancelados.toString() }
+                { label: 'Concluídos', value: `${operacional.servicos.concluidos || 0} (${operacional.servicos.concluidosPercent || 0}%)`, sub: 'R$ 11.8 M' },
+                { label: 'Cancelados ou transferidos', value: operacional.servicos.cancelados?.toString() || "0" }
               ]
             }
           ]}
         />
         <OperationalCard title="Materiais"
           rows={[
-            { full: { label: 'Total a Solicitar', value: operacional.materiais.totalSolicitar.toString() } },
+            { full: { label: 'Total a Solicitar', value: operacional.materiais.totalSolicitar?.toString() || "0" } },
             {
               split: [
-                { label: 'Total Solicitações', value: operacional.materiais.totalSolicitacoes.toString(), sub: operacional.materiais.valorSolicitacoes },
-                { label: 'Total Entregue', value: `${operacional.materiais.entregue} (${operacional.materiais.entreguePercent}%)`, sub: operacional.materiais.valorEntregue }
+                { label: 'Total Solicitações', value: operacional.materiais.totalSolicitacoes?.toString() || "0", sub: operacional.materiais.valorSolicitacoes },
+                { label: 'Total Entregue', value: `${operacional.materiais.entregue || 0} (${operacional.materiais.entreguePercent || 0}%)`, sub: operacional.materiais.valorEntregue }
               ]
             }
           ]}
         />
         <OperationalCard title="Estaleiros"
           rows={[
-            { full: { label: 'Facilidades Contratadas', value: operacional.estaleiros.contratadas.toString(), sub: operacional.estaleiros.valorContratado } },
-            { full: { label: 'Facilidades Consumidas', value: `${operacional.estaleiros.consumidas} (${operacional.estaleiros.consumidasPercent}%)`, sub: operacional.estaleiros.valorConsumido } }
+            { full: { label: 'Facilidades Contratadas', value: operacional.estaleiros.contratadas?.toString() || "0", sub: operacional.estaleiros.valorContratado } },
+            { full: { label: 'Facilidades Consumidas', value: `${operacional.estaleiros.consumidas || 0} (${operacional.estaleiros.consumidasPercent || 0}%)`, sub: operacional.estaleiros.valorConsumido } }
           ]}
         />
       </div>
 
-      {/* Layer 4: Detailed Operational Charts */}
+      {/* Ranking de Pendências Dinâmico */}
       <div className="operational-grid" style={{ marginTop: '24px' }}>
-        {/* Status dos Serviços */}
-        <div className="dashboard-card">
-          <h3 className="card-title">Status dos Serviços</h3>
-          <div style={{ height: '350px', width: '100%' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart layout="vertical" data={p24Data.statusServicos} margin={{ left: 40, right: 20, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
-                <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
-                <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
-                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'var(--dash-card)', borderColor: 'var(--dash-border)', borderRadius: '8px' }} />
-                <Legend verticalAlign="top" align="left" iconSize={10} wrapperStyle={{ paddingBottom: '20px', fontSize: '11px' }} />
-                <Bar dataKey="naoExecutado" name="Não executado" stackId="a" fill="#475569" radius={[0, 0, 0, 0]} />
-                <Bar dataKey="concluido" name="Concluído" stackId="a" fill="#166534" />
-                <Bar dataKey="aprovada" name="Aprovada" stackId="a" fill="#f59e0b" />
-                <Bar dataKey="pcAprovado" name="Pedidos compra aprov." stackId="a" fill="#0891b2" />
-                <Bar dataKey="pago" name="Pago" stackId="a" fill="#a855f7" radius={[0, 4, 4, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Status dos Materiais */}
-        <div className="dashboard-card">
-          <h3 className="card-title">Status dos Materiais</h3>
-          <div style={{ height: '350px', width: '100%' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart layout="vertical" data={p24Data.statusMateriais} margin={{ left: 40, right: 20, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
-                <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
-                <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
-                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'var(--dash-card)', borderColor: 'var(--dash-border)', borderRadius: '8px' }} />
-                <Legend verticalAlign="top" align="left" iconSize={10} wrapperStyle={{ paddingBottom: '20px', fontSize: '11px' }} />
-                <Bar dataKey="naoSolicitado" name="Não solicitado" stackId="a" fill="#475569" />
-                <Bar dataKey="aguardandoAprovacao" name="Aguardando aprov." stackId="a" fill="#166534" />
-                <Bar dataKey="aguardandoEntrega" name="Aguardando entrega" stackId="a" fill="#0891b2" />
-                <Bar dataKey="entregue" name="Entregue" stackId="a" fill="#a855f7" radius={[0, 4, 4, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Consumo de Facilidades */}
-        <div className="dashboard-card">
-          <h3 className="card-title">Consumo de Facilidades</h3>
-          <div style={{ height: '350px', width: '100%' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart layout="vertical" data={p24Data.consumoFacilidades} margin={{ left: 40, right: 20, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
-                <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
-                <YAxis dataKey="name" type="category" stroke="var(--dash-dim)" fontSize={11} width={80} tickLine={false} axisLine={false} />
-                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'var(--dash-card)', borderColor: 'var(--dash-border)', borderRadius: '8px' }} />
-                <Legend verticalAlign="top" align="left" iconSize={10} wrapperStyle={{ paddingBottom: '20px', fontSize: '11px' }} />
-                <Bar dataKey="contratado" name="Contratado" fill="#334155" barSize={12} radius={[0, 4, 4, 0]} />
-                <Bar dataKey="consumido" name="Consumido" fill="#0ea5e9" barSize={12} radius={[0, 4, 4, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-        <div className="dashboard-card" style={{ gridColumn: 'span 3' }}>
-          <h3 className="card-title">Pendências por Área</h3>
-          <div style={{ height: '350px', width: '100%' }}>
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart layout="vertical" data={p24Data.pendenciasPorArea} margin={{ left: 60, right: 20, bottom: 20 }}>
-                <CartesianGrid strokeDasharray="3 3" horizontal={false} stroke="rgba(255,255,255,0.05)" />
-                <XAxis type="number" stroke="var(--dash-dim)" fontSize={10} tickLine={false} axisLine={false} />
-                <YAxis dataKey="name" type="category" stroke="var(--dash-text)" fontSize={11} width={120} tickLine={false} axisLine={false} />
-                <Tooltip cursor={{ fill: 'rgba(255,255,255,0.05)' }} contentStyle={{ backgroundColor: 'var(--dash-card)', borderColor: 'var(--dash-border)', borderRadius: '8px' }} />
-                <Legend verticalAlign="top" align="left" iconSize={10} wrapperStyle={{ paddingBottom: '20px', fontSize: '11px' }} />
-                <Bar dataKey="criticas" name="Críticas" stackId="a" fill="#0ea5e9" radius={[0, 0, 0, 0]}>
-                  <LabelList dataKey="criticas" position="center" fill="#fff" style={{ fontSize: '10px', fontWeight: 'bold' }} />
-                </Bar>
-                <Bar dataKey="normais" name="Normais" stackId="a" fill="#64748b" radius={[0, 4, 4, 0]}>
-                  <LabelList dataKey="normais" position="center" fill="#fff" style={{ fontSize: '10px', fontWeight: 'bold' }} />
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
         <div className="dashboard-card" style={{ gridColumn: 'span 3' }}>
           <h3 className="card-title">Ranking de Pendências</h3>
           <div className="table-responsive">
@@ -401,20 +266,18 @@ const ObraDashboard: React.FC<ObraDashboardProps> = () => {
                 <tr>
                   <th>Tipo</th>
                   <th>Pendência</th>
-                  <th>Área Responsável</th>
-                  <th>Aging</th>
+                  <th>Aging (Dias)</th>
                 </tr>
               </thead>
               <tbody>
-                {p24Data.rankingPendencias.map((item, index) => (
+                {rankingPendencias.map((item: any, index: number) => (
                   <tr key={index}>
                     <td>
-                      <span className={`badge badge-${item.tipo.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}>
-                        {item.tipo === 'Crítica' ? '⚠️ ' : '⚪ '}{item.tipo}
+                      <span className={`badge badge-${item.criticidade.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")}`}>
+                        {item.criticidade === 'Crítica' ? '⚠️ ' : '⚪ '}{item.criticidade}
                       </span>
                     </td>
-                    <td className="text-highlight">{item.pendencia}</td>
-                    <td>{item.area}</td>
+                    <td className="text-highlight">{item.descricao}</td>
                     <td className="aging-value">{item.aging}</td>
                   </tr>
                 ))}

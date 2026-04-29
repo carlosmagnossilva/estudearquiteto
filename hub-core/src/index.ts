@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import "dotenv/config";
 import { ServiceBusClient, ServiceBusAdministrationClient } from "@azure/service-bus";
-import { queryParadas, queryUpdates, queryCapex, queryObrasFinanceiras, queryFinancialIndicadores, queryLastSync, queryObraSobre, saveObraSobre, closePool } from "./database.js";
+import { queryParadas, queryUpdates, queryCapex, queryObrasFinanceiras, queryFinancialIndicadores, queryLastSync, queryObraSobre, saveObraSobre, getObraDashboardSnapshot, getSystemConfig, saveSystemConfig, closePool } from "./database.js";
 import { authMiddleware } from "./authMiddleware.js";
 
 const app = express();
@@ -239,6 +239,19 @@ serviceRouter.put("/obras/:id/sobre", async (req, res) => {
   }
 });
 
+serviceRouter.get("/obras/:id/dashboard", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const snapshot = await getObraDashboardSnapshot(id);
+    if (snapshot) {
+      res.json(snapshot);
+    } else {
+      res.status(404).json({ error: "Snapshot não encontrado" });
+    }
+  } catch (e: any) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 serviceRouter.get("/financeiro/obras", async (req, res) => {
   try {
@@ -247,6 +260,24 @@ serviceRouter.get("/financeiro/obras", async (req, res) => {
     res.json(data);
   } catch (e: any) {
     res.status(500).json({ error: e.message });
+  }
+});
+
+serviceRouter.get("/config/:chave", async (req, res) => {
+  const { chave } = req.params;
+  const valor = await getSystemConfig(chave);
+  res.json({ valor });
+});
+
+serviceRouter.post("/config", async (req, res) => {
+  const { chave, valor } = req.body;
+  console.log(`[CORE] Update de config recebido: ${chave} = ${valor}`);
+  try {
+    const result = await saveSystemConfig(chave, valor);
+    res.json(result);
+  } catch (err: any) {
+    console.error(`[CORE] Erro ao salvar config:`, err.message);
+    res.status(500).json({ ok: false, error: err.message });
   }
 });
 

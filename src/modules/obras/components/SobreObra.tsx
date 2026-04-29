@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useBff } from "../../../hooks/useBff";
 import { useMsal } from "@azure/msal-react";
+import "./SobreObra.css";
 
 interface SobreObraProps {
   obraId: number;
@@ -203,9 +204,9 @@ const DetailItem = ({ label, value, name, isEditing, field, type = "text", formD
     return val;
   };
 
-  const getInputWidth = () => {
-    if (type === "number") return "max-w-[100px]";
-    if (type === "date") return "max-w-[180px]";
+  const getInputClass = () => {
+    if (type === "number") return "detail-item-input-number input-no-icon";
+    if (type === "date") return "detail-item-input-date";
     return "w-full";
   };
 
@@ -215,12 +216,12 @@ const DetailItem = ({ label, value, name, isEditing, field, type = "text", formD
         {label}
       </span>
       {isEditing && field ? (
-        <div className={`flex items-center gap-2 relative group/input ${getInputWidth()}`}>
+        <div className={`flex items-center gap-2 relative group/input ${getInputClass()}`}>
             <input 
                 type={type}
                 value={getEditValue()}
                 onChange={(e) => setFormData({ ...formData, [field]: e.target.value })}
-                className={`bg-[var(--bg-input)] border border-[var(--border-card)] dark:border-white/20 rounded-lg px-3 py-1.5 text-sm font-bold text-[var(--text-main)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/30 outline-none w-full transition-all [color-scheme:light] dark:[color-scheme:dark] shadow-sm pr-10`}
+                className={`bg-[var(--bg-input)] border border-[var(--border-card)] dark:border-white/20 rounded-lg px-3 py-1.5 text-sm font-bold text-[var(--text-main)] focus:border-[var(--accent)] focus:ring-1 focus:ring-[var(--accent)]/30 outline-none w-full transition-all [color-scheme:light] dark:[color-scheme:dark] shadow-sm ${type === 'date' ? 'pr-10' : ''}`}
             />
             {type === "date" && (
               <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-[var(--text-muted)] group-focus-within/input:text-[var(--accent)] transition-colors">

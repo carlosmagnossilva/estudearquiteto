@@ -1,0 +1,26 @@
+/* Estilos específicos para o formulário de Sobre a Obra */
+
+/* Remover setas nativas de inputs numéricos para ganhar espaço horizontal */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+.detail-item-input-number {
+  min-width: 120px !important;
+  max-width: 140px !important;
+}
+
+.detail-item-input-date {
+  min-width: 180px !important;
+}
+
+/* Ajuste de padding quando não há ícone de calendário */
+.input-no-icon {
+  padding-right: 12px !important;
+}

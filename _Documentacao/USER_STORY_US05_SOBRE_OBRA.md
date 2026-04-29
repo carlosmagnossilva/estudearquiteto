@@ -1,7 +1,11 @@
 # User Story US05: Detalhamento Administrativo e Gestão "Sobre a Obra"
 
-**Persona**: Gestor de Obra / Planejador
-**Objetivo**: Visualizar e gerenciar as informações críticas de cronograma, localização e equipe técnica, garantindo que o contexto operacional da obra esteja centralizado e atualizado sem dependência de dados externos ou manuais.
+**Status**: ✅ Concluída (Produção-Ready)
+**Data de Entrega**: 2026-04-28
+**Principais Avanços Técnicos**:
+- **Mecanismo de Upsert**: A Stored Procedure `sp_save_obra_detalhes_v2` agora lida com a criação automática de registros para obras novas (ex: Obra 89).
+- **Independência de Dados**: Migração completa da persistência para o schema `hub_core`.
+- **Fidelidade Visual**: Interface 100% responsiva com suporte a temas Dark/Light.
 
 ---
 

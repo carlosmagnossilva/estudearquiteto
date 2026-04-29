@@ -314,12 +314,12 @@ export async function queryObraSobre(id: number) {
 export async function saveObraSobre(id: number, data: any) {
   try {
     const pool = await getPool();
-    await pool.request()
-      .input("id", mssql.Int, id)
+    const result = await pool.request()
+      .input("id_obra", mssql.Int, id)
       .input("data_inicio", mssql.DateTime2, data.data_inicio_obra)
       .input("data_termino", mssql.DateTime2, data.data_termino_obra)
       .input("data_contrato", mssql.DateTime2, data.data_termino_contrato)
-      .input("ano", mssql.Int, data.ano_orcamento)
+      .input("ano_orcamento", mssql.Int, data.ano_orcamento)
       .input("dur_obra", mssql.Int, data.duracao_obra_dias)
       .input("dur_testes", mssql.Int, data.duracao_testes_dias)
       .input("dur_aceitacao", mssql.Int, data.duracao_aceitacao_dias)
@@ -328,26 +328,68 @@ export async function saveObraSobre(id: number, data: any) {
       .input("inspecao", mssql.VarChar, data.inspecao_casco_status)
       .input("bandeira", mssql.VarChar, data.embarcacao_bandeira)
       .input("nacionalidade", mssql.VarChar, data.embarcacao_nacionalidade)
-      .query(`
-        UPDATE hub_core.obra_detalhes
-        SET data_inicio_obra = @data_inicio,
-            data_termino_obra = @data_termino,
-            data_termino_contrato = @data_contrato,
-            ano_orcamento = @ano,
-            duracao_obra_dias = @dur_obra,
-            duracao_testes_dias = @dur_testes,
-            duracao_aceitacao_dias = @dur_aceitacao,
-            local_estaleiro = @local,
-            condicao_docagem = @condicao,
-            inspecao_casco_status = @inspecao,
-            embarcacao_bandeira = @bandeira,
-            embarcacao_nacionalidade = @nacionalidade,
-            updated_at = GETDATE()
-        WHERE id_obra = @id
-      `);
-    return { ok: true };
+      .input("usuario_log", mssql.VarChar, data.usuario_log || 'System')
+      .execute("hub_core.sp_save_obra_detalhes_v2");
+    
+    return { 
+      ok: result.recordset[0]?.Success === 1, 
+      message: result.recordset[0]?.Message 
+    };
   } catch (err: any) {
     console.error(`[DB] Erro ao salvar detalhes da obra ${id}:`, err.message);
+    throw err;
+  }
+}
+
+/**
+ * Busca o Snapshot JSON consolidado para o Dashboard
+ */
+export async function getObraDashboardSnapshot(idObra: number) {
+  try {
+    const pool = await mssql.connect(config);
+    const result = await pool.request()
+      .input("id", mssql.Int, idObra)
+      .query("SELECT snapshot_json FROM hub_frontend.dashboard_snapshots WHERE id_obra = @id");
+
+    if (result.recordset.length > 0) {
+      return JSON.parse(result.recordset[0].snapshot_json);
+    }
+    return null;
+  } catch (err) {
+    console.error("Erro ao buscar snapshot:", err);
+    throw err;
+  }
+}
+
+/**
+ * Busca configuração por chave
+ */
+export async function getSystemConfig(chave: string) {
+  try {
+    const pool = await getPool();
+    const result = await pool.request()
+      .input("chave", mssql.VarChar, chave)
+      .query("SELECT valor FROM hub_core.configuracoes_sistema WHERE chave = @chave");
+    return result.recordset[0]?.valor || null;
+  } catch (err) {
+    console.error("Erro ao buscar config:", err);
+    return null;
+  }
+}
+
+/**
+ * Salva configuração
+ */
+export async function saveSystemConfig(chave: string, valor: string) {
+  try {
+    const pool = await getPool();
+    await pool.request()
+      .input("chave", mssql.VarChar, chave)
+      .input("valor", mssql.NVarChar, valor)
+      .query("UPDATE hub_core.configuracoes_sistema SET valor = @valor, updated_at = GETDATE() WHERE chave = @chave");
+    return { ok: true };
+  } catch (err: any) {
+    console.error("Erro ao salvar config:", err);
     throw err;
   }
 }

@@ -2,12 +2,16 @@
 
 ## 🏗️ Arquitetura e Infraestrutura
 - **BFF**: Container App em Azure (`hub-bff-app`), rota `PUT /bff/obras/:id/sobre` operacional com suporte a tokens MSAL.
-- **Hub-Core**: Core transacional (`hub-core-app`) conectado ao Azure SQL. Rota `PUT` persistindo no schema `hub_core`.
-- **Hub-Integrator**: Consumidor de filas Service Bus para sincronização de dados técnicos e financeiros.
+- **Hub-Core**: Core transacional (`hub-core-app`)## 🚀 Estado Atual
+- **Pipeline de Sync**: O `hub-integrator` agora roda como serviço de background contínuo com intervalo configurável via banco de dados.
+- **Configurações do Sistema**: Implementado módulo de persistência de parâmetros globais (`hub_core.configuracoes_sistema`) com gestão via Dashboard Administrativo.
+- **Sobre a Obra**: Módulo 100% funcional com mecanismo de Upsert para obras novas.
+- **Auth**: Integração MSAL estabilizada entre Frontend -> BFF -> Core.
 
-### 🗄️ Banco de Dados (Azure SQL)
-- **Schema `hub_core`**: (PRODUÇÃO) Tabelas `obra_detalhes` e `equipe_tecnica` integradas e populadas. 
-- **Integridade**: Migrations e seeds concluídos para a Austral Abrolhos (Obra 24).
+## 🛠️ Descobertas Técnicas Recentes
+- **Debug de Portas**: Identificada necessidade de limpeza agressiva de processos Node/Axios em ambientes de dev para evitar o erro "Processo Fantasma" que causava 404 em rotas novas.
+- **Database**: O schema `hub_core` é agora o motor de snapshots para o frontend, reduzindo a carga no transacional.
+ (Obra 24).
 
 ## ✅ Entregas Concluídas (Módulo Obras)
 - ✅ **CRUD "Sobre a Obra" (US05)**: Ciclo completo de leitura e escrita para dados administrativos e técnicos.
